@@ -47,7 +47,7 @@ class Modulo extends Component {
             </div>
             <div className="card-body">
 
-                {moduloDetalle.map((detalle, i) => (<p key={detalle.id} className="card-text">{detalle.producto}</p>))}
+                {moduloDetalle.map((detalle, i) => (<p key={i} className="card-text">{detalle.producto}</p>))}
 
             </div>
             <div className="card-footer ">

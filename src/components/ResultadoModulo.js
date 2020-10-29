@@ -9,11 +9,19 @@ class ResultadoModulo extends Component {
             texto: '',
             l_cantidad: new Map()
         };
-
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
+    
+    }
+
+    componentWillUpdate =()=>{
+        this.miMapaRefs = new Map();
+        this.props.modulos.forEach(element => {
+            this.miMapaRefs.set(element.id, React.createRef());
+        });
+
     }
     changeCambo = () => {
         this.miMapaRefs.forEach(element => {
@@ -25,6 +33,8 @@ class ResultadoModulo extends Component {
         
         if (modulos.length === 0) return null;
         
+    
+
         return (
             <React.Fragment>
                 <div>

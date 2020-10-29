@@ -1,12 +1,24 @@
-import React, { Component } from "react";
+import React, { Component, useRef  } from "react";
 import logo from '../logo.svg';
 
 function Nav(props) {
+    let textInput = useRef(null);
+    function filtradoModulo(e) {
+        e.preventDefault();
+        const texto = textInput.current.value;
+        props.filtrarModulosApp (texto);
+      }
+    /*obtenerDatos = (e) => {
+        e.preventDefault();
+        const termino = textInput.current;
+        this.props.datosBusqueda (termino);
+        //console.log(this.busquedaRef.current.value);
+    }*/
     return (
         <>
 
             <nav className="navbar navbar-light bg-light">
-                <form className=" ">
+                <form onSubmit={filtradoModulo}>
 
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Farmacia</label>
@@ -20,7 +32,7 @@ function Nav(props) {
                     </div>
 
                     <div className="form-inline">
-                            <input className="form-control mr-sm-2" type="search" placeholder="Filtro" aria-label="Filtro"></input>
+                            <input ref={textInput} className="form-control mr-sm-2 inputUppercase" type="search" placeholder="Filtro" aria-label="Filtro"></input>
                             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Busqueda</button>
                         </div>
                 </form>
