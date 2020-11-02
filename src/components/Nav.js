@@ -1,19 +1,12 @@
-import React, { Component, useRef  } from "react";
-import logo from '../logo.svg';
+import React, { Component, useRef } from "react";
 
 function Nav(props) {
     let textInput = useRef(null);
     function filtradoModulo(e) {
         e.preventDefault();
         const texto = textInput.current.value;
-        props.filtrarModulosApp (texto);
-      }
-    /*obtenerDatos = (e) => {
-        e.preventDefault();
-        const termino = textInput.current;
-        this.props.datosBusqueda (termino);
-        //console.log(this.busquedaRef.current.value);
-    }*/
+        props.filtrarModulosApp(texto);
+    }
     return (
         <>
 
@@ -28,21 +21,23 @@ function Nav(props) {
                                 {props.farmacias.map(farmacia => <option key={farmacia.id} value={farmacia.id}>{farmacia.nombre}</option>)}
                             </select>
                         </div>
-            
+
                     </div>
 
                     <div className="form-inline">
-                            <input ref={textInput} className="form-control mr-sm-2 inputUppercase" type="search" placeholder="Filtro" aria-label="Filtro"></input>
-                            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Busqueda</button>
-                        </div>
+                        <input ref={textInput} className="form-control mr-sm-2 inputUppercase" type="search" placeholder="Filtro" aria-label="Filtro"></input>
+                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Busqueda</button>
+
+
+                    </div>
                 </form>
 
             </nav>
 
             <div className="jumbotron">
-                <img src={logo} width="30" height="30" className="d-inline-block align-top" alt="" loading="lazy"></img>
+
                 <span className="navbar-text">
-                    NativoSistemas  </span>
+                    Info  </span>
             </div>
 
 
@@ -50,5 +45,11 @@ function Nav(props) {
         </>
     );
 }
+/*<input type="text" list="data" className="form-control" />
 
+<datalist id="data">
+    {props.farmacias.map((farmacia, key) =>
+        <option key={key} value={farmacia.nombre} />
+    )}
+</datalist>*/
 export default Nav;
