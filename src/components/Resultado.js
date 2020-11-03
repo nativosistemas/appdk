@@ -4,62 +4,45 @@ import Modulo from "./Modulo";
 class Resultado extends Component {
     constructor(props) {
         super(props);
-        /*this.state = {
-            texto: '',
-            l_cantidad: new Map()
-        };
-        this.miMapaRefs = new Map();
-        this.props.modulos.forEach(element => {
-            this.miMapaRefs.set(element.id, React.createRef());
-        });*/
-    
     }
-
-    componentWillUpdate =()=>{
+    componentWillUpdate = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
-
     }
-    changeCambo = () => {
+    actualizarCantidadEnLosModulos = () => {
         this.miMapaRefs.forEach(element => {
             element.current.refrescarCantidad();
         });
     }
-    mostrarModulos = () => {
-        const modulos = this.props.modulos;
-        
-        if (modulos.length === 0) return null;
-        
-    
 
-        return (
-            <React.Fragment>
-     
-                {modulos.map(modulo => (<Modulo key={modulo.id} id={modulo.id} ref={this.miMapaRefs.get(modulo.id)}
-                    modulo={modulo} cargarCantidad={this.cargarCantidad} getCantidad={this.getCantidad} ></Modulo>))}
-
-            </React.Fragment>
-        )
-    }
-    cargarCantidad = (pModulo, pCantidad) => {
+    setCantidad = (pModulo, pCantidad) => {
         const farmacia = this.props.farmacia;
         if (farmacia === '')
             return;
 
-        this.setearCantidadModulo(farmacia, pModulo, pCantidad);
-        /*let l_cantidad = this.state.l_cantidad;
-        l_cantidad.set(pModulo.id, pCantidad);
-        this.setState({ l_cantidad: l_cantidad });*/
-
-        /*var l_pendiente = localStorage.getItem('l_pedidos') || '';
-        l_pendiente = JSON.parse(l_pendiente);
-        var variable = '';
-        for (var i = 0; i < l_pendiente.length; i++) {
-            variable += 'Farmacia: ' + l_pendiente[i].farmacia.nombre + ' - Modulo: ' + l_pendiente[i].modulo.nombre + ' - Cantidad: ' + String(l_pendiente[i].cantidad) + ' ||| ';
+        var l_pendiente = localStorage.getItem('l_pedidos') || '';
+        var isAgregar = true;
+        if (l_pendiente !== '') {
+            l_pendiente = JSON.parse(l_pendiente);
         }
-        this.setState({ texto: variable })*/
+        if (Array.isArray(l_pendiente)) {
+            for (var i = 0; i < l_pendiente.length; i++) {
+                if (l_pendiente[i].modulo.id === pModulo.id && l_pendiente[i].farmacia.id === farmacia.id) {
+                    isAgregar = false;
+                    l_pendiente[i].cantidad = pCantidad;
+                    break;
+                }
+            }
+        } else {
+            l_pendiente = [];
+        }
+        if (isAgregar) {
+            let oPedido = { fechaCreacion: Date.now(), farmacia: farmacia, modulo: pModulo, cantidad: pCantidad };
+            l_pendiente.push(oPedido);
+        }
+        localStorage.setItem('l_pedidos', JSON.stringify(l_pendiente));
     }
     getCantidad = (pModulo) => {
         var cantidad = 0;
@@ -69,10 +52,7 @@ class Resultado extends Component {
 
         var l_pendiente = localStorage.getItem('l_pedidos') || '';
         if (l_pendiente !== '') {
-            //  try {
             l_pendiente = JSON.parse(l_pendiente);
-            // }catch{}
-
             if (Array.isArray(l_pendiente)) {
                 for (var i = 0; i < l_pendiente.length; i++) {
                     if (String(l_pendiente[i].modulo.id) === String(pModulo.id) && String(l_pendiente[i].farmacia.id) === String(farmacia.id)) {
@@ -84,47 +64,18 @@ class Resultado extends Component {
         }
         return cantidad;
     }
-    setearCantidadModulo = (pFarmacia, pModulo, pCantidad) => {
-        //var myName = localStorage['name'] || '';
-        //var myPass = localStorage['pass'] || '';
-
-        //var l_pendiente = localStorage['l_pedidos'] || '';
-        //localStorage.clear();
-        var l_pendiente = localStorage.getItem('l_pedidos') || '';
-        var isAgregar = true;
-        if (l_pendiente !== '') {
-            //  try {
-            l_pendiente = JSON.parse(l_pendiente);
-            // }catch{}
-        }
-        if (Array.isArray(l_pendiente)) {
-
-            for (var i = 0; i < l_pendiente.length; i++) {
-                if (l_pendiente[i].modulo.id === pModulo.id && l_pendiente[i].farmacia.id === pFarmacia.id) {
-                    isAgregar = false;
-                    l_pendiente[i].cantidad = pCantidad;
-                    break;
-                }
-            }
-        } else {
-            l_pendiente = [];
-        }
-        if (isAgregar) {
-            // let oPedido = new Pedido(pFarmacia, pModulo, pCantidad);
-            let oPedido = { fechaCreacion: Date.now(), farmacia: pFarmacia, modulo: pModulo, cantidad: pCantidad };
-            l_pendiente.push(oPedido);
-        }
-        //localStorage['l_pedidos'] = l_pendiente;
-        localStorage.setItem('l_pedidos', JSON.stringify(l_pendiente));
-    }
     render() {
+        const modulos = this.props.modulos;
+        if (modulos.length === 0) return null;
         return (
             <>
-                {this.mostrarModulos()}
+                <React.Fragment>
+                    {modulos.map(modulo => (<Modulo key={modulo.id} id={modulo.id} ref={this.miMapaRefs.get(modulo.id)}
+                        modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} ></Modulo>))}
+                </React.Fragment>
             </>
         );
     }
-
 }
 
 export default Resultado

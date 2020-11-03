@@ -14,7 +14,6 @@ class App extends Component {
       farmaciaSeleccionada: '',
       filtrado: ''
     }
-
     this.handleChange = this.handleChange.bind(this);
     this.elementResultadoModulo = React.createRef();
     this.url = 'http://www.kellerhoff.com.ar:84/api/'
@@ -43,7 +42,7 @@ class App extends Component {
           localStorage.setItem('l_modulos', JSON.stringify(pModulos));
         }))//
       .then(() => { this.cargarDatosInicio_DesdeLocalStorage(); })
-      .catch(error => { //console.error(error);
+      .catch(error => { 
         this.cargarDatosInicio_DesdeLocalStorage();
       });
   }
@@ -78,7 +77,7 @@ class App extends Component {
   handleChange(event) {
     let farma = this.state.farmacias.find(element => String(element.id) === String(event.target.value));
     this.setState({ farmaciaSeleccionada: farma }, () => {
-      this.elementResultadoModulo.current.changeCambo();
+      this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
     });
   }
 
@@ -95,14 +94,11 @@ class App extends Component {
       }
     });
   }
-  //<div className="app container-fluid">
-  // </div>
-  //<Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} ></Resultado>
   render() {
     return (
       <>
         <div className="app container-fluid">
-          <Nav handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} farmacias={this.state.farmacias}></Nav>
+          <Nav handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} farmacias={this.state.farmacias} farmacia={this.state.farmaciaSeleccionada} ></Nav>
           <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} ></Resultado>
         </div>
       </>
