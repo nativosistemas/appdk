@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import Modulo from "./Modulo";
 
 class Resultado extends Component {
-    constructor(props) {
-        super(props);
-    }
+    
     componentWillUpdate = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {

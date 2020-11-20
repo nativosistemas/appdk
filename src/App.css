@@ -4,6 +4,15 @@
 .cardModulo {
   margin-top: 1rem!important;
 }
+
+.navbar a{
+  color: #fff
+}
+
+.navbar a:hover{
+  color: #ddd
+}
+
 /*.inputUppercase { 
   text-transform: uppercase;
 }*/
