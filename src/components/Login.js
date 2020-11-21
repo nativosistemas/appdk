@@ -1,13 +1,12 @@
   
 import React, { Component } from "react";
-import axios from "axios";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
+      name: "",
       password: "",
       loginErrors: ""
     };
@@ -23,28 +22,28 @@ export default class Login extends Component {
   }
 
   handleSubmit(event) {
-    const { email, password } = this.state;
+    const { name, password } = this.state;
 
-    axios
-      .post(
-        "http://www.kellerhoff.com.ar:84/api/Authenticate",
-        {
-          user: {
-            email: email,
-            password: password
-          }
-        },
-        { withCredentials: true }
-      )
-      .then(response => {
-        if (response.data.logged_in) {
-          this.props.handleSuccessfulAuth(response.data);
-        }
-      })
-      .catch(error => {
-        console.log("login error", error);
+    var url = 'http://www.kellerhoff.com.ar:84/api/';
+    var data = {};
+    data.login = name;
+    data.pass = password;
+    var json = JSON.stringify(data);
+    fetch(url + 'Authenticate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: json
+    })
+      .then(results => results.json())
+      .then(data => {
+        // const {name} = data.results[0];
+        //setFirstName(name.first);
+        alert('OK' + data.apNombre);
+        //  setLastName(name.last);
+
       });
-    event.preventDefault();
   }
 
   render() {
@@ -52,10 +51,10 @@ export default class Login extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
+            type="text"
+            name="user"
+            placeholder="Text"
+            value={this.state.user}
             onChange={this.handleChange}
             required
           />

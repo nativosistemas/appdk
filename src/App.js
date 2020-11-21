@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav} from 'react-bootstrap'
 import Login from './components/Login'
 import Farmacia from './Farmacia'
