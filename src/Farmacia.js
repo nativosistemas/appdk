@@ -28,7 +28,8 @@ class Farmacia extends Component {
     }
   }
   cargarDatosInicio_DesdeApi = () => {
-    fetch(this.url + 'farmacia')
+    fetch(this.url + 'farmacia?' + new URLSearchParams({
+      ApNombre: 'Perez, Nestor'}))
       .then((response) => {
         return response.json()
       })
@@ -89,7 +90,10 @@ class Farmacia extends Component {
         this.setState({ modulos: this.state.modulosOriginal })
 
       } else {
-        let modulosFiltrado = this.state.modulos.filter(f => String(f.nombre).toUpperCase().includes(String(this.state.filtrado).toUpperCase()));
+        //let modulosFiltrado = this.state.modulos.filter(f =>  f.moduloDetalle.map(e =>{String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) );
+       let modulosFiltrado = this.state.modulosOriginal.filter(m => 
+           m.moduloDetalle.find(e =>{String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) != undefined
+      );
         this.setState({ modulos: modulosFiltrado })
       }
     });

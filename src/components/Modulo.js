@@ -22,23 +22,45 @@ class Modulo extends Component {
         this.setState({ count: cantidad }, () => { this.props.setCantidad(this.props.modulo, cantidad); })
     }
     render() {
-        const { nombre, moduloDetalle } = this.props.modulo;
-        return (<div className="card cardModulo ">
-            <div className="card-header">
-                <h5 className="card-title">{nombre}</h5>
-            </div>
+        const { moduloDetalle } = this.props.modulo;
+        return (<div className="card cardModulo">
             <div className="card-body">
-                {moduloDetalle.map((detalle, i) => (<p key={i} className="card-text">{detalle.producto}</p>))}
+                {moduloDetalle.length > 0 &&
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Precio c/ Desc.</th>
+                                <th scope="col">Cant. Unid.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {moduloDetalle.map((detalle, i) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{detalle.producto}</td>
+                                        <td>{detalle.descripcion}</td>
+                                        <td>{detalle.precio}</td>
+                                        <td>{detalle.precioDescuento}</td>
+                                        <td>{detalle.cantidadUnidades}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                }
             </div>
             <div className="card-footer ">
                 <div className=" row justify-content-center">
                     <div className="input-group col-xs-6 col-sm-6 col-md-3 col-lg-2">
                         <div className="input-group-prepend">
-                            <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e,-1)}>-</button>
+                            <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, -1)}>-</button>
                         </div>
                         <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} readOnly />
                         <div className="input-group-prepend">
-                            <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e,1)}>+</button>
+                            <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, 1)}>+</button>
                         </div>
                     </div>
                 </div>
