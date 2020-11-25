@@ -47,6 +47,7 @@ export default class Login extends Component {
 
     render() {
         return (
+          <div className="container">
             <form onSubmit={this.handleSubmit}>
                 <h3>Inicio sesion</h3>
 
@@ -72,6 +73,7 @@ export default class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-block">Login</button>
                
             </form>
+            </div>
         );
     }
 }

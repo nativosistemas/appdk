@@ -9,7 +9,7 @@ function Nav(props) {
     }
     return (
         <>
-            <nav className="navbar navbar-light bg-light">
+            <nav className="navbar navbar-light bg-gradient-info">
                 <form onSubmit={filtradoModulo}>
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Farmacia</label>
@@ -26,12 +26,12 @@ function Nav(props) {
                     </div>
                 </form>
             </nav>
-            {props.farmacia !== '' &&
+           {/*props.farmacia !== '' &&
                 <div className="jumbotron">
                     <span className="navbar-text">
                         <b>Dirección: </b> {props.farmacia.direccion}  </span>
                 </div>
-            }
+    */}
         </>
     );
 }

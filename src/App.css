@@ -1,4 +1,4 @@
-/*
+
 .app {
   user-select: none;
 }
@@ -16,11 +16,16 @@
 
 .inputUppercase { 
   text-transform: uppercase;
-}*/
-
+}
+/*
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 
+body {
 
+
+  font-weight: 400;
+  font-family: 'Fira Sans', sans-serif;
+}
 * {
   box-sizing: border-box;
 }
@@ -92,4 +97,4 @@ body, html, .App, #root, .auth-wrapper {
 
 .forgot-password a {
   color: #167bff;
-}
+}*/

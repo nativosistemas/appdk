@@ -21,10 +21,11 @@ class Farmacia extends Component {
 
   componentWillMount() {
     // this.filtrarModulosApp('');
+    this.cargarDatosInicio_DesdeLocalStorage();
     if (navigator.onLine) {
       this.cargarDatosInicio_DesdeApi();
     } else {
-      this.cargarDatosInicio_DesdeLocalStorage();
+      
     }
   }
   cargarDatosInicio_DesdeApi = () => {
@@ -90,9 +91,8 @@ class Farmacia extends Component {
         this.setState({ modulos: this.state.modulosOriginal })
 
       } else {
-        //let modulosFiltrado = this.state.modulos.filter(f =>  f.moduloDetalle.map(e =>{String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) );
        let modulosFiltrado = this.state.modulosOriginal.filter(m => 
-           m.moduloDetalle.find(e =>{String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) != undefined
+           m.moduloDetalle.find(e =>{ return String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) != undefined
       );
         this.setState({ modulos: modulosFiltrado })
       }

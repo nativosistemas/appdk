@@ -21,6 +21,39 @@ class Modulo extends Component {
         cantidad += pValor;
         this.setState({ count: cantidad }, () => { this.props.setCantidad(this.props.modulo, cantidad); })
     }
+    FormatoDecimalConDivisorMiles = (pValor) =>{
+        var resultado = pValor;
+        var isNroNegativo = false;
+        if (pValor) {
+            if (pValor.toString().indexOf('-') !== -1) {
+                isNroNegativo = true;
+            }
+            var nroBase = pValor.toString().replace('-', '').split('.');
+            if (nroBase.length > 0) {
+                var cant = nroBase[0].length;
+                var parteDecimalAUX = '';
+                var numeroPorParte = nroBase[0];
+                while (numeroPorParte.length > 3) {
+                    parteDecimalAUX = '.' + numeroPorParte.substr(numeroPorParte.length - 3) + parteDecimalAUX;
+                    numeroPorParte = numeroPorParte.substring(0, numeroPorParte.length - 3);
+                }
+                parteDecimalAUX = numeroPorParte + parteDecimalAUX;
+                if (nroBase[1] == undefined) {
+                    resultado = parteDecimalAUX;
+                } else {
+                    resultado = parteDecimalAUX + ',' + nroBase[1];
+                }
+            }
+            if (isNroNegativo) {
+                resultado = '-' + resultado;
+            }
+        }
+        return resultado;
+    }
+     currencyFormat = (num) =>{
+        return '$' + this.FormatoDecimalConDivisorMiles(num);
+     }
+
     render() {
         const { moduloDetalle } = this.props.modulo;
         return (<div className="card cardModulo">
@@ -42,8 +75,8 @@ class Modulo extends Component {
                                     <tr key={i}>
                                         <td>{detalle.producto}</td>
                                         <td>{detalle.descripcion}</td>
-                                        <td>{detalle.precio}</td>
-                                        <td>{detalle.precioDescuento}</td>
+                                        <td>{this.currencyFormat(detalle.precio)}</td>
+                                        <td>{this.currencyFormat(detalle.precioDescuento)}</td>
                                         <td>{detalle.cantidadUnidades}</td>
                                     </tr>
                                 );
