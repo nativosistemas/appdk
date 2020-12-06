@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
-import Resultado from './components/Resultado'
-import Nav from './components/Nav'
+import Resultado from './Resultado'
+import Nav from './Nav'
 
-class Farmacia extends Component {
+class Promociones extends Component {
 
   constructor(props) {
     super(props);
@@ -92,7 +91,7 @@ class Farmacia extends Component {
 
       } else {
        let modulosFiltrado = this.state.modulosOriginal.filter(m => 
-           m.moduloDetalle.find(e =>{ return String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) != undefined
+           m.moduloDetalle.find(e =>{ return String(e.producto).toUpperCase().includes(String(this.state.filtrado).toUpperCase())}) !== undefined
       );
         this.setState({ modulos: modulosFiltrado })
       }
@@ -110,4 +109,4 @@ class Farmacia extends Component {
   };
 }
 
-export default Farmacia;
+export default Promociones;
