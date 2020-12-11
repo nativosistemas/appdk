@@ -18,16 +18,16 @@ function App() {
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav mr-auto">
           <li className="nav-item " activeClassName="active">
-              <Link className="nav-link" to={"/promociones"}>Promociones <span class="sr-only">(current)</span></Link>
+              <Link className="nav-link" to={"/promociones"} data-toggle="collapse" data-target=".navbar-collapse.show">Promociones <span class="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item " activeClassName="active">
-              <Link className="nav-link" to={"/pedidos"}>Pedidos </Link>
+              <Link className="nav-link" to={"/pedidos"} data-toggle="collapse" data-target=".navbar-collapse.show">Pedidos </Link>
             </li>
             <li className="nav-item" activeClassName="active">
-              <Link className="nav-link" to="/pedidoshistorial">Historial de pedidos</Link>
+              <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
             </li>
             <li className="nav-item" activeClassName="active">
-              <Link className="nav-link" to="/sign-in">Salir</Link>
+              <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show">Salir</Link>
             </li>
           </ul>
           <span className="navbar-text">

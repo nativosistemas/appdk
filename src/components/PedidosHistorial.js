@@ -20,12 +20,12 @@ class PedidosHistorial extends Component {
 
     componentWillMount() {
         // this.filtrarModulosApp('');
-        this.cargarDatosInicio_DesdeLocalStorage();
-        if (navigator.onLine) {
-            this.cargarDatosInicio_DesdeApi();
-        } else {
-
-        }
+        /* this.cargarDatosInicio_DesdeLocalStorage();
+         if (navigator.onLine) {
+             this.cargarDatosInicio_DesdeApi();
+         } else {
+ 
+         }*/
     }
     cargarDatosInicio_DesdeApi = () => {
         fetch(this.url + 'farmacia?' + new URLSearchParams({
@@ -98,7 +98,7 @@ class PedidosHistorial extends Component {
             }
         });
     }
-    render() {
+    /*render() {
         return (
             <>
                 <div className="app container-fluid">
@@ -124,6 +124,17 @@ class PedidosHistorial extends Component {
                             <span className="sr-only">Next</span>
                         </a>
                     </div>
+                </div>
+            </>
+        )
+    };*/
+    render() {
+        return (
+            <>
+
+                <div className="app container-fluid">
+                    <div className="alert alert-primary text-center  text-uppercase" ><h2>Historial Pedidos</h2></div>
+
                 </div>
             </>
         )

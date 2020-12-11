@@ -1,26 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Resultado from './Resultado'
 
-class Pedidos extends Component {
+function Pedidos() {
+  const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
+  //const revealRefs = useRef([]);
+  const pedidosFarmaciasRefs = new Map();
+  /*revealRefs.current = [];
+  const addToRefs = (el) => {
+    if (el && !revealRefs.current.includes(el)) {
+      revealRefs.current.push(el);
+    }
+  }*/
 
-  constructor(props) {
-    super(props);
-    this.l_farmaciaModulos_array = []
-    this.pedidosFarmaciasRefs = new Map();
-    var l_pedidos = localStorage.getItem('l_pedidos') || '';
+  useEffect(() => {
+    var l_farmaciaModulos_array = []
+    var l_pedidos = window.localStorage.getItem('l_pedidos') || '';
     if (l_pedidos !== '') {
       l_pedidos = JSON.parse(l_pedidos);
     }
     if (!Array.isArray(l_pedidos)) {
       l_pedidos = [];
     }
-
-
     l_pedidos.forEach(x => {
       var isNotFind = true;
-      for (var i = 0; i < this.l_farmaciaModulos_array.length; i++) {
-        if (this.l_farmaciaModulos_array[i].farmacia.id === x.farmacia.id) {
-          this.l_farmaciaModulos_array[i].modulos.push(x.modulo);
+      for (var i = 0; i < l_farmaciaModulos_array.length; i++) {
+        if (l_farmaciaModulos_array[i].farmacia.id === x.farmacia.id) {
+          l_farmaciaModulos_array[i].modulos.push(x.modulo);
           isNotFind = false;
           break;
         }
@@ -32,45 +37,48 @@ class Pedidos extends Component {
           farmacia: x.farmacia,
           modulos: modulos_temp
         };
-        this.l_farmaciaModulos_array.push(f_m);
+        l_farmaciaModulos_array.push(f_m);
       }
     })
-    this.l_farmaciaModulos_array.forEach(element => {
-      this.pedidosFarmaciasRefs.set(element.farmacia.id, React.createRef());
+    l_farmaciaModulos_array.forEach(element => {
+      pedidosFarmaciasRefs.set(element.farmacia.id, React.createRef());
+      // revealRefs.current.push(React.createRef());
     });
-  }
-  componentDidMount() {
-    this.pedidosFarmaciasRefs.forEach(element => {
-      element.current.actualizarCantidadEnLosModulos();
-    });
-  }
-  render() {
+    setFarmaciaModulosArray(l_farmaciaModulos_array);
 
-    return (
+  });
 
-      <div className="app container-fluid">
-        <h2><p className="text-center">Pedidos por farmacias</p></h2>
-        <div className="float-right">
-          <button className="btn btn-success">Enviar Todos los Pedidos</button>
-        </div>
-        <br></br>
-        {this.l_farmaciaModulos_array.map((farmaciaModulos, i) => {
-          return (
-            <>
-              <h4>{String(farmaciaModulos.farmacia.id) + " - " + farmaciaModulos.farmacia.nombre}</h4>
-            
-              <Resultado key={i}  ref={this.pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} modulos={farmaciaModulos.modulos} farmacia={farmaciaModulos.farmacia} ></Resultado>
-              <br></br>
-              <div className="float-right">
-                <button className="btn btn-success">Enviar Pedido</button>
-              </div>
-            </>
-          );
-        })}
+  return (
+    <div className="app container-fluid">
+      <div className="alert alert-primary text-center  text-uppercase" ><h2>Pedidos por farmacias</h2></div>
+      <div className="float-right">
+        <button className="btn btn-success">Enviar Todos los Pedidos</button>
       </div>
+      <br></br>
+      {farmaciaModulosArray.map((farmaciaModulos, i) => {
+        return (
+          <>
+            <br></br>
+            <div className="card">
+              <div className="card-header pedidoFarmacia-header">
+                <h5 className="card-title">{String(farmaciaModulos.farmacia.id) + " - " + farmaciaModulos.farmacia.nombre}</h5>
+              </div>
+              <div className="card-body card-body-box-sizing">
+                <Resultado key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} modulos={farmaciaModulos.modulos} farmacia={farmaciaModulos.farmacia} ></Resultado>
+              </div>
+              <div className="card-footer text-muted pedidoFarmacia-footer">
+                <div className="float-right">
+                  <button className="btn btn-success">Enviar Pedido</button>
+                </div>
+              </div>
+            </div>
+            <br></br>
+          </>
+        );
+      })}
+    </div>
 
-    )
-  };
+  );
 }
 
 export default Pedidos;

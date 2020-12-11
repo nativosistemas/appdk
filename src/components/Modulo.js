@@ -8,6 +8,9 @@ class Modulo extends Component {
             count: 0
         };
     }
+    componentDidMount() {
+        this.refrescarCantidad();
+    }
     refrescarCantidad = () => {
         let cantidad = this.props.getCantidad(this.props.modulo);
         this.setState({ count: cantidad });
@@ -21,7 +24,7 @@ class Modulo extends Component {
         cantidad += pValor;
         this.setState({ count: cantidad }, () => { this.props.setCantidad(this.props.modulo, cantidad); })
     }
-    FormatoDecimalConDivisorMiles = (pValor) =>{
+    FormatoDecimalConDivisorMiles = (pValor) => {
         var resultado = pValor;
         var isNroNegativo = false;
         if (pValor) {
@@ -50,23 +53,23 @@ class Modulo extends Component {
         }
         return resultado;
     }
-     currencyFormat = (num) =>{
+    currencyFormat = (num) => {
         return '$' + this.FormatoDecimalConDivisorMiles(num);
-     }
+    }
 
     render() {
         const { moduloDetalle } = this.props.modulo;
         return (<div className="card cardModulo">
             <div className="card-body">
                 {moduloDetalle.length > 0 &&
-                    <table className="table">
+                    <table className="table textTable">
                         <thead>
                             <tr>
                                 <th scope="col">Producto</th>
-                                <th scope="col">Descripción</th>
+                                <th className="d-none d-sm-none d-md-table-cell" scope="col">Descripción</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Precio c/ Desc.</th>
-                                <th scope="col">Cant. Unid.</th>
+                                <th className="d-none d-sm-none d-md-table-cell" scope="col">Cant. Unid.</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,10 +77,10 @@ class Modulo extends Component {
                                 return (
                                     <tr key={i}>
                                         <td>{detalle.producto}</td>
-                                        <td>{detalle.descripcion}</td>
+                                        <td className="d-none d-sm-none d-md-table-cell">{detalle.descripcion}</td>
                                         <td>{this.currencyFormat(detalle.precio)}</td>
                                         <td>{this.currencyFormat(detalle.precioDescuento)}</td>
-                                        <td>{detalle.cantidadUnidades}</td>
+                                        <td className="d-none d-sm-none d-md-table-cell">{detalle.cantidadUnidades}</td>
                                     </tr>
                                 );
                             })}
