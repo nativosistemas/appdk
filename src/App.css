@@ -17,6 +17,25 @@
 .inputUppercase { 
   text-transform: uppercase;
 }
+.pedidoFarmacia-header{
+background-color: #b3bb9c;
+
+}
+.pedidoFarmacia-footer{
+  background-color:#f5fbe4;
+  
+  }
+  .card-body-box-sizing {
+    box-sizing: border-box;
+  }
+ 
+@media screen and (max-width: 400px){
+  .textTable{
+    font-size: 0.6em;
+  }
+  
+  }
+  
 /*
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800');
 

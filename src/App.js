@@ -3,7 +3,9 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./components/login.component";
 //import SignUp from "./components/signup.component";
-import Farmacia from './Farmacia'
+import Promociones from './components/Promociones'
+import Pedidos from './components/Pedidos'
+import PedidosHistorial from './components/PedidosHistorial'
 
 function App() {
   return (<Router>
@@ -15,14 +17,17 @@ function App() {
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link className="nav-link" to={"/farmacia"}>Pedidos <span class="sr-only">(current)</span></Link>
+          <li className="nav-item " activeClassName="active">
+              <Link className="nav-link" to={"/promociones"} data-toggle="collapse" data-target=".navbar-collapse.show">Promociones <span class="sr-only">(current)</span></Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/farmacia">Historial de pedidos</Link>
+            <li className="nav-item " activeClassName="active">
+              <Link className="nav-link" to={"/pedidos"} data-toggle="collapse" data-target=".navbar-collapse.show">Pedidos </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/sign-in">Salir</Link>
+            <li className="nav-item" activeClassName="active">
+              <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
+            </li>
+            <li className="nav-item" activeClassName="active">
+              <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show">Salir</Link>
             </li>
           </ul>
           <span className="navbar-text">
@@ -33,7 +38,9 @@ function App() {
       <Switch>
         <Route exact path='/' component={Login} />
         <Route path="/sign-in" component={Login} />
-        <Route path="/farmacia" component={Farmacia} />
+        <Route path="/promociones" component={Promociones} />
+        <Route path="/pedidos" component={Pedidos} />
+        <Route path="/pedidoshistorial" component={PedidosHistorial} />
       </Switch>
     </div>
   </Router>

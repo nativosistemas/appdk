@@ -16,7 +16,7 @@ function Nav(props) {
                         <div className="col-sm-10">
                             <select className="form-control " onChange={props.handleChange}>
                                 <option disabled selected value="0"> -- seleccione una opción -- </option>
-                                {props.farmacias.map(farmacia => <option key={farmacia.id} value={farmacia.id}>{farmacia.nombre}</option>)}
+                                {props.farmacias.map(farmacia => <option key={farmacia.id} value={farmacia.id}>{String(farmacia.id) + " - " + farmacia.nombre}</option>)}
                             </select>
                         </div>
                     </div>

@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import Modulo from "./Modulo";
 
 class Resultado extends Component {
-    
+    componentWillMount = () => {
+        this.miMapaRefs = new Map();
+        this.props.modulos.forEach(element => {
+            this.miMapaRefs.set(element.id, React.createRef());
+        });
+    }
     componentWillUpdate = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
