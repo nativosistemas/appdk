@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import Modulo from "./Modulo";
+import { getCantidad_ModuloFarmacia } from './utils';
 
 class Resultado extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            totalAhorroGeneral: 0,
+            montoTotalGeneral: 0
+        };
+    }
+
     componentWillMount = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
@@ -19,7 +28,24 @@ class Resultado extends Component {
             element.current.refrescarCantidad();
         });
     }
+    getMontoTotalGeneral = () => {
+        var MontoTotalGeneral = 0;
+        this.miMapaRefs.forEach(element => {
+            MontoTotalGeneral += element.current.state.montoTotal;
+        });
+        return MontoTotalGeneral;
+    }
+    getTotalAhorroGeneral = () => {
+        var TotalAhorroGeneral = 0;
+        this.miMapaRefs.forEach(element => {
+            TotalAhorroGeneral += element.current.state.ahorroTotal;
+        });
+        return TotalAhorroGeneral;
+    }
+    refreshMontoAhorroGeneral = () => {
+        this.setState({ totalAhorroGeneral: this.getTotalAhorroGeneral() }, () => { this.setState({ montoTotalGeneral: this.getMontoTotalGeneral() }, () => { this.props.refreshMontoAhorroGeneral() }) })
 
+    }
     setCantidad = (pModulo, pCantidad) => {
         const farmacia = this.props.farmacia;
         if (farmacia === '')
@@ -52,29 +78,21 @@ class Resultado extends Component {
         const farmacia = this.props.farmacia;
         if (farmacia === '')
             return cantidad;
-
-        var l_pendiente = localStorage.getItem('l_pedidos') || '';
-        if (l_pendiente !== '') {
-            l_pendiente = JSON.parse(l_pendiente);
-            if (Array.isArray(l_pendiente)) {
-                for (var i = 0; i < l_pendiente.length; i++) {
-                    if (String(l_pendiente[i].modulo.id) === String(pModulo.id) && String(l_pendiente[i].farmacia.id) === String(farmacia.id)) {
-                        cantidad = l_pendiente[i].cantidad;
-                        break;
-                    }
-                }
-            }
-        }
-        return cantidad;
+        return getCantidad_ModuloFarmacia(pModulo, farmacia);
     }
     render() {
         const modulos = this.props.modulos;
         if (modulos.length === 0) return null;
+        var cantFor = 0;
         return (
             <>
                 <React.Fragment>
-                    {modulos.map(modulo => (<Modulo key={modulo.id} id={modulo.id} ref={this.miMapaRefs.get(modulo.id)}
-                        modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} ></Modulo>))}
+                    {modulos.map((modulo, i) => {
+                        return (<>
+                            <Modulo key={modulo.id} id={modulo.id} ref={this.miMapaRefs.get(modulo.id)} isPar={parseInt(i) % 2} farmacia={this.props.farmacia}
+                                modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral} ></Modulo>
+                        </>);
+                    })}
                 </React.Fragment>
             </>
         );

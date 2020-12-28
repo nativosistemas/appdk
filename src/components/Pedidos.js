@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Resultado from './Resultado'
+import ResultadoFarmacia from './ResultadoFarmacia'
+import { getCantidad_ModuloFarmacia } from './utils';
 
 function Pedidos() {
   const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
-  //const revealRefs = useRef([]);
   const pedidosFarmaciasRefs = new Map();
-  /*revealRefs.current = [];
-  const addToRefs = (el) => {
-    if (el && !revealRefs.current.includes(el)) {
-      revealRefs.current.push(el);
-    }
-  }*/
 
   useEffect(() => {
     var l_farmaciaModulos_array = []
@@ -24,6 +18,11 @@ function Pedidos() {
     l_pedidos.forEach(x => {
       var isNotFind = true;
       for (var i = 0; i < l_farmaciaModulos_array.length; i++) {
+        var cant = getCantidad_ModuloFarmacia(x.modulo, x.farmacia);
+        if (cant <= 0) {
+          isNotFind = false;
+          break;
+        }
         if (l_farmaciaModulos_array[i].farmacia.id === x.farmacia.id) {
           l_farmaciaModulos_array[i].modulos.push(x.modulo);
           isNotFind = false;
@@ -42,11 +41,10 @@ function Pedidos() {
     })
     l_farmaciaModulos_array.forEach(element => {
       pedidosFarmaciasRefs.set(element.farmacia.id, React.createRef());
-      // revealRefs.current.push(React.createRef());
     });
     setFarmaciaModulosArray(l_farmaciaModulos_array);
 
-  });
+  }, []);
 
   return (
     <div className="app container-fluid">
@@ -57,23 +55,7 @@ function Pedidos() {
       <br></br>
       {farmaciaModulosArray.map((farmaciaModulos, i) => {
         return (
-          <>
-            <br></br>
-            <div className="card">
-              <div className="card-header pedidoFarmacia-header">
-                <h5 className="card-title">{String(farmaciaModulos.farmacia.id) + " - " + farmaciaModulos.farmacia.nombre}</h5>
-              </div>
-              <div className="card-body card-body-box-sizing">
-                <Resultado key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} modulos={farmaciaModulos.modulos} farmacia={farmaciaModulos.farmacia} ></Resultado>
-              </div>
-              <div className="card-footer text-muted pedidoFarmacia-footer">
-                <div className="float-right">
-                  <button className="btn btn-success">Enviar Pedido</button>
-                </div>
-              </div>
-            </div>
-            <br></br>
-          </>
+            <ResultadoFarmacia key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} farmaciaModulos={farmaciaModulos} ></ResultadoFarmacia>
         );
       })}
     </div>

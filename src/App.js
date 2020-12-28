@@ -6,6 +6,8 @@ import Login from "./components/login.component";
 import Promociones from './components/Promociones'
 import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
+//import PedidosV2 from './components/Pedidos'
+import Laboratorio from './components/Laboratorio'
 
 function App() {
   return (<Router>
@@ -27,6 +29,9 @@ function App() {
               <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
             </li>
             <li className="nav-item" activeClassName="active">
+              <Link className="nav-link" to="/laboratorio" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios</Link>
+            </li>
+            <li className="nav-item" activeClassName="active">
               <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show">Salir</Link>
             </li>
           </ul>
@@ -41,6 +46,7 @@ function App() {
         <Route path="/promociones" component={Promociones} />
         <Route path="/pedidos" component={Pedidos} />
         <Route path="/pedidoshistorial" component={PedidosHistorial} />
+        <Route path="/laboratorio" component={Laboratorio} />
       </Switch>
     </div>
   </Router>
