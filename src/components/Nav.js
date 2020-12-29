@@ -45,18 +45,24 @@ function Nav(props) {
                              </div>
                          </div>
     */
+    function onClickFarmacias(e) {
+        e.target.value = '';
+        props.handleChange(e);
+    }
     return (
         <>
             <nav className="navbar navbar-light bg-gradient-info">
-                <div className="row">    <div className="col">
+                <div className="row rowNavbar">    <div className="col">
                     <form onSubmit={filtradoModulo}>
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label">Farmacia</label>
                             <div className="col-sm-10">
-                                <select className="form-control " onChange={props.handleChange}>
-                                    <option disabled selected value="0"> -- seleccione una opción -- </option>
-                                    {props.farmacias.map(farmacia => <option key={farmacia.id} value={farmacia.id}>{String(farmacia.id) + " - " + farmacia.nombre}</option>)}
-                                </select>
+                                <input type="text" list="listaFarmacias" className="form-control" onClick={onClickFarmacias} onChange={props.handleChange}></input>
+                                <datalist id="listaFarmacias">
+                                    <select className="form-control "   >
+                                        {props.farmacias.map(farmacia => <option key={farmacia.id} >{String(farmacia.id) + " - " + farmacia.nombre}</option>)}
+                                    </select>
+                                </datalist>
                             </div>
                         </div>
                         <div className="form-inline">

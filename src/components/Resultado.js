@@ -48,7 +48,7 @@ class Resultado extends Component {
     }
     setCantidad = (pModulo, pCantidad) => {
         const farmacia = this.props.farmacia;
-        if (farmacia === '')
+        if (farmacia === null || farmacia === undefined || farmacia === '')
             return;
 
         var l_pendiente = localStorage.getItem('l_pedidos') || '';

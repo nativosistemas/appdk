@@ -33,6 +33,9 @@
 .moduloCssPar {
   background-color: #defff3;
 }
+.rowNavbar{
+  width: 100%;
+}
 
 @media screen and (max-width: 400px) {
   .textTable {

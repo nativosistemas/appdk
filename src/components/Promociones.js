@@ -78,13 +78,20 @@ class Promociones extends Component {
 
 
   }
-
+/*
   handleChange(event) {
     let farma = this.state.farmacias.find(element => String(element.id) === String(event.target.value));
     this.setState({ farmaciaSeleccionada: farma }, () => {
       this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
     });//, () => { this.elementNav.current.actualizarMontosAhorroGenerales(); }
+  }*/
+  handleChange(event) {
+    let farma = this.state.farmacias.find(element => String(element.id) + " - " + element.nombre === String(event.target.value));
+    this.setState({ farmaciaSeleccionada: farma }, () => {
+      this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
+    });
   }
+
 
   filtrarModulosApp = (pTexto) => {
     this.setState({

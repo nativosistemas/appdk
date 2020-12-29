@@ -34,7 +34,7 @@ export function currencyFormat(num) {
 
 export function getCantidad_ModuloFarmacia(pModulo, pFarmacia) {
     var cantidad = 0;
-    if (pFarmacia === '')
+    if (pFarmacia === null || pFarmacia === undefined || pFarmacia === '')
         return cantidad;
     var l_pendiente = localStorage.getItem('l_pedidos') || '';
     if (l_pendiente !== '') {
@@ -52,13 +52,12 @@ export function getCantidad_ModuloFarmacia(pModulo, pFarmacia) {
 }
 export function getPrecioModulo(pModuloDetalle, pFarmacia) {
     var precio = pModuloDetalle.precioDescuento;
-    if (pModuloDetalle.isTieneEnCuentaDescuentoCliente  && pFarmacia != null && pFarmacia != '')//
-        return ObtenerPrecioFinal( pFarmacia.objCliente, pModuloDetalle);
+    if (pModuloDetalle.isTieneEnCuentaDescuentoCliente && pFarmacia != null && pFarmacia != '')//
+        return ObtenerPrecioFinal(pFarmacia.objCliente, pModuloDetalle);
 
     return precio;
 }
-export function getPrecioBaseConDescuento(pPrecioBase, pProductos, pDescuentoRestar)
-{
+export function getPrecioBaseConDescuento(pPrecioBase, pProductos, pDescuentoRestar) {
     var descuento = pDescuentoRestar - pProductos.pro_PorcARestarDelDtoDeCliente;
     if (descuento < 0)
         descuento = 0;
@@ -66,14 +65,11 @@ export function getPrecioBaseConDescuento(pPrecioBase, pProductos, pDescuentoRes
     resultado = resultado * (parseFloat(1) - (descuento / parseFloat(100)));
     return resultado;
 }
-export function ObtenerPrecioFinal( pClientes, pModuloDetalle)
-{
+export function ObtenerPrecioFinal(pClientes, pModuloDetalle) {
     var resultado = 0.0;
     var pProductos = pModuloDetalle.objProducto;
-    if (pProductos.pro_neto)
-    {
-        switch (pProductos.pro_codtpopro)
-        {
+    if (pProductos.pro_neto) {
+        switch (pProductos.pro_codtpopro) {
             case "M": // medicamento
                 resultado = getPrecioBaseConDescuento(pModuloDetalle.precioDescuento, pProductos, pClientes.cli_pordesbetmed);
                 break;
@@ -86,8 +82,7 @@ export function ObtenerPrecioFinal( pClientes, pModuloDetalle)
                 break;
         }
     }
-    else
-    {  // No neto   
+    else {  // No neto   
         resultado = getPrecioBaseConDescuento(pModuloDetalle.precioDescuento, pProductos, pClientes.cli_PorcentajeDescuentoDeEspecialidadesMedicinalesDirecto);
     }
     return resultado;
