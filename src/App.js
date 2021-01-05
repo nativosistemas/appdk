@@ -13,13 +13,16 @@ function App() {
   return (<Router>
     <div className="app container-fluid">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-       
+
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav mr-auto">
-          <li className="nav-item " activeClassName="active">
+            <li className="nav-item" activeClassName="active">
+              <Link className="nav-link" to="/laboratorio" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios</Link>
+            </li>
+            <li className="nav-item " activeClassName="active">
               <Link className="nav-link" to={"/promociones"} data-toggle="collapse" data-target=".navbar-collapse.show">Promociones <span class="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item " activeClassName="active">
@@ -27,9 +30,6 @@ function App() {
             </li>
             <li className="nav-item" activeClassName="active">
               <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
-            </li>
-            <li className="nav-item" activeClassName="active">
-              <Link className="nav-link" to="/laboratorio" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios</Link>
             </li>
             <li className="nav-item" activeClassName="active">
               <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show">Salir</Link>
@@ -41,7 +41,7 @@ function App() {
         </div>
       </nav>
       <Switch>
-        <Route exact path='/' component={Login} />
+        <Route exact path='/' component={Laboratorio} />
         <Route path="/sign-in" component={Login} />
         <Route path="/promociones" component={Promociones} />
         <Route path="/pedidos" component={Pedidos} />

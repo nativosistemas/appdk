@@ -36,7 +36,32 @@
 .rowNavbar{
   width: 100%;
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 7em;
+  width: 7em;
+  outline: black;
+  background-size: 100%, 100%;
+ /* border-radius: 50%;
+  border: 1px solid black;*/
+  background-image: none;
+}
 
+.carousel-control-next-icon:after
+{
+  content: '→';
+  font-size: 6em;
+  color:  #13B1A0;
+}
+
+.carousel-control-prev-icon:after {
+  content: '←';
+  font-size: 6em;
+  color: #13B1A0;
+}
+.carousel-captio-h5{
+  color: hsl(0, 0%, 0%);
+}
 @media screen and (max-width: 400px) {
   .textTable {
     font-size: 0.6em;

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from "react-router-dom";
 
 function Laboratorio() {
     const [laboratoriosArray, setLaboratoriosArray] = useState([]);
+    const [activeItem, setActiveItem] = useState(0);
     let url = 'http://www.kellerhoff.com.ar:84/api/'
-
+    let history = useHistory();
     useEffect(() => {
         cargarDatosInicio_DesdeLocalStorage();
         if (navigator.onLine) {
@@ -32,7 +34,25 @@ function Laboratorio() {
         }
         setLaboratoriosArray(l_laboratorios);
     }
-
+    // <div className="carousel-item active">
+    function onClickActiveItem(e, pValor) {
+        e.preventDefault();
+        /* if ((activeItem === 0 && pValor === -1)
+             || (activeItem === laboratoriosArray.length - 1 && pValor === 1))
+             return null;*/
+        var index = activeItem;
+        if (activeItem === 0 && pValor === -1)
+            index = laboratoriosArray.length - 1;
+        else if (activeItem === laboratoriosArray.length - 1 && pValor === 1)
+            index = 0;
+        else
+            index = activeItem + pValor
+        setActiveItem(index);
+    }
+    function onClickGoToLaboratorio(e) {
+        e.preventDefault();
+        history.push("/promociones");
+    }
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
@@ -40,21 +60,21 @@ function Laboratorio() {
                 <div className="carousel-inner">
                     {laboratoriosArray.map((laboratorio, i) => {
                         return (<>
-
-
-                            <div className="carousel-item active">
-                                <img className="d-block w-100" src={url + 'Image?r=laboratorio&n=' + laboratorio.imagen + '&an=1920&al=700&c=FFFFFF' } alt="First slide"></img>
+                            <div className={`carousel-item ${activeItem === i ? " active" : ""}`} onClick={(e) => onClickGoToLaboratorio(e)}>
+                                {laboratorio.imagen == null && <img className="d-block w-100" src={url + 'Image?r=laboratorio&n=' + 'amissingthumbnail0.png' + '&an=1920&al=700&c=FFFFFF'} alt={laboratorio.nombre}></img>}
+                                {laboratorio.imagen != null && <img className="d-block w-100" src={url + 'Image?r=laboratorio&n=' + laboratorio.imagen + '&an=1920&al=700&c=FFFFFF'} alt={laboratorio.nombre}></img>}
+                                <div className="carousel-caption d-none d-md-block">
+                                    <h5 className="carousel-captio-h5">{laboratorio.nombre}</h5>
+                                </div>
                             </div>
-
-
                         </>);
                     })}
                 </div>
-                <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" onClick={(e) => onClickActiveItem(e, -1)} >
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>
                 </a>
-                <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <a className="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next" onClick={(e) => onClickActiveItem(e, 1)} >
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>
