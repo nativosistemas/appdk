@@ -7,10 +7,11 @@ function Laboratorio() {
     let url = 'http://www.kellerhoff.com.ar:84/api/'
     let history = useHistory();
     useEffect(() => {
+        localStorage.setItem('l_laboratorios', JSON.stringify([{ "id": 1, "nombre": "ROEMMERS", "imagen": "aroemmers.jpg" }, { "id": 2, "nombre": "GENOMMA", "imagen": "agenomma.jpg" }, { "id": 3, "nombre": "DR LENOX", "imagen": "aLenoxLogo09.png" }, { "id": 4, "nombre": "DENVER FARMA", "imagen": "aDENVERFARMA0.png" }, { "id": 5, "nombre": "LA ROCHE POSAY", "imagen": "alaroche.png" }, { "id": 6, "nombre": "SOUBEIRAN CHOBET", "imagen": null }, { "id": 7, "nombre": "BAYER", "imagen": "abayer.png" }]));
         cargarDatosInicio_DesdeLocalStorage();
-        if (navigator.onLine) {
-            cargarDatosInicio_DesdeApi();
-        }
+        /*  if (navigator.onLine) {
+              cargarDatosInicio_DesdeApi();
+          }*/
     }, []);
     function cargarDatosInicio_DesdeApi() {
         fetch(url + 'Laboratorio')
@@ -60,17 +61,25 @@ function Laboratorio() {
                 <div className="carousel-inner">
                     {laboratoriosArray.map((laboratorio, i) => {
                         return (<>
-                            <div className={`carousel-item ${activeItem === i ? " active" : ""}`} onClick={(e) => onClickGoToLaboratorio(e)}>
-                                {laboratorio.imagen == null && <img className="d-block w-100" src={url + 'Image?r=laboratorio&n=' + 'amissingthumbnail0.png' + '&an=1920&al=700&c=FFFFFF'} alt={laboratorio.nombre}></img>}
-                                {laboratorio.imagen != null && <img className="d-block w-100" src={url + 'Image?r=laboratorio&n=' + laboratorio.imagen + '&an=1920&al=700&c=FFFFFF'} alt={laboratorio.nombre}></img>}
+                            <div className={`carousel-item ${activeItem === i ? " active" : ""}`} onDoubleClick={(e) => onClickGoToLaboratorio(e)}>
+
+                                { /*
+                                {laboratorio.imagen == null && <img className="d-block w-100 img-fluid" src={url + 'Image?r=laboratorio&n=' + 'amissingthumbnail0.png' + '&an=1280&al=950&c=FFFFFF'} alt={laboratorio.nombre}></img>}
+                                {laboratorio.imagen != null && <img className="d-block w-100 img-fluid" src={url + 'Image?r=laboratorio&n=' + laboratorio.imagen + '&an=1280&al=950&c=FFFFFF'} alt={laboratorio.nombre}></img>}
+                               */}
+                                {laboratorio.imagen == null && <img className="d-block w-100 img-fluid" src={'https://nativosistemas.github.io/img/' + 'amissingthumbnail0.png'} alt={laboratorio.nombre}></img>}
+                                {laboratorio.imagen != null && <img className="d-block w-100 img-fluid" src={'https://nativosistemas.github.io/img/' + laboratorio.imagen} alt={laboratorio.nombre}></img>}
+                                { /*
                                 <div className="carousel-caption d-none d-md-block">
                                     <h5 className="carousel-captio-h5">{laboratorio.nombre}</h5>
                                 </div>
+                                 */}
                             </div>
                         </>);
                     })}
                 </div>
-                <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" onClick={(e) => onClickActiveItem(e, -1)} >
+                { /*
+                 <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev" onClick={(e) => onClickActiveItem(e, -1)} >
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>
                 </a>
@@ -78,6 +87,7 @@ function Laboratorio() {
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="sr-only">Next</span>
                 </a>
+                */}
             </div>
         </div>
     );

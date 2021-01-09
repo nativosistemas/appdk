@@ -24,7 +24,7 @@ function ResultadoFarmacia(props) {
                 <div className="card-footer text-muted pedidoFarmacia-footer">
                     <div className="float-left">                <div className="input-group ">
                         <div className="input-group-prepend">
-                            <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>
+                              <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>
 
                         </div>
                         <input type="text" className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(montoTotalGeneral_Farmacia)}></input>

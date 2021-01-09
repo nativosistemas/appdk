@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { currencyFormat,getPrecioModulo} from './utils';
+import { currencyFormat, getPrecioModulo } from './utils';
 
 class Modulo extends Component {
     constructor(props) {
@@ -31,13 +31,15 @@ class Modulo extends Component {
         let montoTotalDescuento_detalle = 0;
 
         this.props.modulo.moduloDetalle.forEach(element => {
-            if (element.cantidadUnidades > 0) {
-                if (element.precio > 0) {
-                    montoTotal_detalle += element.precio * element.cantidadUnidades;
-                }
-                if (element.precioDescuento > 0) {
-                    montoTotalDescuento_detalle += element.precioDescuento * element.cantidadUnidades;
-                }
+            var cantidadUnidades = element.cantidadUnidades;
+            if (cantidadUnidades == 0) {
+                cantidadUnidades = 1;
+            }
+            if (element.precio > 0) {
+                montoTotal_detalle += element.precio * cantidadUnidades;
+            }
+            if (element.precioDescuento > 0) {
+                montoTotalDescuento_detalle += element.precioDescuento * cantidadUnidades;
             }
         });
         let montoTotal = 0;
@@ -50,41 +52,6 @@ class Modulo extends Component {
         this.setState({ montoTotal: montoTotal }, () => { this.setState({ ahorroTotal: ahorroTotal }, () => { this.props.refreshMontoAhorroGeneral(); }) })
 
     }
-    /*
-    FormatoDecimalConDivisorMiles = (pValor) => {
-        var valor = pValor.toFixed(2);
-        var resultado = pValor.toFixed(2);
-        var isNroNegativo = false;
-        if (valor) {
-            if (valor.toString().indexOf('-') !== -1) {
-                isNroNegativo = true;
-            }
-            var nroBase = valor.toString().replace('-', '').split('.');
-            if (nroBase.length > 0) {
-                var cant = nroBase[0].length;
-                var parteDecimalAUX = '';
-                var numeroPorParte = nroBase[0];
-                while (numeroPorParte.length > 3) {
-                    parteDecimalAUX = '.' + numeroPorParte.substr(numeroPorParte.length - 3) + parteDecimalAUX;
-                    numeroPorParte = numeroPorParte.substring(0, numeroPorParte.length - 3);
-                }
-                parteDecimalAUX = numeroPorParte + parteDecimalAUX;
-                if (nroBase[1] == undefined) {
-                    resultado = parteDecimalAUX;
-                } else {
-                    resultado = parteDecimalAUX + ',' + nroBase[1];
-                }
-            }
-            if (isNroNegativo) {
-                resultado = '-' + resultado;
-            }
-        }
-        return resultado;
-    }
-    currencyFormat = (num) => {
-        return '$' + this.FormatoDecimalConDivisorMiles(num);
-    }
-*/
     render() {
         const { moduloDetalle } = this.props.modulo;
         return (<div className={this.props.isPar ? 'card cardModulo moduloCssPar' : 'card cardModulo '}>
@@ -107,7 +74,7 @@ class Modulo extends Component {
                                         <td>{detalle.producto}</td>
                                         <td className="d-none d-sm-none d-md-table-cell">{detalle.descripcion}</td>
                                         <td>{currencyFormat(detalle.precio)}</td>
-                                        <td>{currencyFormat(getPrecioModulo(detalle,this.props.farmacia))}</td>
+                                        <td>{currencyFormat(getPrecioModulo(detalle, this.props.farmacia))}</td>
                                         <td className="d-none d-sm-none d-md-table-cell">{detalle.cantidadUnidades}</td>
                                     </tr>
                                 );
