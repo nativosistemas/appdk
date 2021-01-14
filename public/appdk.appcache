@@ -1,0 +1,6 @@
+CACHE MANIFEST
+# v1 - 2021-01-11
+index.html
+includes/css/bootstrap.min.css
+includes/js/jquery-3.5.1.slim.min.js
+includes/js/bootstrap.bundle.min.js
