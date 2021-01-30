@@ -19,6 +19,7 @@ class Promociones extends Component {
     this.elementResultadoModulo = React.createRef();
     this.elementNav = React.createRef();
     this.url = 'https://api.kellerhoff.com.ar/api/'
+    //this.url = 'https://localhost:5001/api/'
   }
 
   componentWillMount() {

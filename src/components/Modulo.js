@@ -17,13 +17,32 @@ class Modulo extends Component {
         let cantidad = this.props.getCantidad(this.props.modulo);
         this.setState({ count: cantidad }, () => { this.RefrescarMontosAhorro(); });
     }
-
+    isFarmaciaSeleccionada = () => {
+        const farmacia = this.props.farmacia;
+        return (farmacia === null || farmacia === undefined || farmacia === '') == false;
+    }
     onClickAccion = (e, pValor) => {
         e.preventDefault();
-        let cantidad = this.state.count;
-        if (cantidad === 0 && pValor === -1)
-            return null;
-        cantidad += pValor;
+        if (this.isFarmaciaSeleccionada()) {
+            let cantidad = parseInt(this.state.count);
+            if (cantidad === 0 && pValor === -1)
+                return null;
+            let cantidadMinimos = this.props.modulo.cantidadMinimos;
+            if (cantidad === cantidadMinimos && pValor === -1)
+                cantidad = 0;
+            else if (cantidad < cantidadMinimos && pValor === 1)
+                cantidad = cantidadMinimos;
+            else
+                cantidad += parseInt(pValor);
+            this.cambiarCantidad(cantidad);
+        }
+    }
+
+    cambiarCantidad = (pValue) => {
+        if (pValue === '' || pValue === null) {
+            pValue = 0;
+        }
+        let cantidad = parseInt(pValue);
         this.setState({ count: cantidad }, () => { this.props.setCantidad(this.props.modulo, cantidad); this.RefrescarMontosAhorro(); })
     }
     RefrescarMontosAhorro = () => {
@@ -101,7 +120,7 @@ class Modulo extends Component {
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, -1)}>-</button>
                                 </div>
-                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} readOnly />
+                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} onChange={(e) => this.cambiarCantidad(e.target.value)} />
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, 1)}>+</button>
                                 </div>
