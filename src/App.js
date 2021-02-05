@@ -1,14 +1,11 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 import Login from "./components/login.component";
-//import SignUp from "./components/signup.component";
 import Promociones from './components/Promociones'
 import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
-//import PedidosV2 from './components/Pedidos'
 import Laboratorio from './components/Laboratorio'
-import Laboratorio_grilla from './components/Laboratorio_grilla'
 
 function App() {
   return (<Router>
@@ -22,11 +19,8 @@ function App() {
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
           <ul className="navbar-nav mr-auto">
-          <li className="nav-item" activeClassName="active">
-              <Link className="nav-link" to="/laboratorio_grilla" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios (grilla)</Link>
-            </li>
             <li className="nav-item" activeClassName="active">
-              <Link className="nav-link" to="/laboratorio" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios (carrusel)</Link>
+              <Link className="nav-link" to="/laboratorio" data-toggle="collapse" data-target=".navbar-collapse.show">Laboratorios</Link>
             </li>
             <li className="nav-item " activeClassName="active">
               <Link className="nav-link" to={"/promociones"} data-toggle="collapse" data-target=".navbar-collapse.show">Promociones <span class="sr-only">(current)</span></Link>
@@ -47,13 +41,13 @@ function App() {
         </div>
       </nav>
       <Switch>
-        <Route exact path='/' component={Laboratorio_grilla} />
+        <Route exact path='/' component={Laboratorio} />
         <Route path="/sign-in" component={Login} />
+        <Route path="/promociones/:cuit" component={Promociones} />
         <Route path="/promociones" component={Promociones} />
         <Route path="/pedidos" component={Pedidos} />
         <Route path="/pedidoshistorial" component={PedidosHistorial} />
         <Route path="/laboratorio" component={Laboratorio} />
-        <Route path="/laboratorio_grilla" component={Laboratorio_grilla} />
       </Switch>
     </div>
   </Router>

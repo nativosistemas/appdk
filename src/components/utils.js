@@ -31,7 +31,21 @@ export function FormatoDecimalConDivisorMiles(pValor) {
 export function currencyFormat(num) {
     return '$' + FormatoDecimalConDivisorMiles(num);
 }
-
+export function getModulo_actualizado(pModulo) {
+    var l_modulos = localStorage.getItem('l_modulos') || '';
+    if (l_modulos !== '') {
+        l_modulos = JSON.parse(l_modulos);
+    }
+    if (!Array.isArray(l_modulos)) {
+        l_modulos = [];
+    }
+    var modulo = l_modulos.find(element => String(pModulo.id) === String(element.id));
+    if (modulo) {
+        return modulo;
+    } else {
+        return null;
+    }
+}
 export function getCantidad_ModuloFarmacia(pModulo, pFarmacia) {
     var cantidad = 0;
     if (pFarmacia === null || pFarmacia === undefined || pFarmacia === '')
