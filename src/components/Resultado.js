@@ -9,20 +9,21 @@ class Resultado extends Component {
             totalAhorroGeneral: 0,
             montoTotalGeneral: 0
         };
+        this.miMapaRefs = new Map();
     }
 
     componentWillMount = () => {
-        this.miMapaRefs = new Map();
+       
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
     }
-    componentWillUpdate = () => {
+   /* componentWillUpdate = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
-    }
+    }*/
     actualizarCantidadEnLosModulos = () => {
         this.miMapaRefs.forEach(element => {
             element.current.refrescarCantidad();

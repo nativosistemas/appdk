@@ -11,7 +11,7 @@ function ResultadoFarmacia(props) {
         setMontoTotalGeneral_Farmacia(refResultado.current.state.montoTotalGeneral);
         setTotalAhorroGeneral_Farmacia(refResultado.current.state.totalAhorroGeneral);
     }
-    function onClickEnviarPedidos(e) {
+    function onClickEnviarPedidos(e, pIdFarmacia) {
         e.preventDefault();
 
         var url = 'https://api.kellerhoff.com.ar/api/';
@@ -41,7 +41,18 @@ function ResultadoFarmacia(props) {
                 if (!data || data === '00000000-0000-0000-0000-000000000000') {
                     alert('Guid ' + data);
                 } else {
-                    localStorage.setItem('l_pedidos', JSON.stringify([]));
+                    //localStorage.setItem('l_pedidos', JSON.stringify([]));
+                   // arr = arr.filter(item => item !== value)
+                    var l_pendiente = localStorage.getItem('l_pedidos') || '';
+                    //var isAgregar = true;
+                    if (l_pendiente !== '') {
+                        l_pendiente = JSON.parse(l_pendiente);
+                    }
+                    if (Array.isArray(l_pendiente)) {
+                        l_pendiente = l_pendiente.filter(item => item.farmacia.id !==  props.farmaciaModulos.farmacia.id);
+                        localStorage.setItem('l_pedidos', JSON.stringify(l_pendiente));
+                    } 
+                    //
                     window.location.reload(false);
                 }
 
@@ -72,7 +83,7 @@ function ResultadoFarmacia(props) {
                             <input type="text" className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(totalAhorroGeneral_Farmacia)}></input>
                         </div></div>
                     <div className="float-right">
-                        <button className="btn btn-success" onClick={(e) => onClickEnviarPedidos(e)}>Enviar Pedido</button>
+                        <button className="btn btn-success" onClick={(e) => onClickEnviarPedidos(e,props.farmaciaModulos.farmacia.id)}>Enviar Pedido</button>
                     </div>
                 </div>
             </div>
