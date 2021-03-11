@@ -18,12 +18,12 @@ class Resultado extends Component {
             this.miMapaRefs.set(element.id, React.createRef());
         });
     }
-   /* componentWillUpdate = () => {
+    componentWillUpdate = () => {
         this.miMapaRefs = new Map();
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
-    }*/
+    }
     actualizarCantidadEnLosModulos = () => {
         this.miMapaRefs.forEach(element => {
             element.current.refrescarCantidad();
@@ -45,7 +45,6 @@ class Resultado extends Component {
     }
     refreshMontoAhorroGeneral = () => {
         this.setState({ totalAhorroGeneral: this.getTotalAhorroGeneral() }, () => { this.setState({ montoTotalGeneral: this.getMontoTotalGeneral() }, () => { this.props.refreshMontoAhorroGeneral() }) })
-
     }
     setCantidad = (pModulo, pCantidad) => {
         const farmacia = this.props.farmacia;
@@ -84,7 +83,7 @@ class Resultado extends Component {
     render() {
         const modulos = this.props.modulos;
         if (modulos.length === 0) return null;
-        var cantFor = 0;
+        //var cantFor = 0;
         return (
             <>
                 <React.Fragment>

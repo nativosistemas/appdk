@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { currencyFormat, getPrecioModulo } from './utils';
+import { currencyFormat, getPrecioModuloDesc,getPrecioModuloHabitual } from './utils';
 
 class Modulo extends Component {
     constructor(props) {
@@ -54,11 +54,11 @@ class Modulo extends Component {
             if (cantidadUnidades == 0) {
                 cantidadUnidades = 1;
             }
-            if (element.precio > 0) {
-                montoTotal_detalle += element.precio * cantidadUnidades;
+            if (element.objProducto.pro_preciofarmacia > 0) {
+                montoTotal_detalle += getPrecioModuloHabitual(element, this.props.farmacia) * cantidadUnidades;
             }
             if (element.precioDescuento > 0) {
-                montoTotalDescuento_detalle += element.precioDescuento * cantidadUnidades;
+                montoTotalDescuento_detalle += getPrecioModuloDesc(element, this.props.farmacia) * cantidadUnidades;
             }
         });
         let montoTotal = 0;
@@ -92,8 +92,8 @@ class Modulo extends Component {
                                     <tr key={i}>
                                         <td>{detalle.producto}</td>
                                         <td className="d-none d-sm-none d-md-table-cell">{detalle.descripcion}</td>
-                                        <td>{currencyFormat(detalle.precio)}</td>
-                                        <td>{currencyFormat(getPrecioModulo(detalle, this.props.farmacia))}</td>
+                                        <td>{currencyFormat(getPrecioModuloHabitual(detalle, this.props.farmacia))}</td>
+                                        <td>{currencyFormat(getPrecioModuloDesc(detalle, this.props.farmacia))}</td>
                                         <td className="d-none d-sm-none d-md-table-cell">{detalle.cantidadUnidades}</td>
                                     </tr>
                                 );
