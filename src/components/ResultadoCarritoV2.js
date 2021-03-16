@@ -1,15 +1,25 @@
-import React, { useState, useRef } from 'react';
-import Resultado from './Resultado'
-import { currencyFormat, getCantidad_ModuloFarmacia } from './utils';
+import React, { useState, useRef, useEffect } from 'react';
+import ResultadoV2 from './ResultadoV2'
+import { currencyFormat, getCantidad_ModuloFarmacia, getMontoAhorroMontoTotal_Modulo } from './utils';
 
-function ResultadoFarmacia(props) {
+function ResultadoCarritoV2(props) {
     var refResultado = React.createRef();
     const [montoTotalGeneral_Farmacia, setMontoTotalGeneral_Farmacia] = useState(0);
     const [totalAhorroGeneral_Farmacia, setTotalAhorroGeneral_Farmacia] = useState(0);
-
+    useEffect(() => {
+        var montoTotalGeneral = 0;
+        var totalAhorroGeneral = 0;
+        props.farmaciaModulos.modulos.forEach(element => {
+            var result = getMontoAhorroMontoTotal_Modulo(element, props.farmaciaModulos.farmacia, element.cantidadGrabado);
+            montoTotalGeneral += result.montoTotal;
+            totalAhorroGeneral += result.ahorroTotal;
+        });
+        setMontoTotalGeneral_Farmacia(montoTotalGeneral);
+        setTotalAhorroGeneral_Farmacia(totalAhorroGeneral);
+    }, []);
     function refreshMontoAhorroGeneral_pedidos() {
-        setMontoTotalGeneral_Farmacia(refResultado.current.state.montoTotalGeneral);
-        setTotalAhorroGeneral_Farmacia(refResultado.current.state.totalAhorroGeneral);
+        //setMontoTotalGeneral_Farmacia(refResultado.current.state.montoTotalGeneral);
+        //setTotalAhorroGeneral_Farmacia(refResultado.current.state.totalAhorroGeneral);
     }
     function onClickEnviarPedidos(e, pIdFarmacia) {
         e.preventDefault();
@@ -66,7 +76,7 @@ function ResultadoFarmacia(props) {
                     <h5 className="card-title">{String(props.farmaciaModulos.farmacia.id) + " - " + props.farmaciaModulos.farmacia.nombre}</h5>
                 </div>
                 <div className="card-body card-body-box-sizing">
-                    <Resultado ref={refResultado} modulos={props.farmaciaModulos.modulos} farmacia={props.farmaciaModulos.farmacia} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral_pedidos} isPromociones={false} ></Resultado>
+                    <ResultadoV2 ref={refResultado} modulos={props.farmaciaModulos.modulos} farmacia={props.farmaciaModulos.farmacia} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral_pedidos}  ></ResultadoV2>
                 </div>
                 <div className="card-footer text-muted pedidoFarmacia-footer">
                     <div className="float-left">                <div className="input-group ">
@@ -82,9 +92,6 @@ function ResultadoFarmacia(props) {
                             </div>
                             <input type="text" className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(totalAhorroGeneral_Farmacia)}></input>
                         </div></div>
-                    <div className="float-right">
-                        <button className="btn btn-success" onClick={(e) => onClickEnviarPedidos(e,props.farmaciaModulos.farmacia.id)}>Enviar Pedido</button>
-                    </div>
                 </div>
             </div>
             <br></br>
@@ -93,4 +100,4 @@ function ResultadoFarmacia(props) {
     );
 }
 
-export default ResultadoFarmacia;
+export default ResultadoCarritoV2;

@@ -13,7 +13,7 @@ class Resultado extends Component {
     }
 
     componentWillMount = () => {
-       
+
         this.props.modulos.forEach(element => {
             this.miMapaRefs.set(element.id, React.createRef());
         });
@@ -80,6 +80,14 @@ class Resultado extends Component {
             return cantidad;
         return getCantidad_ModuloFarmacia(pModulo, farmacia);
     }
+    onClickClose = (e,pModulo) => {
+        e.preventDefault();
+        const farmacia = this.props.farmacia;
+        if (farmacia === '')
+            return;
+        this.setCantidad(pModulo, 0);
+        window.location.reload(false);
+    }
     render() {
         const modulos = this.props.modulos;
         if (modulos.length === 0) return null;
@@ -87,10 +95,12 @@ class Resultado extends Component {
         return (
             <>
                 <React.Fragment>
+
                     {modulos.map((modulo, i) => {
                         return (<>
-                            <Modulo key={modulo.id} id={modulo.id} ref={this.miMapaRefs.get(modulo.id)} isPar={parseInt(i) % 2} farmacia={this.props.farmacia}
-                                modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral} ></Modulo>
+                       {/*!this.props.isPromociones && <button type="button" class="btn btn-secondary" aria-label="Close" onClick={(e) => this.onClickClose(e,modulo)}>X</button>*/}
+                            <Modulo key={i} ref={this.miMapaRefs.get(modulo.id)} isPar={parseInt(i) % 2} farmacia={this.props.farmacia}
+                                modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral} isPromociones={this.props.isPromociones}  isCarrito={this.props.isCarrito} ></Modulo>
                         </>);
                     })}
                 </React.Fragment>

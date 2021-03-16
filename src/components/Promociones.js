@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter  } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Resultado from './Resultado'
 import Nav from './Nav'
 import { getFarmaciaCurrent, setFarmaciaCurrent, getMontoAhorroMontoTotalGeneral_farmacia } from './utils';
@@ -116,15 +116,15 @@ class Promociones extends Component {
     var oMontos = getMontoAhorroMontoTotalGeneral_farmacia();
     this.setState({ totalAhorroGeneral_promociones: oMontos.ahorroTotal }, this.setState({ montoTotalGeneral_promociones: oMontos.montoTotal }))
   }
-   onClickSeguirComprando = (e) => {
+  onClickSeguirComprando = (e) => {
     e.preventDefault();
-   // window.location.href = "./";
-   // window.location.reload(true);
+    // window.location.href = "./";
+    // window.location.reload(true);
 
-   let path = `/laboratorio`; 
-   //let history = useHistory();
-   //history.push(path);
-   this.props.history.push(path);
+    let path = `/laboratorio`;
+    //let history = useHistory();
+    //history.push(path);
+    this.props.history.push(path);
   }
   render() {
     return (
@@ -132,9 +132,11 @@ class Promociones extends Component {
         <div className="app container-fluid">
           <div className="alert alert-primary text-center  text-uppercase" ><h2>Pedidos</h2></div>
           <Nav ref={this.elementNav} handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} getTotalAhorroGeneral={this.state.totalAhorroGeneral_promociones} getMontoTotalGeneral={this.state.montoTotalGeneral_promociones} farmacias={this.state.farmacias} farmacia={this.state.farmaciaSeleccionada} ></Nav>
-          <button className="btn btn-success" onClick={this.onClickSeguirComprando}>SEGUIR COMPRANDO</button>
-          <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} ></Resultado>
-          <button className="btn btn-success" onClick={this.onClickSeguirComprando}>SEGUIR COMPRANDO</button>
+          <div className="float-right">
+            <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
+            <br></br>
+          <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} isPromociones={true} ></Resultado>
+          <div className="float-right"> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
         </div>
       </>
     )

@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from "react-router-dom";
 import NavPrincipal from './NavPrincipal'
+import { getFarmaciaCurrent} from './utils';
+
 function Laboratorio() {
     const [laboratoriosArray, setLaboratoriosArray] = useState([]);
     const [activeItem, setActiveItem] = useState(0);
     const [activeModoCarrusel, setActiveModoCarrusel] = useState(false);
     const [activeLabNombre, setActiveLabNombre] = useState(false);
     const [activeLabFlechas, setActiveLabFlechas] = useState(true);
+    //const [isFarmacia, setIsFarmacia] = useState(false);
     let url = 'https://api.kellerhoff.com.ar/api/'
     let history = useHistory();
     useEffect(() => {
@@ -14,6 +17,7 @@ function Laboratorio() {
         if (navigator.onLine) {
             cargarDatosInicio_DesdeApi();
         }
+        //localStorage.setItem('l_pendienteGrabados', JSON.stringify([]));
     }, []);
     function cargarDatosInicio_DesdeApi() {
         fetch(url + 'Laboratorio')
@@ -52,10 +56,18 @@ function Laboratorio() {
         e.preventDefault();
         history.push("/promociones/" + pCuit);
     }
+    function onClickIrCarrito(e) {
+        e.preventDefault();
+        history.push("/carrito");
+    }
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
             <NavPrincipal  ></NavPrincipal>
+            {
+                <><div className="float-right">
+                    <button className="btn btn-success" onClick={(e) => onClickIrCarrito(e)}>Ir al Carrito</button></div>
+                    <br></br></>}
             <div className="form-check form-check-inline">
                 <input type="checkbox" className="form-check-input" id="checkModoCarrusel" checked={activeModoCarrusel} onClick={() => setActiveModoCarrusel(!activeModoCarrusel)}  ></input>
                 <label className="form-check-label" for="checkModoCarrusel">Carrusel</label>
@@ -99,7 +111,7 @@ function Laboratorio() {
                                     {laboratorio.imagen == null && <img className="d-block w-100 img-fluid" src={url + 'Image?r=laboratorio&n=' + 'amissingthumbnail0.png' + '&an=1280&al=950&c=FFFFFF'} alt={laboratorio.nombre}></img>}
                                     {laboratorio.imagen != null && <img className="d-block w-100 img-fluid" src={url + 'Image?r=laboratorio&n=' + laboratorio.imagen + '&an=1280&al=950&c=FFFFFF'} alt={laboratorio.nombre}></img>}
                                 */}
-                                <img className="d-block w-100 img-fluid" src={`data:image/jpeg;base64,${laboratorio.imagenBase64}`}></img>
+                                    <img className="d-block w-100 img-fluid" src={`data:image/jpeg;base64,${laboratorio.imagenBase64}`}></img>
                                     { /*
                                 {laboratorio.imagen == null && <img className="d-block w-100 img-fluid" src={'https://nativosistemas.github.io/img/' + 'amissingthumbnail0.png'} alt={laboratorio.nombre}></img>}
                                 {laboratorio.imagen != null && <img className="d-block w-100 img-fluid" src={'https://nativosistemas.github.io/img/' + laboratorio.imagen} alt={laboratorio.nombre}></img>}

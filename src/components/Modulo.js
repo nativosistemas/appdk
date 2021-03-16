@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { currencyFormat, getPrecioModuloDesc,getPrecioModuloHabitual } from './utils';
+import { currencyFormat, getPrecioModuloDesc, getPrecioModuloHabitual } from './utils';
 
 class Modulo extends Component {
     constructor(props) {
@@ -14,16 +14,26 @@ class Modulo extends Component {
         this.refrescarCantidad();
     }
     refrescarCantidad = () => {
-        let cantidad = this.props.getCantidad(this.props.modulo);
+        let cantidad = 0;
+        if (this.isChangeCantidad()) {
+            cantidad = this.props.getCantidad(this.props.modulo);
+        } else {
+            cantidad = this.props.modulo.cantidadGrabado;
+        }
+        //let cantidad = this.props.getCantidad(this.props.modulo);
         this.setState({ count: cantidad }, () => { this.RefrescarMontosAhorro(); });
     }
     isFarmaciaSeleccionada = () => {
         const farmacia = this.props.farmacia;
         return (farmacia === null || farmacia === undefined || farmacia === '') == false;
     }
+    isChangeCantidad = () => {
+        const cantidadGrabado = this.props.modulo.cantidadGrabado;
+        return (cantidadGrabado !== null && cantidadGrabado !== undefined && cantidadGrabado !== '') == false;
+    }
     onClickAccion = (e, pValor) => {
         e.preventDefault();
-        if (this.isFarmaciaSeleccionada()) {
+        if (this.isFarmaciaSeleccionada() && this.isChangeCantidad()) {
             let cantidad = parseInt(this.state.count);
             if (cantidad === 0 && pValor === -1)
                 return null;
@@ -69,17 +79,41 @@ class Modulo extends Component {
         }
 
         this.setState({ montoTotal: montoTotal }, () => { this.setState({ ahorroTotal: ahorroTotal }, () => { this.props.refreshMontoAhorroGeneral(); }) })
-
+    }
+    isPromociones = () => {
+        var result = false;
+        if (this.props.isPromociones !== null && this.props.isPromociones !== undefined && this.props.isPromociones !== '') {
+            result = this.props.isPromociones;
+        }
+        return result;
+    }
+    isCarrito = () => {
+        var result = false;
+        if (this.props.isCarrito !== null && this.props.isCarrito !== undefined && this.props.isCarrito !== '') {
+            result = this.props.isCarrito;
+        }
+        return result;
+    }
+    onClickClose = (e) => {
+        e.preventDefault();
+        if (this.isFarmaciaSeleccionada() && this.isChangeCantidad()) {
+            this.cambiarCantidad(0);
+            window.location.reload(false);
+        }
     }
     render() {
         const { moduloDetalle } = this.props.modulo;
         return (<div className={this.props.isPar ? 'card cardModulo moduloCssPar' : 'card cardModulo '}>
+            {this.isCarrito() && <div className="card-header">
+                <button type="button" class="btn  btn-link" aria-label="Close"  onClick={(e) => this.onClickClose(e)}>X</button>
+            </div>}
             <div className="card-body">
                 {moduloDetalle.length > 0 &&
+
                     <table className="table textTable">
                         <thead>
                             <tr>
-                                <th scope="col">Producto</th>
+                                <th scope="col">Producto </th>
                                 <th className="d-none d-sm-none d-md-table-cell" scope="col">Descripción</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Precio c/ Desc.</th>
@@ -120,7 +154,7 @@ class Modulo extends Component {
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, -1)}>-</button>
                                 </div>
-                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} onChange={(e) => this.cambiarCantidad(e.target.value)} />
+                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} onChange={(e) => this.cambiarCantidad(e.target.value)} readOnly={!this.isChangeCantidad()} />
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, 1)}>+</button>
                                 </div>

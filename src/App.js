@@ -6,6 +6,7 @@ import Promociones from './components/Promociones'
 import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
 import Laboratorio from './components/Laboratorio'
+import Carrito from './components/Carrito'
 
 function App() {
   /*function onClickActualizar(e) {
@@ -32,8 +33,11 @@ function App() {
               <Link className="nav-link" to={"/promociones"} data-toggle="collapse" data-target=".navbar-collapse.show">Promociones <span class="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item " activeClassName="active">
-              <Link className="nav-link" to={"/pedidos"} data-toggle="collapse" data-target=".navbar-collapse.show">Carrito </Link>
+              <Link className="nav-link" to={"/carrito"} data-toggle="collapse" data-target=".navbar-collapse.show">Carrito </Link>
             </li>
+           {/* <li className="nav-item " activeClassName="active">
+              <Link className="nav-link" to={"/pedidos"} data-toggle="collapse" data-target=".navbar-collapse.show">Pedidos </Link>
+            </li>*/}
             <li className="nav-item" activeClassName="active">
               <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
             </li>
@@ -52,7 +56,8 @@ function App() {
         <Route path="/sign-in" component={Login} />
         <Route path="/promociones/:cuit" component={Promociones} />
         <Route path="/promociones" component={Promociones} />
-        <Route path="/pedidos" component={Pedidos} />
+        <Route path="/carrito" component={Carrito} />
+          {/*<Route path="/pedidos" component={Pedidos} />*/}
         <Route path="/pedidoshistorial" component={PedidosHistorial} />
         <Route path="/laboratorio" component={Laboratorio} />
       </Switch>

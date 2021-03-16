@@ -183,3 +183,31 @@ export function getMontoAhorroMontoTotalGeneral_farmacia() {
     };
     return result;
 }
+export function getMontoAhorroMontoTotal_Modulo (pModulo, pFarmacia, pCantidad) {
+    let montoTotal_detalle = 0;
+    let montoTotalDescuento_detalle = 0;
+
+    pModulo.moduloDetalle.forEach(element => {
+        var cantidadUnidades = element.cantidadUnidades;
+        if (cantidadUnidades == 0) {
+            cantidadUnidades = 1;
+        }
+        if (element.objProducto.pro_preciofarmacia > 0) {
+            montoTotal_detalle += getPrecioModuloHabitual(element, pFarmacia) * cantidadUnidades;
+        }
+        if (element.precioDescuento > 0) {
+            montoTotalDescuento_detalle += getPrecioModuloDesc(element, pFarmacia) * cantidadUnidades;
+        }
+    });
+    let montoTotal = 0;
+    let ahorroTotal = 0;
+    if (pCantidad > 0) {
+        montoTotal = montoTotal_detalle * pCantidad;
+        ahorroTotal = montoTotal - (montoTotalDescuento_detalle * pCantidad);
+    }
+    var result = {
+        ahorroTotal: ahorroTotal,
+        montoTotal: montoTotal
+    };
+    return result;
+}
