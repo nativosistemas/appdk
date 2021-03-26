@@ -4,6 +4,7 @@ import { currencyFormat, setFarmaciaCurrent, getFarmaciaCurrent, getMontoAhorroM
 function NavPrincipal(props) {
     //let textInput = useRef(null);
     let textInputFarmacia = useRef(null);
+    let inputMontoTotalGeneral = useRef(null);
     const [listFarmacias, setListFarmacias] = useState([]);
     const [montoTotalGeneral, setMontoTotalGeneral] = useState(0);
     const [totalAhorroGeneral, setTotalAhorroGeneral] = useState(0);
@@ -20,6 +21,7 @@ function NavPrincipal(props) {
         var oMontos = getMontoAhorroMontoTotalGeneral_farmacia();
         setMontoTotalGeneral(oMontos.montoTotal);
         setTotalAhorroGeneral(oMontos.ahorroTotal);
+        
     }
     function cargarDatosInicio_DesdeLocalStorage() {
         var l_farmacias = localStorage.getItem('l_farmacias') || '';
@@ -35,6 +37,7 @@ function NavPrincipal(props) {
         e.preventDefault();
         e.target.value = '';
         handleChange(e);
+        //inputMontoTotalGeneral.current.focus();
     }
     function handleChange(e) {
         e.preventDefault();
@@ -48,7 +51,9 @@ function NavPrincipal(props) {
             }
         }
         setFarmaciaCurrent(null);
+
         RefrescarMontos(); 
+        
         /*this.setState({ farmaciaSeleccionada: farma }, () => {
           this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
         });*/
@@ -75,7 +80,7 @@ function NavPrincipal(props) {
                                 <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>
 
                             </div>
-                            <input type="text" className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(montoTotalGeneral)}></input>
+                            <input type="text"  ref={inputMontoTotalGeneral} className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(montoTotalGeneral)}></input>
                         </div>
                         <div className="input-group ">
                             <div className="input-group-prepend">

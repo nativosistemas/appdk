@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {  Redirect } from "react-router-dom";
 import ResultadoCarrito from './ResultadoCarrito'
-import { getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn,getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
 
 function Carrito() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -104,6 +105,9 @@ function Carrito() {
                 window.location.reload(false);
             }
         }
+    }
+    if (!isLoggedIn()) {
+        return <Redirect to="/sign-in" />;
     }
     return (
         <div className="app container-fluid">

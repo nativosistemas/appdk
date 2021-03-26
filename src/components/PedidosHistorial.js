@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {  Redirect } from "react-router-dom";
 import ResultadoCarritoV2 from './ResultadoCarritoV2'
-import { getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import {isLoggedIn , getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
 
 function PedidosHistorial() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -56,7 +57,7 @@ function PedidosHistorial() {
             pedidosFarmaciasRefs.set(element.farmacia.id, React.createRef());
         });
         //}
-        setFarmaciaModulosArray(l_farmaciaModulos_array);
+        setFarmaciaModulosArray(l_farmaciaModulos_array)
 
     }, []);
     function getModuloActualizado(pModulo) {
@@ -131,10 +132,13 @@ function PedidosHistorial() {
             });
 
     }
+    if (!isLoggedIn()) {
+        return <Redirect to="/sign-in" />;
+    }
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Historial Pedidos</h2></div>
-            <div className="float-right">
+           {/* <div className="float-right">
                 <button className="btn btn-success" onClick={(e) => onClickEnviarTodosPedidos(e)}>Enviar Todos los Pedidos</button>
             </div>
             <br></br>
@@ -142,7 +146,7 @@ function PedidosHistorial() {
                 return (
                     <ResultadoCarritoV2 key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} farmaciaModulos={farmaciaModulos} ></ResultadoCarritoV2>
                 );
-            })}
+            })}*/}
         </div>
 
     );

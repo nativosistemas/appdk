@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import NavPrincipal from './NavPrincipal'
-import { getFarmaciaCurrent} from './utils';
+import { isLoggedIn, getFarmaciaCurrent } from './utils';
 
 function Laboratorio() {
     const [laboratoriosArray, setLaboratoriosArray] = useState([]);
@@ -10,17 +10,40 @@ function Laboratorio() {
     const [activeLabNombre, setActiveLabNombre] = useState(false);
     const [activeLabFlechas, setActiveLabFlechas] = useState(true);
     //const [isFarmacia, setIsFarmacia] = useState(false);
-    let url = 'https://api.kellerhoff.com.ar/api/'
+    //let url = 'https://api.kellerhoff.com.ar/api/'
     let history = useHistory();
-    useEffect(() => {
+    useEffect(async () =>  {
+        /*async function fetchBookList() {
+            await  apiFarmaciaAsync();
+            await  cargarDatosInicio_DesdeLocalStorage(); 
+        }*/
         cargarDatosInicio_DesdeLocalStorage();
         if (navigator.onLine) {
-            cargarDatosInicio_DesdeApi();
+            //cargarDatosInicio_DesdeApi_generico();
+            // apiFarmaciaAsync().then(()=>{cargarDatosInicio_DesdeLocalStorage();});
+            
+           // cargarDatosInicio_DesdeApi();
         }
         //localStorage.setItem('l_pendienteGrabados', JSON.stringify([]));
     }, []);
+   /* useEffect(() =>  {
+  
+        cargarDatosInicio_DesdeLocalStorage();
+
+    }, [laboratoriosArray]);*/
+   /* async function sequence() {
+        await  apiFarmaciaAsync();
+        await  cargarDatosInicio_DesdeLocalStorage(); 
+        return "done!";
+      }*/
     function cargarDatosInicio_DesdeApi() {
-        fetch(url + 'Laboratorio')
+        cargarDatosInicio_DesdeLocalStorage();
+       /* fetch(getUrl() + "Laboratorio",
+            {
+                headers: {
+                    "Authorization": getToken(),
+                }
+            })
             .then((response) => {
                 return response.json()
             })
@@ -29,9 +52,9 @@ function Laboratorio() {
             }).then(() => { cargarDatosInicio_DesdeLocalStorage(); })
             .catch(error => {
                 cargarDatosInicio_DesdeLocalStorage();
-            });
+            });*/
     }
-    function cargarDatosInicio_DesdeLocalStorage() {
+  function cargarDatosInicio_DesdeLocalStorage() {
         var l_laboratorios = localStorage.getItem('l_laboratorios') || '';
         if (l_laboratorios !== '') {
             l_laboratorios = JSON.parse(l_laboratorios);
@@ -60,6 +83,10 @@ function Laboratorio() {
         e.preventDefault();
         history.push("/carrito");
     }
+    //funcionLogin();
+    if (!isLoggedIn()) {
+        return <Redirect to="/sign-in" />;
+    }
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
@@ -68,18 +95,11 @@ function Laboratorio() {
                 <><div className="float-right">
                     <button className="btn btn-success" onClick={(e) => onClickIrCarrito(e)}>Ir al Carrito</button></div>
                     <br></br></>}
-            <div className="form-check form-check-inline">
+            { /*   <div className="form-check form-check-inline">
                 <input type="checkbox" className="form-check-input" id="checkModoCarrusel" checked={activeModoCarrusel} onClick={() => setActiveModoCarrusel(!activeModoCarrusel)}  ></input>
                 <label className="form-check-label" for="checkModoCarrusel">Carrusel</label>
-            </div>
-            { /* <div className="form-check form-check-inline">
-                <input type="checkbox" className="form-check-input" id="exampleCheck1" checked={activeLabNombre} onClick={() => setActiveLabNombre(!activeLabNombre)}  ></input>
-                <label className="form-check-label" for="exampleCheck1">Nombre</label>
-            </div>
-            <div className="form-check form-check-inline">
-                <input type="checkbox" className="form-check-input" id="exampleCheck2" checked={activeLabFlechas} onChange={() => setActiveLabFlechas(!activeLabFlechas)}></input>
-                <label className="form-check-label" for="exampleCheck2">Flechas</label>
-            </div> */}
+            </div>*/}
+
             {!activeModoCarrusel &&
                 <div className="row">
                     {laboratoriosArray.map((laboratorio, i) => {

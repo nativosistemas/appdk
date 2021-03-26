@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import Resultado from './Resultado'
 import Nav from './Nav'
-import { getFarmaciaCurrent, setFarmaciaCurrent, getMontoAhorroMontoTotalGeneral_farmacia } from './utils';
+import { isLoggedIn, getName, getUrl, getToken, getFarmaciaCurrent, setFarmaciaCurrent, getMontoAhorroMontoTotalGeneral_farmacia } from './utils';
 
 class Promociones extends Component {
 
@@ -20,7 +20,7 @@ class Promociones extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.elementResultadoModulo = React.createRef();
     this.elementNav = React.createRef();
-    this.url = 'https://api.kellerhoff.com.ar/api/'
+    //this.url = 'https://api.kellerhoff.com.ar/api/'
     //this.url = 'https://localhost:5001/api/'
   }
 
@@ -34,15 +34,26 @@ class Promociones extends Component {
     }
   }
   cargarDatosInicio_DesdeApi = () => {
-    fetch(this.url + 'farmacia?' + new URLSearchParams({
-      ApNombre: 'Perez, Nestor'
-    }))
+    this.cargarDatosInicio_DesdeLocalStorage();
+    /*fetch(getUrl() + 'farmacia?' + new URLSearchParams({
+      ApNombre: getName()
+    }),
+      {
+        headers: {
+          "Authorization": getToken(),
+        }
+      })
       .then((response) => {
         return response.json()
       })
       .then((pFarmacias) => {
         localStorage.setItem('l_farmacias', JSON.stringify(pFarmacias));
-      }).then(() => fetch(this.url + 'modulo')
+      }).then(() => fetch(getUrl() + 'modulo',
+        {
+          headers: {
+            "Authorization": getToken(),
+          }
+        })
         .then((response) => {
           return response.json()
         })
@@ -52,7 +63,7 @@ class Promociones extends Component {
       .then(() => { this.cargarDatosInicio_DesdeLocalStorage(); })
       .catch(error => {
         this.cargarDatosInicio_DesdeLocalStorage();
-      });
+      });*/
   }
   cargarDatosInicio_DesdeLocalStorage = () => {
     var l_farmacias = localStorage.getItem('l_farmacias') || '';
@@ -126,7 +137,11 @@ class Promociones extends Component {
     //history.push(path);
     this.props.history.push(path);
   }
+
   render() {
+    if (!isLoggedIn()) {
+      return <Redirect to="/sign-in" />;
+    }
     return (
       <>
         <div className="app container-fluid">
@@ -134,7 +149,7 @@ class Promociones extends Component {
           <Nav ref={this.elementNav} handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} getTotalAhorroGeneral={this.state.totalAhorroGeneral_promociones} getMontoTotalGeneral={this.state.montoTotalGeneral_promociones} farmacias={this.state.farmacias} farmacia={this.state.farmaciaSeleccionada} ></Nav>
           <div className="float-right">
             <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
-            <br></br>
+          <br></br>
           <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} isPromociones={true} ></Resultado>
           <div className="float-right"> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
         </div>

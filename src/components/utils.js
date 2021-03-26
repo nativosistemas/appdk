@@ -1,3 +1,7 @@
+//import React from 'react';
+//import { useHistory, Redirect } from "react-router-dom";
+var url = 'https://api.kellerhoff.com.ar/api/';
+
 export function FormatoDecimalConDivisorMiles(pValor) {
     var valor = pValor.toFixed(2);
     var resultado = pValor.toFixed(2);
@@ -183,7 +187,7 @@ export function getMontoAhorroMontoTotalGeneral_farmacia() {
     };
     return result;
 }
-export function getMontoAhorroMontoTotal_Modulo (pModulo, pFarmacia, pCantidad) {
+export function getMontoAhorroMontoTotal_Modulo(pModulo, pFarmacia, pCantidad) {
     let montoTotal_detalle = 0;
     let montoTotalDescuento_detalle = 0;
 
@@ -211,3 +215,129 @@ export function getMontoAhorroMontoTotal_Modulo (pModulo, pFarmacia, pCantidad) 
     };
     return result;
 }
+export async function ajaxLogin(pName, pPass) {
+    var isLogin = true;
+    var data = {};
+    data.login = pName;
+    data.pass = pPass;
+    var json = JSON.stringify(data);
+    fetch(url + 'Authenticate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: json
+    })
+        .then(results => results.json())
+        .then(data => {
+
+            if (data.apNombre !== null && data.apNombre !== undefined && data.apNombre !== '') {
+                localStorage.setItem('login_ApNombre', data.apNombre);
+                isLogin = true;
+            }
+            if (data.token !== null && data.token !== undefined && data.token !== '') {
+                localStorage.setItem('login_Token', data.token);
+            }
+        }).then(data => {
+            apiLoadDataAsync().then(() => {
+                if (isLoggedIn()) {
+                    window.location.reload(false);
+                }
+            })
+
+        });
+    return isLogin;
+}
+export function loggedOut() {
+    localStorage.removeItem('login_ApNombre');
+    localStorage.clear();
+    //localStorage.setItem('login_ApNombre', null);
+}
+export function isLoggedIn() {
+    var isLogin = false;
+    var login_ApNombre = localStorage.getItem('login_ApNombre') || '';
+    if (login_ApNombre !== null && login_ApNombre !== undefined && login_ApNombre !== '') {
+        isLogin = true;
+    }
+    return isLogin;
+}
+export function getName() {
+    var name = '';
+    var login_ApNombre = localStorage.getItem('login_ApNombre') || '';
+    if (login_ApNombre !== null && login_ApNombre !== undefined && login_ApNombre !== '') {
+        name = login_ApNombre;
+    }
+    return name;
+}
+export function getUrl() {
+    return url;
+}
+export function getToken() {
+    var token = '';
+    var login_Token = localStorage.getItem('login_Token') || '';
+    if (login_Token !== null && login_Token !== undefined && login_Token !== '') {
+        token = login_Token;
+    }
+    return token;
+}
+
+export async function apiFarmaciaAsync() {
+    const response = await fetch(getUrl() + 'farmacia?' + new URLSearchParams({ ApNombre: getName() }),
+        { headers: { "Authorization": getToken(), } });
+    const reader = response.json();
+    localStorage.setItem('l_farmacias', JSON.stringify(await reader))//await reader.read();
+}
+export async function apiModuloAsync() {
+    const response = await fetch(getUrl() + 'modulo', { headers: { "Authorization": getToken(), } });
+    const reader = response.json();
+    localStorage.setItem('l_modulos', JSON.stringify(await reader));
+}
+export async function apiLaboratorioAsync() {
+    const response = await fetch(getUrl() + 'Laboratorio', { headers: { "Authorization": getToken(), } });
+    const reader = response.json();
+    localStorage.setItem('l_laboratorios', JSON.stringify(await reader));
+}
+export async function apiLoadDataAsync() {
+    await apiFarmaciaAsync();
+    await apiModuloAsync();
+    await apiLaboratorioAsync();
+}
+/*export function cargarDatosInicio_DesdeApi_generico() {
+    fetch(getUrl() + 'farmacia?' + new URLSearchParams({
+        ApNombre: getName()
+    }),
+        {
+            headers: {
+                "Authorization": getToken(),
+            }
+        })
+        .then((response) => {
+            return response.json()
+        })
+        .then((pFarmacias) => {
+            localStorage.setItem('l_farmacias', JSON.stringify(pFarmacias));
+        }).then(() => fetch(getUrl() + 'modulo',
+            {
+                headers: {
+                    "Authorization": getToken(),
+                }
+            })
+            .then((response) => {
+                return response.json()
+            })
+            .then((pModulos) => {
+                localStorage.setItem('l_modulos', JSON.stringify(pModulos));
+            }))//
+        .then(() => fetch(getUrl() + "Laboratorio",
+            {
+                headers: {
+                    "Authorization": getToken(),
+                }
+            })
+            .then((response) => {
+                return response.json()
+            })
+            .then((pLaboratorios) => {
+                localStorage.setItem('l_laboratorios', JSON.stringify(pLaboratorios));
+            }));
+}*/

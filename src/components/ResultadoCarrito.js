@@ -14,7 +14,7 @@ function ResultadoCarrito(props) {
     function onClickEnviarPedidos(e, pIdFarmacia) {
         e.preventDefault();
 
-        var url = 'https://api.kellerhoff.com.ar/api/';
+        /*var url = 'https://api.kellerhoff.com.ar/api/';
         var data = {};
         data.promotor = 'Perez, Nestor';
         data.pedidoModulos = [];
@@ -28,7 +28,8 @@ function ResultadoCarrito(props) {
             data.pedidoModulos.push(p);
         })
 
-        var json = JSON.stringify(data);
+        var json = JSON.stringify(data);*/
+        
         /*fetch(url + 'Pedido', {
             method: 'POST',
             headers: {

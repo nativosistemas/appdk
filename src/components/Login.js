@@ -1,5 +1,6 @@
-  
 import React, { Component } from "react";
+import {  useHistory ,Redirect} from "react-router-dom";
+import { ajaxLogin,isLoggedIn } from './utils';
 
 export default class Login extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ export default class Login extends Component {
 
     this.state = {
       name: "",
+      user: "",
       password: "",
       loginErrors: ""
     };
@@ -14,61 +16,48 @@ export default class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-
+ 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
+    /*   this.setState({
+         name: event.target.value
+    });*/
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { name, password } = this.state;
-
-    var url = 'http://www.kellerhoff.com.ar:84/api/';
-    var data = {};
-    data.login = name;
-    data.pass = password;
-    var json = JSON.stringify(data);
-    fetch(url + 'Authenticate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: json
-    })
-      .then(results => results.json())
-      .then(data => {
-        // const {name} = data.results[0];
-        //setFirstName(name.first);
-        alert('OK' + data.apNombre);
-        //  setLastName(name.last);
-
-      });
+    //ajaxLogin(name, password);
+    if (ajaxLogin(name, password)) {
+      //let history = useHistory();
+     // history.push("/laboratorio" );
+      //return <Redirect to="/login" />;
+    }
   }
 
   render() {
+    if (isLoggedIn()) {
+      return <Redirect to="/laboratorio" />;
+  }
     return (
       <div className="container">
         <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            name="user"
-            placeholder="Text"
-            value={this.state.user}
-            onChange={this.handleChange}
-            required
-          />
+          <h3>Inicio sesion</h3>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            required
-          />
+          <div className="form-group">
+            <label>Usuario</label>
+            <input type="text" name="name" className="form-control" placeholder="Ingrese usuario" value={this.state.name}
+              onChange={this.handleChange} required />
+          </div>
 
-          <button type="submit">Login</button>
+          <div className="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="password" className="form-control" placeholder="Ingrese contraseña" value={this.state.password}
+              onChange={this.handleChange} required />
+          </div>
+          <button type="submit" className="btn btn-primary btn-block">Login</button>
         </form>
       </div>
     );
