@@ -7,14 +7,17 @@ import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
 import Laboratorio from './components/Laboratorio'
 import Carrito from './components/Carrito'
-import { isLoggedIn, loggedOut,getName } from './components/utils';
+import { apiLoadDataAsync, loggedOut,getName } from './components/utils';
 
 function App() {
-  /*function onClickActualizar(e) {
+  function onClickActualizar(e) {
     e.preventDefault();
    // window.location.href = "./";
    // window.location.reload(true);
-  }*/
+   apiLoadDataAsync().then(() => {
+    window.location.reload(false);
+});
+  }
   function onClickSalir(e) {
     loggedOut();
   }
@@ -54,7 +57,7 @@ function App() {
               <u> Promotor/a:</u> {getName() }
     </span>
           </div>
-          {/*<button className="btn btn-success" onClick={(e) => onClickActualizar(e)}>Actualizar(03)</button>*/}
+          <button className="btn btn-success" onClick={(e) => onClickActualizar(e)}>Actualizar</button>
         </nav>
         <Switch>
           <Route exact path='/' component={Laboratorio} />

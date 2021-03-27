@@ -21,53 +21,6 @@ function ResultadoCarritoV2(props) {
         //setMontoTotalGeneral_Farmacia(refResultado.current.state.montoTotalGeneral);
         //setTotalAhorroGeneral_Farmacia(refResultado.current.state.totalAhorroGeneral);
     }
-    function onClickEnviarPedidos(e, pIdFarmacia) {
-        e.preventDefault();
-
-        var url = 'https://api.kellerhoff.com.ar/api/';
-        var data = {};
-        data.promotor = 'Perez, Nestor';
-        data.pedidoModulos = [];
-        props.farmaciaModulos.modulos.map((modulo, i) => {
-            var cant = getCantidad_ModuloFarmacia(modulo, props.farmaciaModulos.farmacia);
-            var p = {
-                idModulo: modulo.id,
-                idFarmacia: props.farmaciaModulos.farmacia.id,
-                cantidad: cant
-            };
-            data.pedidoModulos.push(p);
-        })
-
-        var json = JSON.stringify(data);
-        /*fetch(url + 'Pedido', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: json
-        })
-            .then(results => results.json())
-            .then(data => {
-                if (!data || data === '00000000-0000-0000-0000-000000000000') {
-                    alert('Guid ' + data);
-                } else {
-                    //localStorage.setItem('l_pedidos', JSON.stringify([]));
-                   // arr = arr.filter(item => item !== value)
-                    var l_pendiente = localStorage.getItem('l_pedidos') || '';
-                    //var isAgregar = true;
-                    if (l_pendiente !== '') {
-                        l_pendiente = JSON.parse(l_pendiente);
-                    }
-                    if (Array.isArray(l_pendiente)) {
-                        l_pendiente = l_pendiente.filter(item => item.farmacia.id !==  props.farmaciaModulos.farmacia.id);
-                        localStorage.setItem('l_pedidos', JSON.stringify(l_pendiente));
-                    } 
-                    //
-                    window.location.reload(false);
-                }
-
-            });*/
-    }
     return (
         <>
             <br></br>

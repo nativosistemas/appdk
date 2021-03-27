@@ -24,12 +24,6 @@ function Pedidos() {
                 var isNotFind = true;
                 for (var i = 0; i < l_farmaciaModulos_array.length; i++) {
                     if (l_farmaciaModulos_array[i].farmacia.id === x.farmacia.id) {
-                        //x.modulos[y].modulo.cantidadGrabado = x.modulos[y].cantidad;
-                        /*var m_c = {
-                            cantidad:  x.modulos[y].cantidad,
-                            modulo: x.modulos[y].modulo
-                        };*/
-                        // l_farmaciaModulos_array[i].modulos.push(getModuloActualizado(x.modulos[y].modulo));
                         var mod = getModuloActualizado(x.modulos[y].modulo);
                         mod.cantidadGrabado = x.modulos[y].cantidad;
                         l_farmaciaModulos_array[i].modulos.push(mod);
@@ -102,11 +96,9 @@ function Pedidos() {
         var json = JSON.stringify(data);
         fetch(getUrl() + 'Pedido', {
             method: 'POST',
-            //mode: 'cors',
             headers: {
-                'Authorization': getToken(),
-                'Content-Type': 'application/json'//,
-                //'Access-Control-Allow-Origin': '*'
+               'Authorization': getToken(),
+                'Content-Type': 'application/json'
             },
             body: json
         })

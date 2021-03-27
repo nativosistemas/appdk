@@ -1,6 +1,6 @@
 //import React from 'react';
 //import { useHistory, Redirect } from "react-router-dom";
-var url = 'https://api.kellerhoff.com.ar/api/';
+var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
 
 export function FormatoDecimalConDivisorMiles(pValor) {
     var valor = pValor.toFixed(2);
@@ -239,18 +239,17 @@ export async function ajaxLogin(pName, pPass) {
                 localStorage.setItem('login_Token', data.token);
             }
         }).then(data => {
-            apiLoadDataAsync().then(() => {
-                if (isLoggedIn()) {
+            if (isLoggedIn()) {
+                apiLoadDataAsync().then(() => {
                     window.location.reload(false);
-                }
-            })
-
+                })
+            }
         });
     return isLogin;
 }
 export function loggedOut() {
     localStorage.removeItem('login_ApNombre');
-    localStorage.clear();
+    //localStorage.clear();
     //localStorage.setItem('login_ApNombre', null);
 }
 export function isLoggedIn() {
