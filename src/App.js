@@ -7,19 +7,28 @@ import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
 import Laboratorio from './components/Laboratorio'
 import Carrito from './components/Carrito'
-import { apiLoadDataAsync, loggedOut,getName } from './components/utils';
+import { apiLoadDataAsync,getUltimaSincronizacion,getFormattedDateTime, getTiempoUltimaSincronizacion, loggedOut, getName } from './components/utils';
 
 function App() {
   function onClickActualizar(e) {
     e.preventDefault();
-   // window.location.href = "./";
-   // window.location.reload(true);
-   apiLoadDataAsync().then(() => {
-    window.location.reload(false);
-});
+    // window.location.href = "./";
+    // window.location.reload(true);
+    apiLoadDataAsync().then(() => {
+      window.location.reload(false);
+    });
   }
   function onClickSalir(e) {
     loggedOut();
+  }
+
+  function getClassBtn() {
+    var result = 'btn-light';
+    var segundos = getTiempoUltimaSincronizacion();
+    if (segundos > 60){//86400 //86400 segundos son 24 horas
+      result = 'btn-danger';
+    }
+    return result;
   }
   return (
     <Router>
@@ -50,15 +59,22 @@ function App() {
                 <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
               </li>
               <li className="nav-item" activeClassName="active">
-                <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={onClickSalir} >Salir</Link>
+                <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={onClickSalir} ><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></Link>
+              </li>
+              <li className="nav-item" activeClassName="active">
+                <button className={"btn " + getClassBtn()} onClick={(e) => onClickActualizar(e)}><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></button>
+                {/*Actualizar */}
+                {"Última actualización: " +getFormattedDateTime(new Date(parseFloat(getUltimaSincronizacion())))/**/}
               </li>
             </ul>
             <span className="navbar-text">
-              <u> Promotor/a:</u> {getName() }
-    </span>
+              <u> Promotor/a:</u> {getName()}
+            </span>
           </div>
-          <button className="btn btn-success" onClick={(e) => onClickActualizar(e)}>Actualizar</button>
+
         </nav>
+
+
         <Switch>
           <Route exact path='/' component={Laboratorio} />
           <Route path="/sign-in" component={Login} />

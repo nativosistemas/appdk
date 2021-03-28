@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
 import ResultadoCarritoV2 from './ResultadoCarritoV2'
-import { isLoggedIn, getName,getUrl, getToken, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn, getName, getUrl, getToken, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
 
 function Pedidos() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -64,8 +64,8 @@ function Pedidos() {
     function onClickEnviarTodosPedidos(e) {
         e.preventDefault();
         var l_post_ok = [];
-         //var url = 'https://api.kellerhoff.com.ar/api/';
-
+        //var url = 'https://api.kellerhoff.com.ar/api/';
+        var fechaNow = Date.now();
         var data = {};
         data.promotor = getName();
         data.pedidoModulos = [];
@@ -77,6 +77,7 @@ function Pedidos() {
                     modulo: modulo,
                     farmacia: farmaciaModulos.farmacia,
                     cantidad: modulo.cantidadGrabado,
+                    fecha:fechaNow,
                     guid: null,
                     procesado: null,
                     procesado_fecha: null,
@@ -97,7 +98,7 @@ function Pedidos() {
         fetch(getUrl() + 'Pedido', {
             method: 'POST',
             headers: {
-               'Authorization': getToken(),
+                'Authorization': getToken(),
                 'Content-Type': 'application/json'
             },
             body: json

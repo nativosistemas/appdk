@@ -35,6 +35,37 @@ export function FormatoDecimalConDivisorMiles(pValor) {
 export function currencyFormat(num) {
     return '$' + FormatoDecimalConDivisorMiles(num);
 }
+export function getFormattedDate(date) {
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    return day + '/' + month + '/' + year;
+}
+export function getFormattedDateTime(date) {
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    var hour = date.getHours().toString();
+    hour = hour.length > 1 ? hour : '0' + hour;
+
+    var minutes = date.getMinutes().toString();
+    minutes = minutes.length > 1 ? minutes : '0' + minutes;
+
+    var seconds = date.getSeconds().toString();
+    seconds = seconds.length > 1 ? seconds : '0' + seconds;
+
+    return day + '/' + month + '/' + year + ' ' + hour + ':' + minutes + ':' + seconds;
+}
 export function getModulo_actualizado(pModulo) {
     var l_modulos = localStorage.getItem('l_modulos') || '';
     if (l_modulos !== '') {
@@ -249,7 +280,7 @@ export async function ajaxLogin(pName, pPass) {
 }
 export function loggedOut() {
     localStorage.removeItem('login_ApNombre');
-    //localStorage.clear();
+    localStorage.clear();
     //localStorage.setItem('login_ApNombre', null);
 }
 export function isLoggedIn() {
@@ -296,11 +327,88 @@ export async function apiLaboratorioAsync() {
     const reader = response.json();
     localStorage.setItem('l_laboratorios', JSON.stringify(await reader));
 }
+export async function apiInfoPedidosAsync() {
+    const response = await fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }), { headers: { "Authorization": getToken(), } });
+    const reader = response.json();
+    var l_InfoPedidos = await reader;
+    var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+    if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+        l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
+    }
+    if (!Array.isArray(l_pedidosHistorial)) {
+        l_pedidosHistorial = [];
+    }
+    l_InfoPedidos.forEach(element => {
+        for (var i = 0; i < l_pedidosHistorial.length; i++) {
+            if (String(l_pedidosHistorial[i].guid) === String(element.pea_guid)
+                && parseInt(l_pedidosHistorial[i].modulo.id) === parseInt(element.pea_numeroModulo)
+                && parseInt(l_pedidosHistorial[i].farmacia.id) === parseInt(element.pea_codCliente)) {
+                //l_pedidosHistorial[i].fecha = element.pea_fecha;
+                l_pedidosHistorial[i].procesado = element.pea_procesado;
+                l_pedidosHistorial[i].procesado_fecha = element.pea_procesado_fecha;
+                l_pedidosHistorial[i].procesado_cantidad = element.pea_procesado_cantidad;
+                l_pedidosHistorial[i].procesado_descripcion = element.pea_procesado_descripcion;
+            }
+        }
+
+    });
+    localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
+}
 export async function apiLoadDataAsync() {
+    localStorage.setItem('ultimaSincronizacion', Date.now());
     await apiFarmaciaAsync();
     await apiModuloAsync();
     await apiLaboratorioAsync();
+    await apiInfoPedidosAsync();
+
 }
+export function getUltimaSincronizacion() {
+    var ultimaSincronizacion = window.localStorage.getItem('ultimaSincronizacion') || '';
+    if (ultimaSincronizacion !== null && ultimaSincronizacion !== undefined && ultimaSincronizacion !== '') {
+        return ultimaSincronizacion;
+    }
+    return null;
+}
+export function getTiempoUltimaSincronizacion() {
+    var fechaNow = Date.now();
+    var ultimaSincronizacion = getUltimaSincronizacion();
+    const diffTime = Math.abs(fechaNow - ultimaSincronizacion);
+    const diffSegundos = Math.ceil(diffTime / (1000));
+        //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffSegundos;
+  }
+/*export function apiInfoPedidos() {
+    fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }),
+        { headers: { "Authorization": getToken(), } })
+        .then((response) => {
+            return response.json()
+        })
+        .then((pData) => {
+            if (pData !== null && pData !== undefined && pData !== '') {
+                var l_InfoPedidos = pData;//JSON.parse(pData);
+                var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+                if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+                    l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
+                }
+                if (!Array.isArray(l_pedidosHistorial)) {
+                    l_pedidosHistorial = [];
+                }
+                l_InfoPedidos.forEach(element => {
+                    for (var i = 0; i < l_pedidosHistorial.length; i++) {
+                        if (String(l_pedidosHistorial[i].guid) === String(element.pea_guid)
+                            && parseInt(l_pedidosHistorial[i].modulo.id) === parseInt(element.pea_numeroModulo)
+                            && parseInt(l_pedidosHistorial[i].farmacia.id) === parseInt(element.pea_codCliente)) {
+                            l_pedidosHistorial[i].procesado = element.pea_procesado;
+                            l_pedidosHistorial[i].procesado_fecha = element.pea_procesado_fecha;
+                            l_pedidosHistorial[i].procesado_cantidad = element.pea_procesado_cantidad;
+                            l_pedidosHistorial[i].procesado_descripcion = element.pea_procesado_descripcion;
+                        }
+                    }
+                });
+                localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
+            }
+        })
+}*/
 /*export function cargarDatosInicio_DesdeApi_generico() {
     fetch(getUrl() + 'farmacia?' + new URLSearchParams({
         ApNombre: getName()
