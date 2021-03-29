@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {  Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import ResultadoCarrito from './ResultadoCarrito'
-import { isLoggedIn,getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
 
 function Carrito() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -76,20 +76,39 @@ function Carrito() {
             for (var y = 0; y < farmaciaModulosArray.length; y++) {
                 var mod_cant = [];
                 for (var y2 = 0; y2 < farmaciaModulosArray[y].modulos.length; y2++) {
-                    var m_c = {
-                        modulo: farmaciaModulosArray[y].modulos[y2],
-                        cantidad: getCantidad_ModuloFarmacia(farmaciaModulosArray[y].modulos[y2],farmaciaModulosArray[y].farmacia)
-                    };
-                    mod_cant.push(m_c);
+                    //    
+                    var isNoFindIn_pendienteGrabados = true;
+                    for (var y3 = 0; y3 < l_pendienteGrabados.length; y3++) {
+                        if (farmaciaModulosArray[y].farmacia.id === l_pendienteGrabados[y3].farmacia.id) {
+                            for (var y4 = 0; y4 < l_pendienteGrabados[y3].modulos.length; y4++) {
+                                if (farmaciaModulosArray[y].modulos[y2].id === l_pendienteGrabados[y3].modulos[y4].modulo.id) {
+                                    l_pendienteGrabados[y3].modulos[y4].cantidad = getCantidad_ModuloFarmacia(farmaciaModulosArray[y].modulos[y2], farmaciaModulosArray[y].farmacia);
+                                    isNoFindIn_pendienteGrabados = false;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    //    
+                    if (isNoFindIn_pendienteGrabados) {
+                        var m_c = {
+                            modulo: farmaciaModulosArray[y].modulos[y2],
+                            cantidad: getCantidad_ModuloFarmacia(farmaciaModulosArray[y].modulos[y2], farmaciaModulosArray[y].farmacia)
+                        };
+                        mod_cant.push(m_c);
+                    }
                 }
-                var f_m = {
-                    farmacia: farmaciaModulosArray[y].farmacia,
-                    modulos: mod_cant,
-                    fecha_grabado: Date.now()//,
-                   // fecha_enviado: null,
-                    //guid: null
-                };
-                l_pendienteGrabados.push(f_m);
+                if (mod_cant.length > 0) {
+                    var f_m = {
+                        farmacia: farmaciaModulosArray[y].farmacia,
+                        modulos: mod_cant,
+                        fecha_grabado: Date.now()//,
+                        // fecha_enviado: null,
+                        //guid: null
+                    };
+                    l_pendienteGrabados.push(f_m);
+                }
             }
             localStorage.setItem('l_pendienteGrabados', JSON.stringify(l_pendienteGrabados));
         }

@@ -7,7 +7,9 @@ import Pedidos from './components/Pedidos'
 import PedidosHistorial from './components/PedidosHistorial'
 import Laboratorio from './components/Laboratorio'
 import Carrito from './components/Carrito'
-import { apiLoadDataAsync,getUltimaSincronizacion,getFormattedDateTime, getTiempoUltimaSincronizacion, loggedOut, getName } from './components/utils';
+import Config from './components/Config'
+
+import { apiLoadDataAsync, getUltimaSincronizacion, getFormattedDateTime, getTiempoUltimaSincronizacion, loggedOut, getName } from './components/utils';
 
 function App() {
   function onClickActualizar(e) {
@@ -24,9 +26,11 @@ function App() {
 
   function getClassBtn() {
     var result = 'btn-light';
-    var segundos = getTiempoUltimaSincronizacion();
-    if (segundos > 60){//86400 //86400 segundos son 24 horas
-      result = 'btn-danger';
+    if (getUltimaSincronizacion() != null) {
+      var segundos = getTiempoUltimaSincronizacion();
+      if (segundos > 60) {//86400 //86400 segundos son 24 horas
+        result = 'btn-danger';
+      }
     }
     return result;
   }
@@ -59,22 +63,24 @@ function App() {
                 <Link className="nav-link" to="/pedidoshistorial" data-toggle="collapse" data-target=".navbar-collapse.show">Historial de pedidos</Link>
               </li>
               <li className="nav-item" activeClassName="active">
-                <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={onClickSalir} ><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></Link>
+                <Link className="nav-link" to="/config" data-toggle="collapse" data-target=".navbar-collapse.show"  ><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></Link>
               </li>
+              {/*<li className="nav-item" activeClassName="active">
+                <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={onClickSalir} ><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></Link>
+              </li>*/}
               <li className="nav-item" activeClassName="active">
                 <button className={"btn " + getClassBtn()} onClick={(e) => onClickActualizar(e)}><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></button>
                 {/*Actualizar */}
-                {"Última actualización: " +getFormattedDateTime(new Date(parseFloat(getUltimaSincronizacion())))/**/}
+                {getUltimaSincronizacion() != null && "Última actualización: " + getFormattedDateTime(new Date(parseFloat(getUltimaSincronizacion())))/**/}
               </li>
+
             </ul>
             <span className="navbar-text">
-              <u> Promotor/a:</u> {getName()}
+              {getName() != '' && <u>  Promotor/a:</u>} {getName() != '' && getName()}
             </span>
           </div>
 
         </nav>
-
-
         <Switch>
           <Route exact path='/' component={Laboratorio} />
           <Route path="/sign-in" component={Login} />
@@ -84,6 +90,7 @@ function App() {
           <Route path="/pedidos" component={Pedidos} />
           <Route path="/pedidoshistorial" component={PedidosHistorial} />
           <Route path="/laboratorio" component={Laboratorio} />
+          <Route path="/config" component={Config} />
         </Switch>
       </div>
     </Router>
@@ -91,3 +98,4 @@ function App() {
 }
 
 export default App;
+

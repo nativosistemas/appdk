@@ -278,9 +278,16 @@ export async function ajaxLogin(pName, pPass) {
         });
     return isLogin;
 }
+export function clear_localStorage() {
+    localStorage.clear();
+}
 export function loggedOut() {
     localStorage.removeItem('login_ApNombre');
-    localStorage.clear();
+
+    localStorage.removeItem('ultimaSincronizacion');
+
+
+    //localStorage.clear();
     //localStorage.setItem('login_ApNombre', null);
 }
 export function isLoggedIn() {
@@ -355,12 +362,13 @@ export async function apiInfoPedidosAsync() {
     localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
 }
 export async function apiLoadDataAsync() {
-    localStorage.setItem('ultimaSincronizacion', Date.now());
-    await apiFarmaciaAsync();
-    await apiModuloAsync();
-    await apiLaboratorioAsync();
-    await apiInfoPedidosAsync();
-
+    if (getName() != '') {
+        localStorage.setItem('ultimaSincronizacion', Date.now());
+        await apiFarmaciaAsync();
+        await apiModuloAsync();
+        await apiLaboratorioAsync();
+        await apiInfoPedidosAsync();
+    }
 }
 export function getUltimaSincronizacion() {
     var ultimaSincronizacion = window.localStorage.getItem('ultimaSincronizacion') || '';
@@ -374,9 +382,9 @@ export function getTiempoUltimaSincronizacion() {
     var ultimaSincronizacion = getUltimaSincronizacion();
     const diffTime = Math.abs(fechaNow - ultimaSincronizacion);
     const diffSegundos = Math.ceil(diffTime / (1000));
-        //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffSegundos;
-  }
+}
 /*export function apiInfoPedidos() {
     fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }),
         { headers: { "Authorization": getToken(), } })

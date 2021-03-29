@@ -37,6 +37,7 @@ function NavPrincipal(props) {
         e.preventDefault();
         e.target.value = '';
         handleChange(e);
+        
         //inputMontoTotalGeneral.current.focus();
     }
     function handleChange(e) {
