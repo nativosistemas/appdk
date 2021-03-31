@@ -31,7 +31,7 @@ function ResultadoV3(props) {
                 {props.modulos.map((modulo, i) => {
                     return (<>
                         <Modulo key={modulo.id} ref={miMapaRefs.get(modulo.id)} isPar={parseInt(i) % 2} farmacia={props.farmacia}
-                            modulo={modulo} getCantidad={getCantidad} setCantidad={setCantidad} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral} ></Modulo>
+                            modulo={modulo} getCantidad={getCantidad} setCantidad={setCantidad} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral} isPedido={props.isPedido} ></Modulo>
                     </>);
                 })}
             </React.Fragment>

@@ -29,7 +29,7 @@ function ResultadoCarritoV2(props) {
                     <h5 className="card-title">{String(props.farmaciaModulos.farmacia.id) + " - " + props.farmaciaModulos.farmacia.nombre}</h5>
                 </div>
                 <div className="card-body card-body-box-sizing">
-                    <ResultadoV2 ref={refResultado} modulos={props.farmaciaModulos.modulos} farmacia={props.farmaciaModulos.farmacia} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral_pedidos}  ></ResultadoV2>
+                    <ResultadoV2 ref={refResultado} modulos={props.farmaciaModulos.modulos} farmacia={props.farmaciaModulos.farmacia} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral_pedidos} isPedido={props.isPedido}  ></ResultadoV2>
                 </div>
                 <div className="card-footer text-muted pedidoFarmacia-footer">
                     <div className="float-left">                <div className="input-group ">

@@ -385,6 +385,24 @@ export function getTiempoUltimaSincronizacion() {
     //const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffSegundos;
 }
+export function delete_PendienteGrabados_ModuloFarmacia(pModulo, pFarmacia) {
+    var l_pendienteGrabados = window.localStorage.getItem('l_pendienteGrabados') || '';
+    if (l_pendienteGrabados !== null && l_pendienteGrabados !== undefined && l_pendienteGrabados !== '') {
+        l_pendienteGrabados = JSON.parse(l_pendienteGrabados);
+    }
+    if (Array.isArray(l_pendienteGrabados)) {
+        for (var i = 0; i < l_pendienteGrabados.length; i++) {
+            if (l_pendienteGrabados[i].farmacia.id === pFarmacia.id) {
+               l_pendienteGrabados[i].modulos = l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
+                //l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
+            }
+        }
+        /*l_pendienteGrabados.find( x0 => x0.id === pFarmacia.id ).forEach(x => {
+            x.modulos = x.modulos.filter(item => item.id === pModulo.id);
+        })*/
+        localStorage.setItem('l_pendienteGrabados', JSON.stringify(l_pendienteGrabados));
+    }
+}
 /*export function apiInfoPedidos() {
     fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }),
         { headers: { "Authorization": getToken(), } })

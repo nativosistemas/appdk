@@ -25,7 +25,7 @@ function Config() {
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Configuración</h2></div>
             <div class="jumbotron">
                 <h1 className="display-4">Borrar datos</h1>
-                <p className="lead">Al borrarlas, se solucionan algunos problemas, como los errores de carga o formato en la app.</p>
+                <p className="lead">Al borrarlas, se restaura a la versión original de la app.</p>
                 <hr className="my-4"></hr>
                 <p className="lead">
                     <a className="btn btn-primary btn-lg" href="#" role="button" onClick={(e) => onClickLimpiar(e)}>Limpiar datos</a>

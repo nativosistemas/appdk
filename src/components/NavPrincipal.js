@@ -38,7 +38,7 @@ function NavPrincipal(props) {
         e.target.value = '';
         handleChange(e);
         
-        //inputMontoTotalGeneral.current.focus();
+        
     }
     function handleChange(e) {
         e.preventDefault();
@@ -48,6 +48,7 @@ function NavPrincipal(props) {
             if (farma !== null && farma !== undefined && farma !== '') {
                 setFarmaciaCurrent(farma);
                 RefrescarMontos(); 
+                inputMontoTotalGeneral.current.focus();
                 return;
             }
         }

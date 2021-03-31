@@ -140,7 +140,7 @@ function Pedidos() {
             <br></br>
             {farmaciaModulosArray.map((farmaciaModulos, i) => {
                 return (
-                    <ResultadoCarritoV2 key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} farmaciaModulos={farmaciaModulos} ></ResultadoCarritoV2>
+                    <ResultadoCarritoV2 key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} farmaciaModulos={farmaciaModulos} isPedido={true} ></ResultadoCarritoV2>
                 );
             })}
         </div>
