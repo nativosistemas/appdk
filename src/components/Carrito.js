@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Redirect } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import ResultadoCarrito from './ResultadoCarrito'
-import { isLoggedIn, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent ,setFarmaciaCurrent} from './utils';
 
 function Carrito() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
     const pedidosFarmaciasRefs = new Map();
-
+    let history = useHistory();
     useEffect(() => {
         var l_farmaciaModulos_array = [];
         let farma = getFarmaciaCurrent();
@@ -121,9 +121,19 @@ function Carrito() {
             if (Array.isArray(l_pendiente)) {
                 l_pendiente = l_pendiente.filter(item => item.farmacia.id !== farma.id);
                 localStorage.setItem('l_pedidos', JSON.stringify(l_pendiente));
-                window.location.reload(false);
+                //window.location.reload(false);
+                setFarmaciaCurrent(null);
+                irLaboratorio();
             }
         }
+    }
+    function irLaboratorio() {
+        let path = `/laboratorio`;
+        history.push(path);
+    }
+    function onClickSeguirComprando(e) {
+        e.preventDefault();
+        irLaboratorio();
     }
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
@@ -131,9 +141,12 @@ function Carrito() {
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Carrito</h2></div>
-            <div className="float-right">
+            <div className="float-right px-4">
                 <button className="btn btn-success" onClick={(e) => onClickGrabarPedidos(e)}>Grabar Pedido</button>
             </div>
+    
+            <div className="float-right">
+                <button className="btn btn-success" onClick={(e) => onClickSeguirComprando(e)}>Seguir Comprando</button></div>
             <br></br>
             {farmaciaModulosArray.map((farmaciaModulos, i) => {
                 return (

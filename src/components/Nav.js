@@ -18,8 +18,8 @@ function Nav(props) {
 
     function filtradoModulo(e) {
         e.preventDefault();
-       // const texto = textInput.current.value;
-        //props.filtrarModulosApp(texto);
+        const texto = textInput.current.value;
+        props.filtrarModulosApp(texto);
     }
     function onClickFarmacias(e) {
         e.preventDefault();
@@ -33,7 +33,7 @@ function Nav(props) {
     return (
         <>
             <nav className="navbar navbar-light bg-gradient-info">
-                <div className="row rowNavbar">    <div className="col">
+                <div className="row rowNavbar">    <div className="col-lg-6 col-md-12">
                     <form onSubmit={filtradoModulo}>
                         <div className="form-group row">
                             <label className="col-sm-2 col-form-label">Farmacia</label>
@@ -58,7 +58,7 @@ function Nav(props) {
                         </div>*/}
                     </form>
                 </div>
-                    <div className="col">
+                    <div className="col-lg-6 col-md-12">
                         <div className="input-group ">
                             <div className="input-group-prepend">
                                 <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>

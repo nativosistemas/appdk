@@ -63,7 +63,7 @@ function NavPrincipal(props) {
     return (
         <>
             <nav className="navbar navbar-light bg-gradient-info">
-                <div className="row rowNavbar">    <div className="col">
+                <div className="row rowNavbar">    <div className="col-lg-6 col-md-12">
                     <div className="form-group row">
                         <label className="col-sm-2 col-form-label">Farmacia</label>
                         <div className="col-sm-10">
@@ -76,7 +76,7 @@ function NavPrincipal(props) {
                         </div>
                     </div>
                 </div>
-                    <div className="col">
+                    <div className="col-lg-6  col-md-12">
                         <div className="input-group ">
                             <div className="input-group-prepend">
                                 <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>
