@@ -149,9 +149,12 @@ class Promociones extends Component {
           <Nav ref={this.elementNav} handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} getTotalAhorroGeneral={this.state.totalAhorroGeneral_promociones} getMontoTotalGeneral={this.state.montoTotalGeneral_promociones} farmacias={this.state.farmacias} farmacia={this.state.farmaciaSeleccionada} ></Nav>
           <div className="float-right">
             <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
-          <br></br>
+          <br></br> <br></br>
           <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} isPromociones={true} ></Resultado>
-          <div className="float-right"> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
+   {this.state.modulos.length > 0 && 
+   <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>}
+          
+     
         </div>
       </>
     )

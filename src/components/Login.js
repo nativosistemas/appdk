@@ -44,7 +44,7 @@ export default class Login extends Component {
     return (
       <div className="container">
         <form onSubmit={this.handleSubmit}>
-          <h3>Inicio sesion</h3>
+          <h3>Iniciar sesión</h3>
 
           <div className="form-group">
             <label>Usuario</label>
