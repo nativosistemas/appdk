@@ -20,14 +20,9 @@ class Promociones extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.elementResultadoModulo = React.createRef();
     this.elementNav = React.createRef();
-    //this.url = 'https://api.kellerhoff.com.ar/api/'
-    //this.url = 'https://localhost:5001/api/'
   }
 
   componentWillMount() {
-    //localStorage.setItem('l_farmacias', this.state.farmacias);
-    //localStorage.setItem('l_modulos', this.state.modulosOriginal);
-    //this.filtrarModulosApp('');
     this.cargarDatosInicio_DesdeLocalStorage();
     if (navigator.onLine) {
       this.cargarDatosInicio_DesdeApi();
@@ -35,35 +30,6 @@ class Promociones extends Component {
   }
   cargarDatosInicio_DesdeApi = () => {
     this.cargarDatosInicio_DesdeLocalStorage();
-    /*fetch(getUrl() + 'farmacia?' + new URLSearchParams({
-      ApNombre: getName()
-    }),
-      {
-        headers: {
-          "Authorization": getToken(),
-        }
-      })
-      .then((response) => {
-        return response.json()
-      })
-      .then((pFarmacias) => {
-        localStorage.setItem('l_farmacias', JSON.stringify(pFarmacias));
-      }).then(() => fetch(getUrl() + 'modulo',
-        {
-          headers: {
-            "Authorization": getToken(),
-          }
-        })
-        .then((response) => {
-          return response.json()
-        })
-        .then((pModulos) => {
-          localStorage.setItem('l_modulos', JSON.stringify(pModulos));
-        }))//
-      .then(() => { this.cargarDatosInicio_DesdeLocalStorage(); })
-      .catch(error => {
-        this.cargarDatosInicio_DesdeLocalStorage();
-      });*/
   }
   cargarDatosInicio_DesdeLocalStorage = () => {
     var l_farmacias = localStorage.getItem('l_farmacias') || '';
@@ -137,7 +103,12 @@ class Promociones extends Component {
     //history.push(path);
     this.props.history.push(path);
   }
-
+  onClickVolver = (e) => {
+    e.preventDefault();
+    //this.elementNav.current.textInput.current.value = 'hola';
+    //this.filtrarModulosApp('');
+    window.location.reload(false);
+  }
   render() {
     if (!isLoggedIn()) {
       return <Redirect to="/sign-in" />;
@@ -151,10 +122,12 @@ class Promociones extends Component {
             <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
           <br></br> <br></br>
           <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} isPromociones={true} ></Resultado>
-   {this.state.modulos.length > 0 && 
-   <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>}
-          
-     
+          {/*(this.state.modulos.length === 0 && this.state.modulosOriginal.length > 0) &&
+            <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickVolver}>Volver</button></div>*/}
+          {this.state.modulos.length > 0 &&
+            <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>}
+
+
         </div>
       </>
     )

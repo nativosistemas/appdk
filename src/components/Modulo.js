@@ -53,7 +53,24 @@ class Modulo extends Component {
             pValue = 0;
         }
         let cantidad = parseInt(pValue);
+        /*
+        let cantidadMinimos = this.props.modulo.cantidadMinimos;
+        if (cantidad < cantidadMinimos){
+            cantidad = 0;
+        }
+        */    
         this.setState({ count: cantidad }, () => { this.props.setCantidad(this.props.modulo, cantidad); this.RefrescarMontosAhorro(); })
+    }
+    onBlurCantidad = (pValue) => {
+        if (pValue === '' || pValue === null) {
+            pValue = 0;
+        }
+        let cantidad = parseInt(pValue);
+        let cantidadMinimos = this.props.modulo.cantidadMinimos;
+        if (cantidad < cantidadMinimos && cantidad !== 0){
+            this.cambiarCantidad(0);
+        };
+
     }
     RefrescarMontosAhorro = () => {
         let montoTotal_detalle = 0;
@@ -165,7 +182,7 @@ class Modulo extends Component {
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, -1)}>-</button>
                                 </div>
-                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} onChange={(e) => this.cambiarCantidad(e.target.value)} readOnly={!this.isChangeCantidad()} />
+                                <input type="number" className="form-control" placeholder="Cantidad" value={this.state.count} onChange={(e) => this.cambiarCantidad(e.target.value)} onBlur={(e) => this.onBlurCantidad(e.target.value)} readOnly={!this.isChangeCantidad()} />
                                 <div className="input-group-prepend">
                                     <button type="button" className="btn btn-secondary" onClick={(e) => this.onClickAccion(e, 1)}>+</button>
                                 </div>

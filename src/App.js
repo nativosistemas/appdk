@@ -69,14 +69,14 @@ function App() {
                 <Link className="nav-link" to="/sign-in" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={onClickSalir} ><svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg></Link>
               </li>*/}
               <li className="nav-item" activeClassName="active">
-                <button className={"btn " + getClassBtn()} onClick={(e) => onClickActualizar(e)}><span className=" ultimaActualizacion">Sincronizar </span> &nbsp;<svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></button>
+                <button className={"btn " + getClassBtn()} onClick={(e) => onClickActualizar(e)}><span className="ultimaActualizacion">Sincronizar&nbsp;</span>&nbsp;<svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></button>
                 {/*Actualizar */}
-                {getUltimaSincronizacion() != null &&  <span className="navbar-text ultimaActualizacion">&nbsp; Última actualización:&nbsp;{getFormattedDateTime(new Date(parseFloat(getUltimaSincronizacion())))}   </span> /**/}
+                {getUltimaSincronizacion() != null &&  <span className="navbar-text ultimaActualizacion">&nbsp;Última actualización:&nbsp;{getFormattedDateTime(new Date(parseFloat(getUltimaSincronizacion())))}   </span> /**/}
               </li>
 
             </ul>
             <span className="navbar-text">
-              {getName() != '' && <u>  Promotor/a:</u>} {getName() != '' && getName()}
+              {getName() != '' && <u>Promotor/a:</u>} {getName() != '' && getName()}
             </span>
             
           </div>
