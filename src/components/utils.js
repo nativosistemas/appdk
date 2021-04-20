@@ -110,9 +110,10 @@ export function getPrecioModuloDesc(pModuloDetalle, pFarmacia) {
     return precio;
 }
 export function getPrecioModuloHabitual(pModuloDetalle, pFarmacia) {
-    var precio = 0;// pModuloDetalle.objProducto.pro_preciofarmacia;
-    if (pFarmacia !== undefined && pFarmacia !== null && pFarmacia !== '')//
-        return ObtenerPrecioFinal(pModuloDetalle.objProducto.pro_preciofarmacia, pFarmacia.objCliente, pModuloDetalle);
+    var precio = 0;
+    if (pFarmacia !== undefined && pFarmacia !== null && pFarmacia !== '') {
+        return ObtenerPrecioFinal(pModuloDetalle.objProducto.pro_PrecioBase, pFarmacia.objCliente, pModuloDetalle);
+    }
     return precio;
 }
 export function getPrecioBaseConDescuento(pPrecioBase, pProductos, pDescuentoRestar) {
@@ -322,44 +323,55 @@ export async function apiFarmaciaAsync() {
     const response = await fetch(getUrl() + 'farmacia?' + new URLSearchParams({ ApNombre: getName() }),
         { headers: { "Authorization": getToken(), } });
     const reader = response.json();
-    localStorage.setItem('l_farmacias', JSON.stringify(await reader))//await reader.read();
+    var l_farmacias = await reader;
+    if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '' && Array.isArray(l_farmacias)) {
+        localStorage.setItem('l_farmacias', JSON.stringify(l_farmacias))
+    }
 }
 export async function apiModuloAsync() {
     const response = await fetch(getUrl() + 'modulo', { headers: { "Authorization": getToken(), } });
     const reader = response.json();
-    localStorage.setItem('l_modulos', JSON.stringify(await reader));
+    var l_modulos = await reader;
+    if (l_modulos !== null && l_modulos !== undefined && l_modulos !== '' && Array.isArray(l_modulos)) {
+        localStorage.setItem('l_modulos', JSON.stringify(l_modulos));
+    }
 }
 export async function apiLaboratorioAsync() {
     const response = await fetch(getUrl() + 'Laboratorio', { headers: { "Authorization": getToken(), } });
     const reader = response.json();
-    localStorage.setItem('l_laboratorios', JSON.stringify(await reader));
+    var l_laboratorios = await reader;
+    if (l_laboratorios !== null && l_laboratorios !== undefined && l_laboratorios !== '' && Array.isArray(l_laboratorios)) {
+        localStorage.setItem('l_laboratorios', JSON.stringify(l_laboratorios));
+    }
 }
 export async function apiInfoPedidosAsync() {
     const response = await fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }), { headers: { "Authorization": getToken(), } });
     const reader = response.json();
     var l_InfoPedidos = await reader;
-    var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
-    if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
-        l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
-    }
-    if (!Array.isArray(l_pedidosHistorial)) {
-        l_pedidosHistorial = [];
-    }
-    l_InfoPedidos.forEach(element => {
-        for (var i = 0; i < l_pedidosHistorial.length; i++) {
-            if (String(l_pedidosHistorial[i].guid) === String(element.pea_guid)
-                && parseInt(l_pedidosHistorial[i].modulo.id) === parseInt(element.pea_numeroModulo)
-                && parseInt(l_pedidosHistorial[i].farmacia.id) === parseInt(element.pea_codCliente)) {
-                //l_pedidosHistorial[i].fecha = element.pea_fecha;
-                l_pedidosHistorial[i].procesado = element.pea_procesado;
-                l_pedidosHistorial[i].procesado_fecha = element.pea_procesado_fecha;
-                l_pedidosHistorial[i].procesado_cantidad = element.pea_procesado_cantidad;
-                l_pedidosHistorial[i].procesado_descripcion = element.pea_procesado_descripcion;
-            }
+    if (l_InfoPedidos !== null && l_InfoPedidos !== undefined && l_InfoPedidos !== '' && Array.isArray(l_InfoPedidos)) {
+        var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+        if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+            l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
         }
+        if (!Array.isArray(l_pedidosHistorial)) {
+            l_pedidosHistorial = [];
+        }
+        l_InfoPedidos.forEach(element => {
+            for (var i = 0; i < l_pedidosHistorial.length; i++) {
+                if (String(l_pedidosHistorial[i].guid) === String(element.pea_guid)
+                    && parseInt(l_pedidosHistorial[i].modulo.id) === parseInt(element.pea_numeroModulo)
+                    && parseInt(l_pedidosHistorial[i].farmacia.id) === parseInt(element.pea_codCliente)) {
+                    //l_pedidosHistorial[i].fecha = element.pea_fecha;
+                    l_pedidosHistorial[i].procesado = element.pea_procesado;
+                    l_pedidosHistorial[i].procesado_fecha = element.pea_procesado_fecha;
+                    l_pedidosHistorial[i].procesado_cantidad = element.pea_procesado_cantidad;
+                    l_pedidosHistorial[i].procesado_descripcion = element.pea_procesado_descripcion;
+                }
+            }
 
-    });
-    localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
+        });
+        localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
+    }
 }
 export async function apiLoadDataAsync() {
     if (getName() != '') {
@@ -393,7 +405,7 @@ export function delete_PendienteGrabados_ModuloFarmacia(pModulo, pFarmacia) {
     if (Array.isArray(l_pendienteGrabados)) {
         for (var i = 0; i < l_pendienteGrabados.length; i++) {
             if (l_pendienteGrabados[i].farmacia.id === pFarmacia.id) {
-               l_pendienteGrabados[i].modulos = l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
+                l_pendienteGrabados[i].modulos = l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
                 //l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
             }
         }

@@ -9,6 +9,8 @@ function NavPrincipal(props) {
     const [montoTotalGeneral, setMontoTotalGeneral] = useState(0);
     const [totalAhorroGeneral, setTotalAhorroGeneral] = useState(0);
 
+
+
     useEffect(() => {
         cargarDatosInicio_DesdeLocalStorage();
         RefrescarMontos();
