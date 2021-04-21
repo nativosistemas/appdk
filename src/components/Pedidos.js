@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
 import ResultadoCarritoV2 from './ResultadoCarritoV2'
-import { isLoggedIn, getName, getUrl, getToken, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn, getName, getUrl, getToken, getCantidad_ModuloFarmacia, getFarmaciaCurrent,getFarmaciaActualizada,getModuloActualizado } from './utils';
 
 function Pedidos() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -39,7 +39,7 @@ function Pedidos() {
                     mod.cantidadGrabado = x.modulos[y].cantidad;
                     modulos_temp.push(mod);
                     var f_m = {
-                        farmacia: x.farmacia,
+                        farmacia: getFarmaciaActualizada(x.farmacia),
                         modulos: modulos_temp
                     };
                     l_farmaciaModulos_array.push(f_m);
@@ -54,13 +54,13 @@ function Pedidos() {
         setFarmaciaModulosArray(l_farmaciaModulos_array);
 
     }, []);
-    function getModuloActualizado(pModulo) {
+    /*function getModuloActualizado(pModulo) {
         var mod = getModulo_actualizado(pModulo);
         if (mod === null) {
             return pModulo;
         }
         return mod;
-    }
+    }*/
     function onClickEnviarTodosPedidos(e) {
         e.preventDefault();
         var l_post_ok = [];

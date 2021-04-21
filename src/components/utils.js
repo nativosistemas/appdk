@@ -66,20 +66,49 @@ export function getFormattedDateTime(date) {
 
     return day + '/' + month + '/' + year + ' ' + hour + ':' + minutes + ':' + seconds;
 }
-export function getModulo_actualizado(pModulo) {
+export function getFarmaciaActualizada(pFarmacia) {
+    var farma = private_getFarmacia_actualizada(pFarmacia);
+    if (farma === null) {
+        return pFarmacia;
+    }
+    return farma;
+}
+export function private_getFarmacia_actualizada(pFarmacia) {
+    var l_farmacias = localStorage.getItem('l_farmacias') || '';
+    if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '') {
+        l_farmacias = JSON.parse(l_farmacias);
+    }
+    if (!Array.isArray(l_farmacias)) {
+        l_farmacias = [];
+    }
+    var farma = l_farmacias.find(element => String(pFarmacia.id) === String(element.id));
+    if (farma !== undefined && farma !== null && farma !== '') {
+        return farma;
+    } else {
+        return null;
+    }
+}
+export function private_getModulo_actualizado(pModulo) {
     var l_modulos = localStorage.getItem('l_modulos') || '';
-    if (l_modulos !== '') {
+    if (l_modulos !== undefined && l_modulos !== null && l_modulos !== '') {
         l_modulos = JSON.parse(l_modulos);
     }
     if (!Array.isArray(l_modulos)) {
         l_modulos = [];
     }
     var modulo = l_modulos.find(element => String(pModulo.id) === String(element.id));
-    if (modulo) {
+    if (modulo !== undefined && modulo !== null && modulo !== '') {
         return modulo;
     } else {
         return null;
     }
+}
+export function getModuloActualizado(pModulo) {
+    var mod = private_getModulo_actualizado(pModulo);
+    if (mod === null) {
+        return pModulo;
+    }
+    return mod;
 }
 export function getCantidad_ModuloFarmacia(pModulo, pFarmacia) {
     var cantidad = 0;
@@ -167,6 +196,9 @@ export function getFarmaciaCurrent() {
     } else {
         farmaciaCurrent = null;
     }
+    if (farmaciaCurrent !== null) {
+        farmaciaCurrent = getFarmaciaActualizada(farmaciaCurrent);
+    }
     return farmaciaCurrent;
 }
 export function setFarmaciaCurrent(pValue) {
@@ -187,29 +219,35 @@ export function getMontoAhorroMontoTotalGeneral_farmacia() {
         var l_pedidos_farmacia = [];
         l_pedidos.forEach(x => {
             if (x.cantidad > 0 && x.farmacia.id === farmaciaCurrent.id) {
-                l_pedidos_farmacia.push(x);
+                let oPedido = { fechaCreacion: x.fechaCreacion, farmacia:  getFarmaciaActualizada(x.farmacia), modulo: getModuloActualizado( x.modulo) , cantidad: x.cantidad  };
+                l_pedidos_farmacia.push(oPedido);
             }
         });
         l_pedidos_farmacia.forEach(elementPedidos_farmacia => {
-            let montoTotal_detalle = 0;
-            let montoTotalDescuento_detalle = 0;
+            let montoTotal_PrecioModuloDesc = 0;
+            let montoTotal_PrecioModuloHabitual = 0;
+
             elementPedidos_farmacia.modulo.moduloDetalle.forEach(element => {
                 var cantidadUnidades = element.cantidadUnidades;
                 if (cantidadUnidades == 0) {
                     cantidadUnidades = 1;
                 }
-                if (element.objProducto.pro_preciofarmacia > 0) {
-                    montoTotal_detalle += getPrecioModuloHabitual(element, farmaciaCurrent) * cantidadUnidades;
+                if (element.objProducto.pro_PrecioBase > 0) {
+                    montoTotal_PrecioModuloHabitual += getPrecioModuloHabitual(element, farmaciaCurrent) * cantidadUnidades;
                 }
                 if (element.precioDescuento > 0) {
-                    montoTotalDescuento_detalle += getPrecioModuloDesc(element, farmaciaCurrent) * cantidadUnidades;
+                    montoTotal_PrecioModuloDesc += getPrecioModuloDesc(element, farmaciaCurrent) * cantidadUnidades;
                 }
             });
 
             if (elementPedidos_farmacia.cantidad > 0) {
-                var montoTotal_aux = montoTotal_detalle * elementPedidos_farmacia.cantidad;
-                montoTotal += montoTotal_aux;
-                ahorroTotal += montoTotal_aux - (montoTotalDescuento_detalle * elementPedidos_farmacia.cantidad);
+                //var montoTotal_aux = montoTotal_detalle * elementPedidos_farmacia.cantidad;
+                //montoTotal += montoTotal_aux;
+                //ahorroTotal += montoTotal_aux - (montoTotalDescuento_detalle * elementPedidos_farmacia.cantidad);
+                var PrecioModuloHabitual_aux = montoTotal_PrecioModuloHabitual * elementPedidos_farmacia.cantidad;
+                var PrecioModuloDesc_aux = montoTotal_PrecioModuloDesc * elementPedidos_farmacia.cantidad;
+                montoTotal += PrecioModuloDesc_aux;
+                ahorroTotal += PrecioModuloHabitual_aux - PrecioModuloDesc_aux;
             }
         });
     }
@@ -220,26 +258,26 @@ export function getMontoAhorroMontoTotalGeneral_farmacia() {
     return result;
 }
 export function getMontoAhorroMontoTotal_Modulo(pModulo, pFarmacia, pCantidad) {
-    let montoTotal_detalle = 0;
-    let montoTotalDescuento_detalle = 0;
+    let montoTotal_PrecioModuloDesc = 0;
+    let montoTotal_PrecioModuloHabitual = 0;
 
     pModulo.moduloDetalle.forEach(element => {
         var cantidadUnidades = element.cantidadUnidades;
         if (cantidadUnidades == 0) {
             cantidadUnidades = 1;
         }
-        if (element.objProducto.pro_preciofarmacia > 0) {
-            montoTotal_detalle += getPrecioModuloHabitual(element, pFarmacia) * cantidadUnidades;
+        if (element.objProducto.pro_PrecioBase > 0) {
+            montoTotal_PrecioModuloHabitual += getPrecioModuloHabitual(element, pFarmacia) * cantidadUnidades;
         }
         if (element.precioDescuento > 0) {
-            montoTotalDescuento_detalle += getPrecioModuloDesc(element, pFarmacia) * cantidadUnidades;
+            montoTotal_PrecioModuloDesc += getPrecioModuloDesc(element, pFarmacia) * cantidadUnidades;
         }
     });
     let montoTotal = 0;
     let ahorroTotal = 0;
     if (pCantidad > 0) {
-        montoTotal = montoTotal_detalle * pCantidad;
-        ahorroTotal = montoTotal - (montoTotalDescuento_detalle * pCantidad);
+        montoTotal = montoTotal_PrecioModuloDesc * pCantidad;
+        ahorroTotal = (montoTotal_PrecioModuloHabitual * pCantidad) - montoTotal;
     }
     var result = {
         ahorroTotal: ahorroTotal,

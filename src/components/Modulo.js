@@ -73,26 +73,28 @@ class Modulo extends Component {
 
     }
     RefrescarMontosAhorro = () => {
-        let montoTotal_detalle = 0;
-        let montoTotalDescuento_detalle = 0;
+
+        let montoTotal_PrecioModuloDesc = 0;
+        let montoTotal_PrecioModuloHabitual = 0;
+
 
         this.props.modulo.moduloDetalle.forEach(element => {
             var cantidadUnidades = element.cantidadUnidades;
             if (cantidadUnidades == 0) {
                 cantidadUnidades = 1;
             }
-            if (element.objProducto.pro_preciofarmacia > 0) {
-                montoTotal_detalle += getPrecioModuloHabitual(element, this.props.farmacia) * cantidadUnidades;
+            if (element.objProducto.pro_PrecioBase > 0) {
+                montoTotal_PrecioModuloHabitual += getPrecioModuloHabitual(element, this.props.farmacia) * cantidadUnidades;
             }
             if (element.precioDescuento > 0) {
-                montoTotalDescuento_detalle += getPrecioModuloDesc(element, this.props.farmacia) * cantidadUnidades;
+                montoTotal_PrecioModuloDesc += getPrecioModuloDesc(element, this.props.farmacia) * cantidadUnidades;
             }
         });
         let montoTotal = 0;
         let ahorroTotal = 0;
         if (this.state.count > 0) {
-            montoTotal = montoTotal_detalle * this.state.count;
-            ahorroTotal = montoTotal - (montoTotalDescuento_detalle * this.state.count);
+            montoTotal = montoTotal_PrecioModuloDesc * this.state.count;
+            ahorroTotal = (montoTotal_PrecioModuloHabitual * this.state.count) - montoTotal;
         }
 
         this.setState({ montoTotal: montoTotal }, () => { this.setState({ ahorroTotal: ahorroTotal }, () => { this.props.refreshMontoAhorroGeneral(); }) })

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
 //import ResultadoCarritoV2 from './ResultadoCarritoV2'
 import ResultadoV2 from './ResultadoV2'
-import { isLoggedIn, getFormattedDateTime, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent } from './utils';
+import { isLoggedIn, getFormattedDateTime, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent,getFarmaciaActualizada } from './utils';
 
 function PedidosHistorial() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -77,7 +77,7 @@ function PedidosHistorial() {
                 x.modulo.procesado_descripcion = x.procesado_descripcion;
                 l_modulos_aux.push(x.modulo);
                 var p = {
-                    farmacia: x.farmacia,
+                    farmacia: getFarmaciaActualizada(x.farmacia),
                     modulos: l_modulos_aux
                 };
                 nuevoObjeto[index].farmacias.push(p);
