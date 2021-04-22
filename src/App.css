@@ -65,6 +65,9 @@
 .ultimaActualizacion{
   font-size: 0.8rem;
 }
+.collapseShow{
+  display: block !important;
+}
 @media screen and (max-width: 400px) {
   .textTable {
     font-size: 0.6em;
