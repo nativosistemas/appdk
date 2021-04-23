@@ -173,7 +173,7 @@ export function ObtenerPrecioFinal(pPrecioBase, pClientes, pModuloDetalle) {
     else {  // No neto   
         resultado = getPrecioBaseConDescuento(pPrecioBase, pProductos, pClientes.cli_PorcentajeDescuentoDeEspecialidadesMedicinalesDirecto);
     }
-    return resultado;
+    return parseFloat(parseFloat(resultado).toFixed(2));
 }
 export function getBase64Image(img) {
     var canvas = document.createElement("canvas");

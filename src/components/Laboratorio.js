@@ -89,7 +89,7 @@ function Laboratorio() {
     }
     return (
         <div className="app container-fluid">
-            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios (V3)</h2></div>
+            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
             <NavPrincipal  ></NavPrincipal>
             {
                 <><div className="float-right">

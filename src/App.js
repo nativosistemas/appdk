@@ -40,7 +40,8 @@ function App() {
   }
   function onClickCerrarMenu(e) {
     e.preventDefault();
-    handleNavCollapse();
+    //handleNavCollapse();
+    setIsNavCollapsed(true);
   }
   return (
     <Router>
