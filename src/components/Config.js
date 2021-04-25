@@ -26,7 +26,7 @@ function Config() {
     return (
         <div className="app container-fluid">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Configuración</h2></div>
-            <div class="jumbotron">
+            <div class="bg-light p-5 mb-5 shadow-lg">
                 <h1 className="display-4">Borrar datos</h1>
                 <p className="lead">Al borrarlas, se restaura a la versión original de la app.</p>
                 <hr className="my-4"></hr>
@@ -39,7 +39,8 @@ function Config() {
                     </div>
                 </p>
             </div>
-            <div class="jumbotron">
+          
+            <div class="bg-light p-5  mb-5 shadow-lg">
                 <h1 className="display-4">Cerrar sesión</h1>
                 <hr className="my-4"></hr>
                 <p className="lead">

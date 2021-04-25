@@ -88,11 +88,11 @@ function Laboratorio() {
         return <Redirect to="/sign-in" />;
     }
     return (
-        <div className="app container-fluid">
+        <div className="app container-fluid mb-4">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
             <NavPrincipal  ></NavPrincipal>
             {
-                <><div className="float-right">
+                <><div className="float-end">
                     <button className="btn btn-success" onClick={(e) => onClickIrCarrito(e)}>Ir al Carrito</button></div>
                     <br></br></>}
             <div className="form-check form-check-inline">

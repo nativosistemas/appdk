@@ -118,14 +118,14 @@ class Promociones extends Component {
         <div className="app container-fluid">
           <div className="alert alert-primary text-center  text-uppercase" ><h2>Pedidos</h2></div>
           <Nav ref={this.elementNav} handleChange={this.handleChange} filtrarModulosApp={this.filtrarModulosApp} getTotalAhorroGeneral={this.state.totalAhorroGeneral_promociones} getMontoTotalGeneral={this.state.montoTotalGeneral_promociones} farmacias={this.state.farmacias} farmacia={this.state.farmaciaSeleccionada} ></Nav>
-          <div className="float-right">
+          <div className="float-end">
             <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>
           <br></br> <br></br>
           <Resultado ref={this.elementResultadoModulo} modulos={this.state.modulos} farmacia={this.state.farmaciaSeleccionada} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral_promociones} isPromociones={true} ></Resultado>
           {/*(this.state.modulos.length === 0 && this.state.modulosOriginal.length > 0) &&
             <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickVolver}>Volver</button></div>*/}
           {this.state.modulos.length > 0 &&
-            <div className="float-right"><br></br> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>}
+            <div className="float-end"><br></br> <button className="btn btn-success" onClick={this.onClickSeguirComprando}>Seguir Comprando</button></div>}
 
 
         </div>
