@@ -104,8 +104,8 @@ function Pedidos() {
             body: json
         })
             .then(results => results.json())
-            .then(data => {
-                if (!data || data === '00000000-0000-0000-0000-000000000000') {
+            .then(data => {         
+                if (data === null || data === undefined || data === '' || !data || data === '00000000-0000-0000-0000-000000000000') {
                     alert('Guid ' + data);
                 } else {
 

@@ -304,6 +304,11 @@ export async function ajaxLogin(pName, pPass) {
             if (data.apNombre !== null && data.apNombre !== undefined && data.apNombre !== '') {
                 localStorage.setItem('login_ApNombre', data.apNombre);
                 isLogin = true;
+
+                var ApNombre_anterior = getApNombre_anterior();
+                if (ApNombre_anterior != '' && ApNombre_anterior != data.apNombre) {
+                    clear_localStorage();
+                }
             }
             if (data.token !== null && data.token !== undefined && data.token !== '') {
                 localStorage.setItem('login_Token', data.token);
@@ -337,6 +342,14 @@ export function isLoggedIn() {
     }
     return isLogin;
 }
+function getApNombre_anterior() {
+    var name = '';
+    var login_ApNombre = localStorage.getItem('login_ApNombre_anterior') || '';
+    if (login_ApNombre !== null && login_ApNombre !== undefined && login_ApNombre !== '') {
+        name = login_ApNombre;
+    }
+    return name;
+}
 export function getName() {
     var name = '';
     var login_ApNombre = localStorage.getItem('login_ApNombre') || '';
@@ -356,10 +369,12 @@ export function getToken() {
     }
     return token;
 }
-
+/*function isSecurityToken() {
+    return true;
+}
 export async function apiFarmaciaAsync() {
     const response = await fetch(getUrl() + 'farmacia?' + new URLSearchParams({ ApNombre: getName() }),
-        { headers: { "Authorization": getToken(), } });
+    headers: { "Authorization": getToken(), });
     const reader = response.json();
     var l_farmacias = await reader;
     if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '' && Array.isArray(l_farmacias)) {
@@ -381,7 +396,7 @@ export async function apiLaboratorioAsync() {
     if (l_laboratorios !== null && l_laboratorios !== undefined && l_laboratorios !== '' && Array.isArray(l_laboratorios)) {
         localStorage.setItem('l_laboratorios', JSON.stringify(l_laboratorios));
     }
-}
+}*/
 export async function apiInfoPedidosAsync() {
     const response = await fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }), { headers: { "Authorization": getToken(), } });
     const reader = response.json();
@@ -413,14 +428,15 @@ export async function apiInfoPedidosAsync() {
 }
 export async function apiLoadDataAsync() {
     if (getName() != '') {
-        localStorage.setItem('ultimaSincronizacion', Date.now());
 
-        const response = await fetch(getUrl() + 'SincronizadorApp?' + new URLSearchParams({ ApNombre: getName() }),
-            { headers: { "Authorization": getToken(), } });
+
+        const response = await fetch(getUrl() + 'SincronizadorApp?' + new URLSearchParams({ ApNombre: getName() }));
         const reader = response.json();
         var oSincronizadorApp = await reader;
 
         if (oSincronizadorApp !== null && oSincronizadorApp !== undefined && oSincronizadorApp !== '') {
+            localStorage.setItem('ultimaSincronizacion', Date.now());
+
             // farmacia    
             var l_farmacias = oSincronizadorApp.listaFarmacia;
             if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '' && Array.isArray(l_farmacias)) {
@@ -467,15 +483,6 @@ export async function apiLoadDataAsync() {
         }
     }
 }
-/*export async function apiLoadDataAsync() {
-    if (getName() != '') {
-        localStorage.setItem('ultimaSincronizacion', Date.now());
-        await apiFarmaciaAsync();
-        await apiModuloAsync();
-        await apiLaboratorioAsync();
-        await apiInfoPedidosAsync();
-    }
-}*/
 export function getUltimaSincronizacion() {
     var ultimaSincronizacion = window.localStorage.getItem('ultimaSincronizacion') || '';
     if (ultimaSincronizacion !== null && ultimaSincronizacion !== undefined && ultimaSincronizacion !== '') {
@@ -500,83 +507,8 @@ export function delete_PendienteGrabados_ModuloFarmacia(pModulo, pFarmacia) {
         for (var i = 0; i < l_pendienteGrabados.length; i++) {
             if (l_pendienteGrabados[i].farmacia.id === pFarmacia.id) {
                 l_pendienteGrabados[i].modulos = l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
-                //l_pendienteGrabados[i].modulos.filter(item => item.modulo.id !== pModulo.id);
             }
         }
-        /*l_pendienteGrabados.find( x0 => x0.id === pFarmacia.id ).forEach(x => {
-            x.modulos = x.modulos.filter(item => item.id === pModulo.id);
-        })*/
         localStorage.setItem('l_pendienteGrabados', JSON.stringify(l_pendienteGrabados));
     }
 }
-/*export function apiInfoPedidos() {
-    fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }),
-        { headers: { "Authorization": getToken(), } })
-        .then((response) => {
-            return response.json()
-        })
-        .then((pData) => {
-            if (pData !== null && pData !== undefined && pData !== '') {
-                var l_InfoPedidos = pData;//JSON.parse(pData);
-                var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
-                if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
-                    l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
-                }
-                if (!Array.isArray(l_pedidosHistorial)) {
-                    l_pedidosHistorial = [];
-                }
-                l_InfoPedidos.forEach(element => {
-                    for (var i = 0; i < l_pedidosHistorial.length; i++) {
-                        if (String(l_pedidosHistorial[i].guid) === String(element.pea_guid)
-                            && parseInt(l_pedidosHistorial[i].modulo.id) === parseInt(element.pea_numeroModulo)
-                            && parseInt(l_pedidosHistorial[i].farmacia.id) === parseInt(element.pea_codCliente)) {
-                            l_pedidosHistorial[i].procesado = element.pea_procesado;
-                            l_pedidosHistorial[i].procesado_fecha = element.pea_procesado_fecha;
-                            l_pedidosHistorial[i].procesado_cantidad = element.pea_procesado_cantidad;
-                            l_pedidosHistorial[i].procesado_descripcion = element.pea_procesado_descripcion;
-                        }
-                    }
-                });
-                localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));
-            }
-        })
-}*/
-/*export function cargarDatosInicio_DesdeApi_generico() {
-    fetch(getUrl() + 'farmacia?' + new URLSearchParams({
-        ApNombre: getName()
-    }),
-        {
-            headers: {
-                "Authorization": getToken(),
-            }
-        })
-        .then((response) => {
-            return response.json()
-        })
-        .then((pFarmacias) => {
-            localStorage.setItem('l_farmacias', JSON.stringify(pFarmacias));
-        }).then(() => fetch(getUrl() + 'modulo',
-            {
-                headers: {
-                    "Authorization": getToken(),
-                }
-            })
-            .then((response) => {
-                return response.json()
-            })
-            .then((pModulos) => {
-                localStorage.setItem('l_modulos', JSON.stringify(pModulos));
-            }))//
-        .then(() => fetch(getUrl() + "Laboratorio",
-            {
-                headers: {
-                    "Authorization": getToken(),
-                }
-            })
-            .then((response) => {
-                return response.json()
-            })
-            .then((pLaboratorios) => {
-                localStorage.setItem('l_laboratorios', JSON.stringify(pLaboratorios));
-            }));
-}*/

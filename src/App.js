@@ -32,7 +32,7 @@ function App() {
     var result = 'btn-light';
     if (getUltimaSincronizacion() != null) {
       var segundos = getTiempoUltimaSincronizacion();
-      if (segundos > 60) {//86400 //86400 segundos son 24 horas
+      if (segundos > 86400) {//86400 //86400 segundos son 24 horas
         result = 'btn-danger';
       }
     }
