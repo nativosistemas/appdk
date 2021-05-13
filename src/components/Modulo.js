@@ -148,6 +148,7 @@ class Modulo extends Component {
                                 <th scope="col">Precio</th>
                                 <th scope="col">Precio c/ Desc.</th>
                                 <th className="d-none d-sm-none d-md-table-cell" scope="col">Cant. Unid.</th>
+                                <th className="d-none d-sm-none d-md-table-cell" scope="col">Cant. Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -159,6 +160,7 @@ class Modulo extends Component {
                                         <td>{currencyFormat(getPrecioModuloHabitual(detalle, this.props.farmacia))}</td>
                                         <td>{currencyFormat(getPrecioModuloDesc(detalle, this.props.farmacia))}</td>
                                         <td className="d-none d-sm-none d-md-table-cell">{detalle.cantidadUnidades}</td>
+                                        <td className="d-none d-sm-none d-md-table-cell">{this.state.count * detalle.cantidadUnidades}</td>
                                     </tr>
                                 );
                             })}

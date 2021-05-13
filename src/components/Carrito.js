@@ -148,6 +148,7 @@ function Carrito() {
             <div className="float-end">
                 <button className="btn btn-success" onClick={(e) => onClickSeguirComprando(e)}>Seguir Comprando</button></div>
             <br></br>
+            <div className="clearfix"></div>
             {farmaciaModulosArray.map((farmaciaModulos, i) => {
                 return (
                     <ResultadoCarrito key={i} ref={pedidosFarmaciasRefs.get(farmaciaModulos.farmacia.id)} farmaciaModulos={farmaciaModulos} isCarrito={true} ></ResultadoCarrito>
