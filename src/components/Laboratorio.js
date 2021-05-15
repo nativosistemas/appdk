@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory, Redirect } from "react-router-dom";
 import NavPrincipal from './NavPrincipal'
+//import PedidosHistorialClienteComponente from './PedidosHistorialClienteComponente'
 import { isLoggedIn, getFarmaciaCurrent } from './utils';
 
 function Laboratorio() {
@@ -83,6 +84,10 @@ function Laboratorio() {
         e.preventDefault();
         history.push("/carrito");
     }
+    /*function onClickIrPedidosHistorialCliente(e) {
+        e.preventDefault();
+        history.push("/pedidoshistorialcliente");
+    }*/
     //funcionLogin();
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
@@ -90,6 +95,7 @@ function Laboratorio() {
     return (
         <div className="app container-fluid mb-4">
             <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
+          
             <NavPrincipal  ></NavPrincipal>
             {
                 <><div className="float-end">

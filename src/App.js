@@ -8,6 +8,7 @@ import PedidosHistorial from './components/PedidosHistorial'
 import Laboratorio from './components/Laboratorio'
 import Carrito from './components/Carrito'
 import Config from './components/Config'
+import PedidosHistorialCliente from './components/PedidosHistorialCliente'
 
 import { apiSincronizadorAppPostAsync, getUltimaSincronizacion, getFormattedDateTime, getTiempoUltimaSincronizacion, loggedOut, getName, isAlertVisible, getMsgAlert, setAlertVisible,CerrarAlert } from './components/utils';
 
@@ -125,6 +126,7 @@ function App() {
           <Route path="/pedidoshistorial" component={PedidosHistorial} />
           <Route path="/laboratorio" component={Laboratorio} />
           <Route path="/config" component={Config} />
+          <Route path="/pedidoshistorialcliente" component={PedidosHistorialCliente} />  
         </Switch>
       </div>
     </Router>

@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import PedidosHistorialClienteComponente from './PedidosHistorialClienteComponente'
 import { currencyFormat, setFarmaciaCurrent, getFarmaciaCurrent, getMontoAhorroMontoTotalGeneral_farmacia } from './utils';
 
 function NavPrincipal(props) {
@@ -8,12 +9,16 @@ function NavPrincipal(props) {
     const [listFarmacias, setListFarmacias] = useState([]);
     const [montoTotalGeneral, setMontoTotalGeneral] = useState(0);
     const [totalAhorroGeneral, setTotalAhorroGeneral] = useState(0);
-
+    const [farmaciaHistorial, setFarmaciaHistorial] = useState('');
 
 
     useEffect(() => {
         cargarDatosInicio_DesdeLocalStorage();
         RefrescarMontos();
+        let farma = getFarmaciaCurrent();
+        if (farma !== null && farma !== undefined && farma !== '') {
+            setFarmaciaHistorial(farma);
+        }
     }, []);
     function RefrescarMontos() {
         let farma = getFarmaciaCurrent();
@@ -49,6 +54,7 @@ function NavPrincipal(props) {
             let farma = listFarmacias.find(element => String(element.id) + " - " + element.nombre === String(valueInput));
             if (farma !== null && farma !== undefined && farma !== '') {
                 setFarmaciaCurrent(farma);
+                setFarmaciaHistorial(farma);
                 RefrescarMontos();
                 inputMontoTotalGeneral.current.focus();
                 return;
@@ -57,10 +63,6 @@ function NavPrincipal(props) {
         setFarmaciaCurrent(null);
 
         RefrescarMontos();
-
-        /*this.setState({ farmaciaSeleccionada: farma }, () => {
-          this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
-        });*/
     }
     return (
         <>
@@ -77,6 +79,7 @@ function NavPrincipal(props) {
                             </datalist>
                         </div>
                     </div>
+                    <PedidosHistorialClienteComponente farmaciaHistorial={farmaciaHistorial}></PedidosHistorialClienteComponente>
                 </div>
                     <div className="col-lg-6  col-md-12">
                         <div className="input-group ">

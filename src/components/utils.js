@@ -706,13 +706,13 @@ export async function apiSincronizadorAppPostAsync() {
                 });
                 if (response.status >= 400 && response.status < 600) {
                     AbrirAlert(msgNoInternet);
-                    window.location.reload(false);
+                    window.location.reload();
                 } else {
                     const reader = response.json();
                     var oSincronizadorApp = await reader;
                     if (oSincronizadorApp === null || oSincronizadorApp === undefined || oSincronizadorApp === '') {
                         AbrirAlert(msgVuelvaIntentarlo);
-                        window.location.reload(false);
+                        window.location.reload();
                     } else {
                         localStorage.setItem('ultimaSincronizacion', Date.now());
 
@@ -783,13 +783,115 @@ export async function apiSincronizadorAppPostAsync() {
                         }
                     }
                 }
-            } catch { 
+            } catch {
                 AbrirAlert(msgNoInternet);
-                window.location.reload(false);
+                window.location.reload();
             }
         } else {
             AbrirAlert(msgNoInternet);
-            window.location.reload(false);
+            window.location.reload();
         }
     }
+}
+export function getPedidosHistorial(pFarmacia, pFecha) {
+    var l_farmaciaModulos_array = [];
+
+    var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+    if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+        l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
+    }
+    if (!Array.isArray(l_pedidosHistorial)) {
+        l_pedidosHistorial = [];
+    }
+    if (pFarmacia !== null && pFarmacia !== undefined && pFarmacia !== '') {
+        l_pedidosHistorial = l_pedidosHistorial.filter(element => String(element.farmacia.id) + " - " + element.farmacia.nombre === String(pFarmacia));
+    }
+    if (pFecha !== null && pFecha !== undefined && pFecha !== '') {
+        var fechaDesde = Date.parse(pFecha + ' 00:00:00');
+        l_pedidosHistorial = l_pedidosHistorial.filter(element => element.fecha >= fechaDesde);
+    }
+    let nuevoObjeto = [];
+    //Recorremos el arreglo 
+    l_pedidosHistorial.forEach(x => {
+        var index = 0;
+        var isNotFindGuid = true;
+        for (var i = 0; i < nuevoObjeto.length; i++) {
+            if (nuevoObjeto[i].guid === x.guid) {
+                index = i;
+                isNotFindGuid = false;
+                break;
+            }
+        }
+        if (isNotFindGuid) {
+            var g = {
+                guid: x.guid,
+                fecha: x.fecha,
+                farmacias: []
+            };
+            nuevoObjeto.push(g);
+            index = nuevoObjeto.length - 1;
+        }
+        var isAddFarma = true;
+        for (var i = 0; i < nuevoObjeto[index].farmacias.length; i++) {
+            if (nuevoObjeto[index].farmacias[i].farmacia.id === x.farmacia.id) {
+                x.modulo.guid = x.guid;
+                x.modulo.procesado = x.procesado;
+                x.modulo.procesado_fecha = x.procesado_fecha;
+                x.modulo.procesado_cantidad = x.procesado_cantidad;
+                x.modulo.procesado_descripcion = x.procesado_descripcion;
+                nuevoObjeto[index].farmacias[i].modulos.push(x.modulo);
+                isAddFarma = false;
+            }
+        }
+        if (isAddFarma) {
+            var l_modulos_aux = [];
+            x.modulo.guid = x.guid;
+            x.modulo.procesado = x.procesado;
+            x.modulo.procesado_fecha = x.procesado_fecha;
+            x.modulo.procesado_cantidad = x.procesado_cantidad;
+            x.modulo.procesado_descripcion = x.procesado_descripcion;
+            l_modulos_aux.push(x.modulo);
+            var p = {
+                farmacia: getFarmaciaActualizada(x.farmacia),
+                modulos: l_modulos_aux
+            };
+            nuevoObjeto[index].farmacias.push(p);
+        }
+    })
+    l_farmaciaModulos_array = nuevoObjeto;
+    return l_farmaciaModulos_array;
+    //setFarmaciaModulosArray(l_farmaciaModulos_array);
+}
+export function getPedidosHistorialCliente(farmacia) {
+    var l_HistorialCliente_array = [];
+    //var farmacia = getFarmaciaCurrent();
+    if (farmacia !== null && farmacia !== undefined && farmacia !== '') {
+        var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+        if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+            l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
+        }
+        if (!Array.isArray(l_pedidosHistorial)) {
+            l_pedidosHistorial = [];
+        }
+
+        l_pedidosHistorial = l_pedidosHistorial.filter(element => element.farmacia.id === farmacia.id);
+
+        l_pedidosHistorial.forEach(x => {
+
+            for (var i = 0; i < x.modulo.moduloDetalle.length; i++) {
+
+            var oHistorialCliente = {
+                guid: x.guid,
+                fecha: x.fecha,
+                modulo: x.modulo,
+                moduloDetalle: x.modulo.moduloDetalle[i],
+                producto: x.modulo.moduloDetalle[i].producto,
+                cantidad: x.modulo.cantidadGrabado * x.modulo.moduloDetalle[i].cantidadUnidades
+            };
+            l_HistorialCliente_array.push(oHistorialCliente);
+
+        }
+        })
+    }
+    return l_HistorialCliente_array;
 }
