@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import ResultadoV2 from './ResultadoV2'
 import Accordion from './Accordion'
 import PedidosHistorialBusqueda from './PedidosHistorialBusqueda'
-import { isLoggedIn,getFormattedDateTime, getPedidosHistorial} from './utils';
+import { isLoggedIn,getFormattedDateTime, getPedidosHistorial,ActualizarPedidosHistorial_borrarViejosRegistros} from './utils';
 
 function PedidosHistorial() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
@@ -11,6 +11,7 @@ function PedidosHistorial() {
     const itemsEls = useRef(new Array());
 
     useEffect(() => {
+        ActualizarPedidosHistorial_borrarViejosRegistros();
         setFarmaciaModulosArray(getPedidosHistorial('',''));
     }, []);
 

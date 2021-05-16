@@ -880,18 +880,48 @@ export function getPedidosHistorialCliente(farmacia) {
 
             for (var i = 0; i < x.modulo.moduloDetalle.length; i++) {
 
-            var oHistorialCliente = {
-                guid: x.guid,
-                fecha: x.fecha,
-                modulo: x.modulo,
-                moduloDetalle: x.modulo.moduloDetalle[i],
-                producto: x.modulo.moduloDetalle[i].producto,
-                cantidad: x.modulo.cantidadGrabado * x.modulo.moduloDetalle[i].cantidadUnidades
-            };
-            l_HistorialCliente_array.push(oHistorialCliente);
+                var oHistorialCliente = {
+                    guid: x.guid,
+                    fecha: x.fecha,
+                    modulo: x.modulo,
+                    moduloDetalle: x.modulo.moduloDetalle[i],
+                    producto: x.modulo.moduloDetalle[i].producto,
+                    cantidad: x.modulo.cantidadGrabado * x.modulo.moduloDetalle[i].cantidadUnidades
+                };
+                l_HistorialCliente_array.push(oHistorialCliente);
 
-        }
+            }
         })
     }
     return l_HistorialCliente_array;
+}
+export function add_months(dt, n) {
+    return new Date(dt.setMonth(dt.getMonth() + n));
+}
+export function ActualizarPedidosHistorial_borrarViejosRegistros() {
+
+    var fechaActual =new Date( Date.now());
+    var fechaActualMenos6meses = add_months(fechaActual, -6);
+    //var fechaActualMenos4meses = add_months(fechaActual, -4);
+    //var fechaActualMenos5meses = add_months(fechaActual, -5);
+    var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
+    if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
+        l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
+    }
+    if (!Array.isArray(l_pedidosHistorial)) {
+        l_pedidosHistorial = [];
+    }
+    /*l_pedidosHistorial.forEach(x => {
+        x.fecha = fechaActualMenos6meses;  
+if ( x.fecha < fechaActualMenos4meses.getTime()) {
+      // x.fecha = fechaActualMenos6meses;
+    }else{
+        x.fecha = fechaActualMenos6meses;  
+    }
+    })
+    localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial));*/
+
+    var l_pedidosHistorial_new = l_pedidosHistorial.filter(element => element.fecha >= fechaActualMenos6meses.getTime());
+
+    localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial_new));
 }
