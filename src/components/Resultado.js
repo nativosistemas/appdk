@@ -26,20 +26,26 @@ class Resultado extends Component {
     }
     actualizarCantidadEnLosModulos = () => {
         this.miMapaRefs.forEach(element => {
-            element.current.refrescarCantidad();
+            if (element != null && element.current != null) {
+                element.current.refrescarCantidad();
+            }
         });
     }
     getMontoTotalGeneral = () => {
         var MontoTotalGeneral = 0;
         this.miMapaRefs.forEach(element => {
-            MontoTotalGeneral += element.current.state.montoTotal;
+            if (element != null && element.current != null) {
+                MontoTotalGeneral += element.current.state.montoTotal;
+            }
         });
         return MontoTotalGeneral;
     }
     getTotalAhorroGeneral = () => {
         var TotalAhorroGeneral = 0;
         this.miMapaRefs.forEach(element => {
-            TotalAhorroGeneral += element.current.state.ahorroTotal;
+            if (element != null && element.current != null) {
+                TotalAhorroGeneral += element.current.state.ahorroTotal;
+            }
         });
         return TotalAhorroGeneral;
     }
@@ -80,7 +86,7 @@ class Resultado extends Component {
             return cantidad;
         return getCantidad_ModuloFarmacia(pModulo, farmacia);
     }
-    onClickClose = (e,pModulo) => {
+    onClickClose = (e, pModulo) => {
         e.preventDefault();
         const farmacia = this.props.farmacia;
         if (farmacia === '')
@@ -98,9 +104,9 @@ class Resultado extends Component {
 
                     {modulos.map((modulo, i) => {
                         return (<>
-                       {/*!this.props.isPromociones && <button type="button" class="btn btn-secondary" aria-label="Close" onClick={(e) => this.onClickClose(e,modulo)}>X</button>*/}
+                            {/*!this.props.isPromociones && <button type="button" class="btn btn-secondary" aria-label="Close" onClick={(e) => this.onClickClose(e,modulo)}>X</button>*/}
                             <Modulo key={i} ref={this.miMapaRefs.get(modulo.id)} isPar={parseInt(i) % 2} farmacia={this.props.farmacia}
-                                modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral} isPromociones={this.props.isPromociones}  isCarrito={this.props.isCarrito} ></Modulo>
+                                modulo={modulo} setCantidad={this.setCantidad} getCantidad={this.getCantidad} refreshMontoAhorroGeneral={this.refreshMontoAhorroGeneral} isPromociones={this.props.isPromociones} isCarrito={this.props.isCarrito} ></Modulo>
                         </>);
                     })}
                 </React.Fragment>

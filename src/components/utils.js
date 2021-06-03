@@ -317,7 +317,7 @@ export async function ajaxLogin(pName, pPass) {
             }
         }).then(data => {
             if (isLoggedIn()) {
-                apiLoadDataAsync().then(() => {
+                apiSincronizadorAppPostAsync().then(() => {
                     window.location.reload(false);
                 })
             }
@@ -432,7 +432,7 @@ export async function apiLaboratorioAsync() {
         localStorage.setItem('l_laboratorios', JSON.stringify(l_laboratorios));
     }
 }*/
-export async function apiInfoPedidosAsync() {
+/*export async function apiInfoPedidosAsync() {
     const response = await fetch(getUrl() + 'Pedido?' + new URLSearchParams({ ApNombre: getName() }), { headers: { "Authorization": getToken(), } });
     const reader = response.json();
     var l_InfoPedidos = await reader;
@@ -522,7 +522,7 @@ export async function apiLoadDataAsync() {
             }
         }
     }
-}
+}*/
 export function getUltimaSincronizacion() {
     var ultimaSincronizacion = window.localStorage.getItem('ultimaSincronizacion') || '';
     if (ultimaSincronizacion !== null && ultimaSincronizacion !== undefined && ultimaSincronizacion !== '') {
@@ -591,7 +591,7 @@ export function getPedidosEnviar() {
     })
     return l_farmaciaModulos_array;
 }
-export async function apiPedidoAsync() {
+/*export async function apiPedidoAsync() {
     if (getName() != '') {
         CerrarAlert();
         var farmaciaModulosArray = getPedidosEnviar();
@@ -661,7 +661,7 @@ export async function apiPedidoAsync() {
             }
         }
     }
-}
+}*/
 export async function apiSincronizadorAppPostAsync() {
     if (getName() != '') {
         CerrarAlert();

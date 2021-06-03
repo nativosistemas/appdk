@@ -170,7 +170,7 @@ class Modulo extends Component {
             </div>
             <div className="card-footer ">
                 <div className="row">
-                    <div className="col">
+                    <div className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3">
                         {this.props.modulo.cantidadMinimos != null &&
                             <div className="input-group mb-3">
                                 <div className="input-group-prepend">
@@ -180,7 +180,7 @@ class Modulo extends Component {
                             </div>
                         }
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-6">
                         <div className=" row justify-content-center">
                             <div className="input-group col-xs-12 col-sm-10 col-md-8 col-lg-8">
                                 <div className="input-group-prepend">
@@ -193,7 +193,7 @@ class Modulo extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col">
+                    <div className="col-12 col-sm-12 col-md-5 col-lg-6 col-xl-3">
                         <div className="input-group ">
                             <div className="input-group-prepend">
                                 <span className="input-group-text font-weight-bold">MONTO TOTAL</span>
