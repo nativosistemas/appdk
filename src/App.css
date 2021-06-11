@@ -68,6 +68,22 @@
 .collapseShow{
   display: block !important;
 }
+.card-body {
+  padding: 0rem;
+}
+.textTable{
+   margin-bottom: 0rem;
+}
+.Alert_block{
+  display: block;
+}
+.Alert_none{
+  display: none;
+}
+.accordion-button-historial {
+  padding: 0.1rem 0.1rem;
+}
+
 @media screen and (max-width: 400px) {
   .textTable {
     font-size: 0.6em;

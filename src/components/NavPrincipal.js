@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import PedidosHistorialClienteComponente from './PedidosHistorialClienteComponente'
 import { currencyFormat, setFarmaciaCurrent, getFarmaciaCurrent, getMontoAhorroMontoTotalGeneral_farmacia } from './utils';
 
 function NavPrincipal(props) {
@@ -8,12 +9,16 @@ function NavPrincipal(props) {
     const [listFarmacias, setListFarmacias] = useState([]);
     const [montoTotalGeneral, setMontoTotalGeneral] = useState(0);
     const [totalAhorroGeneral, setTotalAhorroGeneral] = useState(0);
-
+    const [farmaciaHistorial, setFarmaciaHistorial] = useState('');
 
 
     useEffect(() => {
         cargarDatosInicio_DesdeLocalStorage();
         RefrescarMontos();
+        let farma = getFarmaciaCurrent();
+        if (farma !== null && farma !== undefined && farma !== '') {
+            setFarmaciaHistorial(farma);
+        }
     }, []);
     function RefrescarMontos() {
         let farma = getFarmaciaCurrent();
@@ -23,7 +28,7 @@ function NavPrincipal(props) {
         var oMontos = getMontoAhorroMontoTotalGeneral_farmacia();
         setMontoTotalGeneral(oMontos.montoTotal);
         setTotalAhorroGeneral(oMontos.ahorroTotal);
-        
+
     }
     function cargarDatosInicio_DesdeLocalStorage() {
         var l_farmacias = localStorage.getItem('l_farmacias') || '';
@@ -39,8 +44,8 @@ function NavPrincipal(props) {
         e.preventDefault();
         e.target.value = '';
         handleChange(e);
-        
-        
+
+
     }
     function handleChange(e) {
         e.preventDefault();
@@ -49,18 +54,15 @@ function NavPrincipal(props) {
             let farma = listFarmacias.find(element => String(element.id) + " - " + element.nombre === String(valueInput));
             if (farma !== null && farma !== undefined && farma !== '') {
                 setFarmaciaCurrent(farma);
-                RefrescarMontos(); 
+                setFarmaciaHistorial(farma);
+                RefrescarMontos();
                 inputMontoTotalGeneral.current.focus();
                 return;
             }
         }
         setFarmaciaCurrent(null);
 
-        RefrescarMontos(); 
-        
-        /*this.setState({ farmaciaSeleccionada: farma }, () => {
-          this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
-        });*/
+        RefrescarMontos();
     }
     return (
         <>
@@ -77,6 +79,7 @@ function NavPrincipal(props) {
                             </datalist>
                         </div>
                     </div>
+                    <PedidosHistorialClienteComponente farmaciaHistorial={farmaciaHistorial}></PedidosHistorialClienteComponente>
                 </div>
                     <div className="col-lg-6  col-md-12">
                         <div className="input-group ">
@@ -84,7 +87,7 @@ function NavPrincipal(props) {
                                 <span className="input-group-text font-weight-bold" >MONTO TOTAL GENERAL</span>
 
                             </div>
-                            <input type="text"  ref={inputMontoTotalGeneral} className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(montoTotalGeneral)}></input>
+                            <input type="text" ref={inputMontoTotalGeneral} className="form-control" aria-describedby="basic-addon1" readOnly value={currencyFormat(montoTotalGeneral)}></input>
                         </div>
                         <div className="input-group ">
                             <div className="input-group-prepend">
