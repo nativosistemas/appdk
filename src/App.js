@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link, useParams, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-router-dom";
 import Login from "./components/Login";
 import Promociones from './components/Promociones'
 import Pedidos from './components/Pedidos'
@@ -18,7 +18,6 @@ function App() {
   const [isAlert, setIsAlert] = useState(false);
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
   const handleCerrarAlert = () => { setAlertVisible(false); setIsAlert(false); }
-  let history = useHistory();
   useEffect(async () => {
     setIsAlert(isAlertVisible())
   }, [isAlert]);
@@ -57,16 +56,6 @@ function App() {
   function onClickCerrarMenu(e) {
     e.preventDefault();;
     setIsNavCollapsed(true);
-  }
-  function onClickIrLaboratorio(e) {
-    e.preventDefault();
-    let path = `/laboratorio`;
-    history.push(path);
-    //return false;
-    //history.push("/laboratorio");
-
-    //let path = `/laboratorio`;
-    //this.props.history.push(path);
   }
   return (
     <Router>
