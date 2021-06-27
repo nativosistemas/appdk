@@ -84,11 +84,6 @@ function Laboratorio() {
         e.preventDefault();
         history.push("/carrito");
     }
-    /*function onClickIrPedidosHistorialCliente(e) {
-        e.preventDefault();
-        history.push("/pedidoshistorialcliente");
-    }*/
-    //funcionLogin();
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
     }

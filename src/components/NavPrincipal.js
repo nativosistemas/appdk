@@ -61,7 +61,7 @@ function NavPrincipal(props) {
             }
         }
         setFarmaciaCurrent(null);
-
+        setFarmaciaHistorial(null);
         RefrescarMontos();
     }
     return (
