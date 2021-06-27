@@ -63,7 +63,25 @@ function Laboratorio() {
         if (!Array.isArray(l_laboratorios)) {
             l_laboratorios = [];
         }
-        setLaboratoriosArray(l_laboratorios);
+        var l_laboratorios_mostrar = [];
+        // Se valida que el laboratorio tenga un o mas modulo para mostrar
+
+        var l_modulos = localStorage.getItem('l_modulos') || '';
+        if (l_modulos !== undefined && l_modulos !== null && l_modulos !== '') {
+            l_modulos = JSON.parse(l_modulos);
+        }
+        if (!Array.isArray(l_modulos)) {
+            l_modulos = [];
+        }
+        l_laboratorios.forEach(elementLab => {
+            var modulo = l_modulos.find(elementMod => String(elementLab.id) === String(elementMod.idLaboratorio));
+            if (modulo !== undefined && modulo !== null && modulo !== '') {
+                l_laboratorios_mostrar.push(elementLab);
+            } 
+        });
+      
+        // fin  valida que el laboratorio tenga un o mas modulo para mostrar
+        setLaboratoriosArray(l_laboratorios_mostrar);
     }
     function onClickActiveItem(e, pValor) {
         e.preventDefault();
