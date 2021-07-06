@@ -1,4 +1,5 @@
-var url =  'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
+var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
+var apiNameSincronizadorApp =  'SincronizadorAppTest'; //'SincronizadorApp';//
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
 
@@ -507,7 +508,7 @@ export async function apiSincronizadorAppPostAsync() {
             var json = JSON.stringify(data);
             /* */
             try {
-                const response = await fetch(getUrl() + 'SincronizadorApp', {
+                const response = await fetch(getUrl() + apiNameSincronizadorApp, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -590,7 +591,7 @@ export async function apiSincronizadorAppPostAsync() {
                                     pea_codCliente: pedidoModuloHistorial.pea_codCliente, //pea_codCliente
                                     pea_cantidad: pedidoModuloHistorial.pea_cantidad,
                                     cantidad: pedidoModuloHistorial.pea_cantidad,
-                                    fecha:  Date.parse(pedidoModuloHistorial.pea_fecha),
+                                    fecha: Date.parse(pedidoModuloHistorial.pea_fecha),
                                     guid: pedidoModuloHistorial.pea_guid,
                                     procesado: pedidoModuloHistorial.pea_procesado,
                                     procesado_fecha: pedidoModuloHistorial.pea_procesado_fecha,

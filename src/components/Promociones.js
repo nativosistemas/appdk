@@ -68,7 +68,7 @@ class Promociones extends Component {
     })
   }
   handleChange(event) {
-    let farma = this.state.farmacias.find(element => String(element.id) + " - " + element.nombre === String(event.target.value));
+    let farma = this.state.farmacias.find(element =>  (String(element.id) + " - " + String(element.nombre)).replace(/ /g, "") === String(event.target.value).replace(/ /g, ""));
     setFarmaciaCurrent(farma);
     this.setState({ farmaciaSeleccionada: farma }, () => {
       this.elementResultadoModulo.current.actualizarCantidadEnLosModulos();
