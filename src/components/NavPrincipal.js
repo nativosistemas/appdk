@@ -51,7 +51,7 @@ function NavPrincipal(props) {
         e.preventDefault();
         let valueInput = e.target.value;
         if (valueInput !== null && valueInput !== undefined && valueInput !== '') {
-            let farma = listFarmacias.find(element => String(element.id) + " - " + element.nombre === String(valueInput));
+            let farma = listFarmacias.find(element => (String(element.id) + " - " + String(element.nombre)).replace(/ /g, "") === String(valueInput).replace(/ /g, ""));
             if (farma !== null && farma !== undefined && farma !== '') {
                 setFarmaciaCurrent(farma);
                 setFarmaciaHistorial(farma);
@@ -61,7 +61,7 @@ function NavPrincipal(props) {
             }
         }
         setFarmaciaCurrent(null);
-
+        setFarmaciaHistorial(null);
         RefrescarMontos();
     }
     return (
