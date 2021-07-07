@@ -1,4 +1,4 @@
-var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
+var url = 'https://localhost:5001/api/';//'https://api.kellerhoff.com.ar/api/';//
 var apiNameSincronizadorApp =  'SincronizadorAppTest'; //'SincronizadorApp';//
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
@@ -292,6 +292,7 @@ export async function ajaxLogin(pName, pPass) {
     data.login = pName;
     data.pass = pPass;
     var json = JSON.stringify(data);
+    CerrarAlert(); 
     fetch(url + 'Authenticate', {
         method: 'POST',
         headers: {
@@ -319,6 +320,9 @@ export async function ajaxLogin(pName, pPass) {
                 apiSincronizadorAppPostAsync().then(() => {
                     window.location.reload(false);
                 })
+            }else{
+                AbrirAlert("Usuario y contraseña incorrectos.");
+                window.location.reload();
             }
         });
     return isLogin;
