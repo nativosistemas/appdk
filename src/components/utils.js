@@ -1,5 +1,5 @@
-var url = 'https://localhost:5001/api/';//'https://api.kellerhoff.com.ar/api/';//
-var apiNameSincronizadorApp =  'SincronizadorAppTest'; //'SincronizadorApp';//
+var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
+var apiNameSincronizadorApp ='SincronizadorAppTest'; // 'SincronizadorApp';// 
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
 
@@ -287,12 +287,12 @@ export function getMontoAhorroMontoTotal_Modulo(pModulo, pFarmacia, pCantidad) {
     return result;
 }
 export async function ajaxLogin(pName, pPass) {
+    CerrarAlert(); 
     var isLogin = true;
     var data = {};
     data.login = pName;
     data.pass = pPass;
-    var json = JSON.stringify(data);
-    CerrarAlert(); 
+    var json = JSON.stringify(data);    
     fetch(url + 'Authenticate', {
         method: 'POST',
         headers: {
@@ -476,8 +476,21 @@ export function getPedidosEnviar() {
     })
     return l_farmaciaModulos_array;
 }
+export function isSincronizadorApp() {
+    var result = false;
+    var apiSincronizadorAppPost = localStorage.getItem('apiSincronizadorAppPost') || '';
+    if (apiSincronizadorAppPost !== null && apiSincronizadorAppPost !== undefined && apiSincronizadorAppPost !== '') {
+        result = true;
+    }
+    return result;
+}
+export function setSincronizadorApp(pValue) {
+    localStorage.setItem('apiSincronizadorAppPost', pValue);
+    // localStorage.removeItem('apiSincronizadorAppPost');
+}
 export async function apiSincronizadorAppPostAsync() {
-    if (getName() != '') {
+    if (getName() != '' && !isSincronizadorApp()) {
+        setSincronizadorApp('true');
         CerrarAlert();
         if (navigator.onLine) {
 
@@ -520,16 +533,18 @@ export async function apiSincronizadorAppPostAsync() {
                     body: json
                 });
                 if (response.status >= 400 && response.status < 600) {
+                    localStorage.removeItem('apiSincronizadorAppPost');
                     AbrirAlert(msgNoInternet);
                     window.location.reload();
                 } else {
                     const reader = response.json();
                     var oSincronizadorApp = await reader;
                     if (oSincronizadorApp === null || oSincronizadorApp === undefined || oSincronizadorApp === '') {
+                        localStorage.removeItem('apiSincronizadorAppPost');
                         AbrirAlert(msgVuelvaIntentarlo);
                         window.location.reload();
                     } else {
-                        localStorage.setItem('ultimaSincronizacion', Date.now());
+      
 
                         // farmacia    
                         var l_farmacias = oSincronizadorApp.listaFarmacia;
@@ -628,14 +643,22 @@ export async function apiSincronizadorAppPostAsync() {
                             */
                             localStorage.setItem('l_pendienteGrabados', JSON.stringify([]));
                         }
+
+
+
+                       /// final ok
+                       localStorage.removeItem('apiSincronizadorAppPost');
+                       localStorage.setItem('ultimaSincronizacion', Date.now()); 
                     }
                 }
             } catch {
+                localStorage.removeItem('apiSincronizadorAppPost');
                 AbrirAlert(msgNoInternet);
                 window.location.reload();
             }
             /* */
         } else {
+            localStorage.removeItem('apiSincronizadorAppPost');
             AbrirAlert(msgNoInternet);
             window.location.reload();
         }
