@@ -17,9 +17,7 @@ function Pedidos() {
 
     function onClickEnviarTodosPedidos(e) {
         e.preventDefault();
-        apiSincronizadorAppPostAsync().then(() => {
-            window.location.reload(false);
-        });
+        apiSincronizadorAppPostAsync();
     }
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
