@@ -649,6 +649,7 @@ export async function apiSincronizadorAppPostAsync() {
                        /// final ok
                        localStorage.removeItem('apiSincronizadorAppPost');
                        localStorage.setItem('ultimaSincronizacion', Date.now()); 
+                       window.location.reload();
                     }
                 }
             } catch {

@@ -26,9 +26,7 @@ function App() {
     // window.location.href = "./";
     // window.location.reload(true);
     //CerrarAlert();
-    apiSincronizadorAppPostAsync().then(() => {
-      window.location.reload(false);
-    });
+    apiSincronizadorAppPostAsync();
   }
   function onClickSalir(e) {
     loggedOut();
