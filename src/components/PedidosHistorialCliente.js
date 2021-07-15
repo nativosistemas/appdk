@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
 import PedidosHistorialClienteComponente from './PedidosHistorialClienteComponente'
-import { isLoggedIn, getFormattedDateTime, getHistorialCliente } from './utils';
+import { isLoggedIn, getHistorialCliente } from './utils';
 
 function PedidosHistorialCliente() {
     const [historialClienteArray, setHistorialClienteArray] = useState([]);

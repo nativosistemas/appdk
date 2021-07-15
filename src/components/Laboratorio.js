@@ -107,7 +107,7 @@ function Laboratorio() {
     }
     return (
         <div className="app container-fluid mb-4">
-            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
+            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios (test)</h2></div>
           
             <NavPrincipal  ></NavPrincipal>
             {

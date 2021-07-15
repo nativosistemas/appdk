@@ -1,5 +1,5 @@
 var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
-var apiNameSincronizadorApp ='SincronizadorAppTest'; // 'SincronizadorApp';// 
+var apiNameSincronizadorApp = 'SincronizadorAppTest'; // 'SincronizadorApp';// 
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
 
@@ -75,19 +75,21 @@ export function getFarmaciaActualizada(pFarmacia) {
     return farma;
 }
 export function private_getFarmacia_actualizada(pFarmacia) {
-    var l_farmacias = localStorage.getItem('l_farmacias') || '';
-    if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '') {
-        l_farmacias = JSON.parse(l_farmacias);
+    var result = null;
+    if (pFarmacia !== null) {
+        var l_farmacias = localStorage.getItem('l_farmacias') || '';
+        if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '') {
+            l_farmacias = JSON.parse(l_farmacias);
+        }
+        if (!Array.isArray(l_farmacias)) {
+            l_farmacias = [];
+        }
+        var farma = l_farmacias.find(element => String(pFarmacia.id) === String(element.id));
+        if (farma !== undefined && farma !== null && farma !== '') {
+            result = farma;
+        } 
     }
-    if (!Array.isArray(l_farmacias)) {
-        l_farmacias = [];
-    }
-    var farma = l_farmacias.find(element => String(pFarmacia.id) === String(element.id));
-    if (farma !== undefined && farma !== null && farma !== '') {
-        return farma;
-    } else {
-        return null;
-    }
+    return result;
 }
 export function private_getModulo_actualizado(pModulo) {
     var l_modulos = localStorage.getItem('l_modulos') || '';
@@ -287,12 +289,12 @@ export function getMontoAhorroMontoTotal_Modulo(pModulo, pFarmacia, pCantidad) {
     return result;
 }
 export async function ajaxLogin(pName, pPass) {
-    CerrarAlert(); 
+    CerrarAlert();
     var isLogin = true;
     var data = {};
     data.login = pName;
     data.pass = pPass;
-    var json = JSON.stringify(data);    
+    var json = JSON.stringify(data);
     fetch(url + 'Authenticate', {
         method: 'POST',
         headers: {
@@ -320,7 +322,7 @@ export async function ajaxLogin(pName, pPass) {
                 apiSincronizadorAppPostAsync().then(() => {
                     window.location.reload(false);
                 })
-            }else{
+            } else {
                 AbrirAlert("Usuario y contraseña incorrectos.");
                 window.location.reload();
             }
@@ -544,7 +546,7 @@ export async function apiSincronizadorAppPostAsync() {
                         AbrirAlert(msgVuelvaIntentarlo);
                         window.location.reload();
                     } else {
-      
+
 
                         // farmacia    
                         var l_farmacias = oSincronizadorApp.listaFarmacia;
@@ -646,10 +648,10 @@ export async function apiSincronizadorAppPostAsync() {
 
 
 
-                       /// final ok
-                       localStorage.removeItem('apiSincronizadorAppPost');
-                       localStorage.setItem('ultimaSincronizacion', Date.now()); 
-                       window.location.reload();
+                        /// final ok
+                        localStorage.removeItem('apiSincronizadorAppPost');
+                        localStorage.setItem('ultimaSincronizacion', Date.now());
+                        window.location.reload();
                     }
                 }
             } catch {
@@ -675,6 +677,8 @@ export function getHistorial(pFarmacia, pFecha) {
     if (!Array.isArray(l_historial)) {
         l_historial = [];
     }
+    l_historial = l_historial.filter(element => element.farmacia  !== null);
+
     if (pFarmacia !== null && pFarmacia !== undefined && pFarmacia !== '') {
         l_historial = l_historial.filter(element => String(element.farmacia.id) + " - " + element.farmacia.nombre === String(pFarmacia));
     }
@@ -746,7 +750,7 @@ export function getHistorialCliente(farmacia) {
             l_historial = [];
         }
 
-        l_historial = l_historial.filter(element => element.farmacia.id === farmacia.id);
+        l_historial = l_historial.filter(element => element.farmacia !== null && element.farmacia.id === farmacia.id);
 
         l_historial.forEach(x => {
 
@@ -767,110 +771,6 @@ export function getHistorialCliente(farmacia) {
     }
     return l_HistorialCliente_array;
 }
-/*export function getPedidosHistorial(pFarmacia, pFecha) {
-    var l_farmaciaModulos_array = [];
-
-    var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
-    if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
-        l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
-    }
-    if (!Array.isArray(l_pedidosHistorial)) {
-        l_pedidosHistorial = [];
-    }
-    if (pFarmacia !== null && pFarmacia !== undefined && pFarmacia !== '') {
-        l_pedidosHistorial = l_pedidosHistorial.filter(element => String(element.farmacia.id) + " - " + element.farmacia.nombre === String(pFarmacia));
-    }
-    if (pFecha !== null && pFecha !== undefined && pFecha !== '') {
-        var fechaDesde = Date.parse(pFecha + ' 00:00:00');
-        l_pedidosHistorial = l_pedidosHistorial.filter(element => element.fecha >= fechaDesde);
-    }
-    let nuevoObjeto = [];
-    //Recorremos el arreglo 
-    l_pedidosHistorial.forEach(x => {
-        var index = 0;
-        var isNotFindGuid = true;
-        for (var i = 0; i < nuevoObjeto.length; i++) {
-            if (nuevoObjeto[i].guid === x.guid) {
-                index = i;
-                isNotFindGuid = false;
-                break;
-            }
-        }
-        if (isNotFindGuid) {
-            var g = {
-                guid: x.guid,
-                fecha: x.fecha,
-                farmacias: []
-            };
-            nuevoObjeto.push(g);
-            index = nuevoObjeto.length - 1;
-        }
-        var isAddFarma = true;
-        for (var i = 0; i < nuevoObjeto[index].farmacias.length; i++) {
-            if (nuevoObjeto[index].farmacias[i].farmacia.id === x.farmacia.id) {
-                x.modulo.guid = x.guid;
-                x.modulo.procesado = x.procesado;
-                x.modulo.procesado_fecha = x.procesado_fecha;
-                x.modulo.procesado_cantidad = x.procesado_cantidad;
-                x.modulo.procesado_descripcion = x.procesado_descripcion;
-                nuevoObjeto[index].farmacias[i].modulos.push(x.modulo);
-                isAddFarma = false;
-            }
-        }
-        if (isAddFarma) {
-            var l_modulos_aux = [];
-            x.modulo.guid = x.guid;
-            x.modulo.procesado = x.procesado;
-            x.modulo.procesado_fecha = x.procesado_fecha;
-            x.modulo.procesado_cantidad = x.procesado_cantidad;
-            x.modulo.procesado_descripcion = x.procesado_descripcion;
-            l_modulos_aux.push(x.modulo);
-            var p = {
-                farmacia: getFarmaciaActualizada(x.farmacia),
-                modulos: l_modulos_aux
-            };
-            nuevoObjeto[index].farmacias.push(p);
-        }
-    })
-    l_farmaciaModulos_array = nuevoObjeto;
-    return l_farmaciaModulos_array;
-    //setFarmaciaModulosArray(l_farmaciaModulos_array);
-}*/
-/*
-export function getPedidosHistorialCliente(farmacia) {
-    var l_HistorialCliente_array = [];
-    //var farmacia = getFarmaciaCurrent();
-    if (farmacia !== null && farmacia !== undefined && farmacia !== '') {
-        var l_pedidosHistorial = window.localStorage.getItem('l_pedidosHistorial') || '';
-        if (l_pedidosHistorial !== null && l_pedidosHistorial !== undefined && l_pedidosHistorial !== '') {
-            l_pedidosHistorial = JSON.parse(l_pedidosHistorial);
-        }
-        if (!Array.isArray(l_pedidosHistorial)) {
-            l_pedidosHistorial = [];
-        }
-
-        l_pedidosHistorial = l_pedidosHistorial.filter(element => element.farmacia.id === farmacia.id);
-
-        l_pedidosHistorial.forEach(x => {
-
-            for (var i = 0; i < x.modulo.moduloDetalle.length; i++) {
-
-                var oHistorialCliente = {
-                    guid: x.guid,
-                    fecha: x.fecha,
-                    modulo: x.modulo,
-                    moduloDetalle: x.modulo.moduloDetalle[i],
-                    producto: x.modulo.moduloDetalle[i].producto,
-                    cantidad: x.modulo.cantidadGrabado * x.modulo.moduloDetalle[i].cantidadUnidades
-                };
-                l_HistorialCliente_array.push(oHistorialCliente);
-
-            }
-        })
-    }
-    return l_HistorialCliente_array;
-}
-*/
 export function add_months(dt, n) {
     return new Date(dt.setMonth(dt.getMonth() + n));
 }
