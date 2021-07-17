@@ -1,5 +1,5 @@
 var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
-var apiNameSincronizadorApp = 'SincronizadorAppTest'; // 'SincronizadorApp';// 
+var apiNameSincronizadorApp = 'SincronizadorApp';// 'SincronizadorAppTest'; // 
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
 
@@ -87,7 +87,7 @@ export function private_getFarmacia_actualizada(pFarmacia) {
         var farma = l_farmacias.find(element => String(pFarmacia.id) === String(element.id));
         if (farma !== undefined && farma !== null && farma !== '') {
             result = farma;
-        } 
+        }
     }
     return result;
 }
@@ -291,42 +291,56 @@ export function getMontoAhorroMontoTotal_Modulo(pModulo, pFarmacia, pCantidad) {
 export async function ajaxLogin(pName, pPass) {
     CerrarAlert();
     var isLogin = true;
-    var data = {};
-    data.login = pName;
-    data.pass = pPass;
-    var json = JSON.stringify(data);
-    fetch(url + 'Authenticate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: json
-    })
-        .then(results => results.json())
-        .then(data => {
-
-            if (data.apNombre !== null && data.apNombre !== undefined && data.apNombre !== '') {
-                var ApNombre_anterior = getApNombre_anterior();
-                if (ApNombre_anterior != '' && ApNombre_anterior != data.apNombre) {
-                    clear_localStorage();
+    if (navigator.onLine) {
+        try {
+            var data = {};
+            data.login = pName;
+            data.pass = pPass;
+            var json = JSON.stringify(data);
+            const response = await fetch(getUrl() + 'Authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            });
+            if (response.status >= 400 && response.status < 600) {
+                if (response.status == 400) {
+                    AbrirAlert("Usuario y contraseña incorrectos.");
+                } else {
+                    AbrirAlert(msgNoInternet);
                 }
-                setApNombre_anterior(data.apNombre);
-                localStorage.setItem('login_ApNombre', data.apNombre);
-                isLogin = true;
-            }
-            if (data.token !== null && data.token !== undefined && data.token !== '') {
-                localStorage.setItem('login_Token', data.token);
-            }
-        }).then(data => {
-            if (isLoggedIn()) {
-                apiSincronizadorAppPostAsync().then(() => {
-                    window.location.reload(false);
-                })
-            } else {
-                AbrirAlert("Usuario y contraseña incorrectos.");
                 window.location.reload();
+            } else {
+                const reader = response.json();
+                var dataResult = await reader;
+                if (dataResult.apNombre !== null && dataResult.apNombre !== undefined && dataResult.apNombre !== '') {
+                    var ApNombre_anterior = getApNombre_anterior();
+                    if (ApNombre_anterior != '' && ApNombre_anterior != dataResult.apNombre) {
+                        clear_localStorage();
+                    }
+                    setApNombre_anterior(dataResult.apNombre);
+                    localStorage.setItem('login_ApNombre', dataResult.apNombre);
+                    isLogin = true;
+                }
+                if (dataResult.token !== null && dataResult.token !== undefined && dataResult.token !== '') {
+                    localStorage.setItem('login_Token', dataResult.token);
+                }
+                if (isLoggedIn()) {
+                    apiSincronizadorAppPostAsync();
+                } else {
+                    AbrirAlert("Usuario y contraseña incorrectos.");
+                    window.location.reload();
+                }
             }
-        });
+        } catch {
+            AbrirAlert(msgNoInternet);
+            window.location.reload();
+        }
+    } else {
+        AbrirAlert(msgNoInternet);
+        window.location.reload();
+    }
     return isLogin;
 }
 export function clear_localStorage() {
@@ -484,11 +498,11 @@ export function isSincronizadorApp() {
     if (apiSincronizadorAppPost !== null && apiSincronizadorAppPost !== undefined && apiSincronizadorAppPost !== '') {
         result = true;
     }
-    //console.log('isSincronizadorApp: ' + result);
+    console.log('isSincronizadorApp: ' + result);
     return result;
 }
 export function setSincronizadorApp(pValue) {
-    //console.log('setSincronizadorApp :' + pValue);
+    console.log('setSincronizadorApp :' + pValue);
     localStorage.setItem('apiSincronizadorAppPost', pValue);
 }
 export async function apiSincronizadorAppPostAsync() {
@@ -673,7 +687,7 @@ export function getHistorial(pFarmacia, pFecha) {
     if (!Array.isArray(l_historial)) {
         l_historial = [];
     }
-    l_historial = l_historial.filter(element => element.farmacia  !== null);
+    l_historial = l_historial.filter(element => element.farmacia !== null);
 
     if (pFarmacia !== null && pFarmacia !== undefined && pFarmacia !== '') {
         l_historial = l_historial.filter(element => String(element.farmacia.id) + " - " + element.farmacia.nombre === String(pFarmacia));

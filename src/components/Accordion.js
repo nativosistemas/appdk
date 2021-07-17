@@ -22,7 +22,7 @@ function Accordion(props) {
                         <h5 >  {String(props.farmaciaModulos.farmacia.id) + " - " + props.farmaciaModulos.farmacia.nombre}</h5>  
                         </button>
                     </h2>
-                    <div id="collapseOne" class={"accordion-collapse collapse " + (activeCollapse?"show":"")} >
+                    <div id="collapseOne" className={"accordion-collapse collapse " + (activeCollapse?"show":"")} >
                         <div className="accordion-body">
                             <ResultadoV2 modulos={props.farmaciaModulos.modulos} farmacia={props.farmaciaModulos.farmacia}   ></ResultadoV2>
                         </div>
