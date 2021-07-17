@@ -3,16 +3,15 @@ import { Redirect } from "react-router-dom";
 import ResultadoV2 from './ResultadoV2'
 import Accordion from './Accordion'
 import PedidosHistorialBusqueda from './PedidosHistorialBusqueda'
-import { isLoggedIn,getFormattedDateTime, getPedidosHistorial,ActualizarPedidosHistorial_borrarViejosRegistros} from './utils';
+import { isLoggedIn,getFormattedDateTime, getHistorial,ActualizarPedidosHistorial_borrarViejosRegistros} from './utils';
 
-function PedidosHistorial() {
+function PedidosHistorialV2() {
     const [farmaciaModulosArray, setFarmaciaModulosArray] = useState([]);
     const pedidosFarmaciasRefs = new Map();
     const itemsEls = useRef(new Array());
 
     useEffect(() => {
-        ActualizarPedidosHistorial_borrarViejosRegistros();
-        setFarmaciaModulosArray(getPedidosHistorial('',''));
+        setFarmaciaModulosArray(getHistorial('',''));
     }, []);
 
     function refreshMontoAhorroGeneral_pedidos() {
@@ -20,11 +19,9 @@ function PedidosHistorial() {
     }
     function onClickUpdateInfoPedidos(e) {
         e.preventDefault();
-        //apiInfoPedidos();
     }
     function filtrarFarmaciaFecha(pFarmacia, pFecha) {
-        //var tt = 0;
-        setFarmaciaModulosArray(getPedidosHistorial(pFarmacia, pFecha));
+        setFarmaciaModulosArray(getHistorial(pFarmacia, pFecha));
     }
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
@@ -47,16 +44,6 @@ function PedidosHistorial() {
                                     return (
                                         <>
                                             <Accordion farmaciaModulos={farmaciaModulos} ></Accordion>
-                                            {/*<br></br>
-                                            <div className="card">
-                                                <div className="card-header pedidoFarmacia-header">
-                                                    <h5 className="card-title">{String(farmaciaModulos.farmacia.id) + " - " + farmaciaModulos.farmacia.nombre}</h5>
-                                                </div>
-                                                <div className="card-body card-body-box-sizing">
-                                                    <ResultadoV2 modulos={farmaciaModulos.modulos} farmacia={farmaciaModulos.farmacia} refreshMontoAhorroGeneral={refreshMontoAhorroGeneral_pedidos}  ></ResultadoV2>
-                                                </div>
-                                            </div>
-                                            <br></br>*/}
                                         </>
                                     );
                                 })}
@@ -70,4 +57,4 @@ function PedidosHistorial() {
     );
 }
 
-export default PedidosHistorial;
+export default PedidosHistorialV2;

@@ -63,7 +63,25 @@ function Laboratorio() {
         if (!Array.isArray(l_laboratorios)) {
             l_laboratorios = [];
         }
-        setLaboratoriosArray(l_laboratorios);
+        var l_laboratorios_mostrar = [];
+        // Se valida que el laboratorio tenga un o mas modulo para mostrar
+
+        var l_modulos = localStorage.getItem('l_modulos') || '';
+        if (l_modulos !== undefined && l_modulos !== null && l_modulos !== '') {
+            l_modulos = JSON.parse(l_modulos);
+        }
+        if (!Array.isArray(l_modulos)) {
+            l_modulos = [];
+        }
+        l_laboratorios.forEach(elementLab => {
+            var modulo = l_modulos.find(elementMod => String(elementLab.id) === String(elementMod.idLaboratorio));
+            if (modulo !== undefined && modulo !== null && modulo !== '') {
+                l_laboratorios_mostrar.push(elementLab);
+            } 
+        });
+      
+        // fin  valida que el laboratorio tenga un o mas modulo para mostrar
+        setLaboratoriosArray(l_laboratorios_mostrar);
     }
     function onClickActiveItem(e, pValor) {
         e.preventDefault();
@@ -84,17 +102,12 @@ function Laboratorio() {
         e.preventDefault();
         history.push("/carrito");
     }
-    /*function onClickIrPedidosHistorialCliente(e) {
-        e.preventDefault();
-        history.push("/pedidoshistorialcliente");
-    }*/
-    //funcionLogin();
     if (!isLoggedIn()) {
         return <Redirect to="/sign-in" />;
     }
     return (
         <div className="app container-fluid mb-4">
-            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios</h2></div>
+            <div className="alert alert-primary text-center  text-uppercase" ><h2>Laboratorios (test)</h2></div>
           
             <NavPrincipal  ></NavPrincipal>
             {

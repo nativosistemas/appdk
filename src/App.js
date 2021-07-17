@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, useParams } from "react-r
 import Login from "./components/Login";
 import Promociones from './components/Promociones'
 import Pedidos from './components/Pedidos'
-import PedidosHistorial from './components/PedidosHistorial'
+import PedidosHistorialV2 from './components/PedidosHistorialV2'
 import Laboratorio from './components/Laboratorio'
 import Carrito from './components/Carrito'
 import Config from './components/Config'
@@ -120,7 +120,7 @@ function App() {
           <Route path="/promociones" component={Promociones} />
           <Route path="/carrito" component={Carrito} />
           <Route path="/pedidos" component={Pedidos} />
-          <Route path="/pedidoshistorial" component={PedidosHistorial} />
+          <Route path="/pedidoshistorial" component={PedidosHistorialV2} />
           <Route path="/laboratorio" component={Laboratorio} />
           <Route path="/config" component={Config} />
           <Route path="/pedidoshistorialcliente" component={PedidosHistorialCliente} />

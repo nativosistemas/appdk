@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
 import ResultadoV2 from './ResultadoV2'
-import { isLoggedIn, getFormattedDateTime, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent, getFarmaciaActualizada } from './utils';
+//import { isLoggedIn, getFormattedDateTime, getCantidad_ModuloFarmacia, getModulo_actualizado, getFarmaciaCurrent, getFarmaciaActualizada } from './utils';
 
 function Accordion(props) {
     const [activeCollapse, setActiveCollapse] = useState(false);

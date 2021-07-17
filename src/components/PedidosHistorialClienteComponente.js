@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Redirect } from "react-router-dom";
-import { isLoggedIn, getFormattedDateTime, getPedidosHistorialCliente } from './utils';
+import { isLoggedIn, getFormattedDateTime, getHistorialCliente } from './utils';
 
 function PedidosHistorialClienteComponente(props) {
     const [historialClienteArray, setHistorialClienteArray] = useState([]);
     const [activeCollapse, setActiveCollapse] = useState(false);
     useEffect(() => {
-        var lista = getPedidosHistorialCliente(props.farmaciaHistorial);
+        var lista = getHistorialCliente(props.farmaciaHistorial);
         
         setHistorialClienteArray(lista.sort(condicionParaOrdenar));
     }, [props.farmaciaHistorial]);
