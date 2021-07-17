@@ -23,9 +23,6 @@ function App() {
   }, [isAlert]);
   function onClickActualizar(e) {
     e.preventDefault();
-    // window.location.href = "./";
-    // window.location.reload(true);
-    //CerrarAlert();
     apiSincronizadorAppPostAsync();
   }
   function onClickSalir(e) {

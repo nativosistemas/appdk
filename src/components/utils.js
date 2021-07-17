@@ -484,15 +484,16 @@ export function isSincronizadorApp() {
     if (apiSincronizadorAppPost !== null && apiSincronizadorAppPost !== undefined && apiSincronizadorAppPost !== '') {
         result = true;
     }
+    //console.log('isSincronizadorApp: ' + result);
     return result;
 }
 export function setSincronizadorApp(pValue) {
+    //console.log('setSincronizadorApp :' + pValue);
     localStorage.setItem('apiSincronizadorAppPost', pValue);
-    // localStorage.removeItem('apiSincronizadorAppPost');
 }
 export async function apiSincronizadorAppPostAsync() {
     if (getName() != '' && !isSincronizadorApp()) {
-        setSincronizadorApp('true');
+        setSincronizadorApp('info');
         CerrarAlert();
         if (navigator.onLine) {
 
@@ -546,8 +547,6 @@ export async function apiSincronizadorAppPostAsync() {
                         AbrirAlert(msgVuelvaIntentarlo);
                         window.location.reload();
                     } else {
-
-
                         // farmacia    
                         var l_farmacias = oSincronizadorApp.listaFarmacia;
                         if (l_farmacias !== null && l_farmacias !== undefined && l_farmacias !== '' && Array.isArray(l_farmacias)) {
@@ -645,12 +644,9 @@ export async function apiSincronizadorAppPostAsync() {
                             */
                             localStorage.setItem('l_pendienteGrabados', JSON.stringify([]));
                         }
-
-
-
                         /// final ok
-                        localStorage.removeItem('apiSincronizadorAppPost');
                         localStorage.setItem('ultimaSincronizacion', Date.now());
+                        localStorage.removeItem('apiSincronizadorAppPost');
                         window.location.reload();
                     }
                 }
