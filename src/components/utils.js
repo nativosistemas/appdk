@@ -875,18 +875,20 @@ export function getDatosCliente_Responsable_util() {
         cdr_EstadoCivil: '',
         cdr_NombreConyuge: '',
         cdr_Nacionalidad: '',
-        cdr_CargoOcupa: ''};
-        return result;
+        cdr_CargoOcupa: ''
+    };
+    return result;
 }
 export function getDatosCliente_Proveedor_util() {
     var result = {
         cdc_Proveedor_Nombre: '',
         cdc_Proveedor_Direccion: '',
         cdc_Proveedor_Localidad: '',
-        cdc_Proveedor_Provincia: '',        
+        cdc_Proveedor_Provincia: '',
         cdc_Proveedor_CPA: '',
-        cdc_Proveedor_Telefono: ''};
-        return result;
+        cdc_Proveedor_Telefono: ''
+    };
+    return result;
 }
 export function getDatosCliente_util() {
     var result = {
@@ -927,5 +929,20 @@ export function getDatosCliente_util() {
 export function setDatosCliente_util(pObj) {
     if (pObj !== null && pObj !== undefined && pObj !== '') {
         localStorage.setItem('o_datosCliente', JSON.stringify(pObj));
+    }
+}
+
+export function getDatosCliente_urlEditar_util() {
+    var result = null;
+    var o_datosCliente = window.localStorage.getItem('o_datosCliente_urlEditar') || '';
+    if (o_datosCliente !== null && o_datosCliente !== undefined && o_datosCliente !== '') {
+        result = JSON.parse(o_datosCliente);
+    }
+    return result;
+}
+
+export function setDatosCliente_urlEditar_util(pObj) {
+    if (pObj !== null && pObj !== undefined && pObj !== '') {
+        localStorage.setItem('o_datosCliente_urlEditar', JSON.stringify(pObj));
     }
 }
