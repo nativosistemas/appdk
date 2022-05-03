@@ -1,5 +1,6 @@
 var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
 var apiNameSincronizadorApp = 'SincronizadorApp';// 'SincronizadorAppTest'; // 
+var apiNameCargaDatosCliente = 'CargaDatosCliente';// 'CargaDatosClienteTest'; // 
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
 var msgVuelvaIntentarlo = 'Vuelva a intentarlo mas tarde.';
 
@@ -810,4 +811,121 @@ if ( x.fecha < fechaActualMenos4meses.getTime()) {
     var l_pedidosHistorial_new = l_pedidosHistorial.filter(element => element.fecha >= fechaActualMenos6meses.getTime());
 
     localStorage.setItem('l_pedidosHistorial', JSON.stringify(l_pedidosHistorial_new));
+}
+export async function apiCargaDatosClientePostAsync() {
+    if (getName() != '' && !isSincronizadorApp()) {
+        setSincronizadorApp('info');
+        CerrarAlert();
+        if (navigator.onLine) {
+            var pDatosCliente = getDatosCliente_util()
+            pDatosCliente.cdc_promotor = getName();
+            var json = JSON.stringify(pDatosCliente);//data
+            try {
+                const response = await fetch(getUrl() + apiNameCargaDatosCliente, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: json
+                });
+                if (response.status >= 400 && response.status < 600) {
+                    localStorage.removeItem('apiSincronizadorAppPost');
+                    AbrirAlert(msgNoInternet);
+                    window.location.reload();
+                } else {
+                    const reader = response.json();
+                    var oSincronizadorApp = await reader;
+                    if (oSincronizadorApp === null || oSincronizadorApp === undefined || oSincronizadorApp === '') {
+                        localStorage.removeItem('apiSincronizadorAppPost');
+                        AbrirAlert(msgVuelvaIntentarlo);
+                        window.location.reload();
+                    } else {
+
+                        //localStorage.setItem('ultimaSincronizacion', Date.now());
+                        localStorage.removeItem('o_datosCliente');
+                        localStorage.removeItem('apiSincronizadorAppPost');
+                        window.location.reload();
+                    }
+                }
+            } catch {
+                localStorage.removeItem('apiSincronizadorAppPost');
+                AbrirAlert(msgNoInternet);
+                window.location.reload();
+            }
+            /* */
+        } else {
+            localStorage.removeItem('apiSincronizadorAppPost');
+            AbrirAlert(msgNoInternet);
+            window.location.reload();
+        }
+    }
+}
+export function getDatosCliente_Responsable_util() {
+    var result = {
+        cdr_NombreApellido: '',
+        cdr_Direccion: '',
+        cdr_Localidad: '',
+        cdr_Provincia: '',
+        cdr_CPA: '',
+        cdr_Telefono: '',
+        cdr_Email: '',
+        cdr_CUIT: '',
+        cdr_DNI: '',
+        cdr_FechaNacimiento: '',
+        cdr_EstadoCivil: '',
+        cdr_NombreConyuge: '',
+        cdr_Nacionalidad: '',
+        cdr_CargoOcupa: ''};
+        return result;
+}
+export function getDatosCliente_Proveedor_util() {
+    var result = {
+        cdc_Proveedor_Nombre: '',
+        cdc_Proveedor_Direccion: '',
+        cdc_Proveedor_Localidad: '',
+        cdc_Proveedor_Provincia: '',        
+        cdc_Proveedor_CPA: '',
+        cdc_Proveedor_Telefono: ''};
+        return result;
+}
+export function getDatosCliente_util() {
+    var result = {
+        cdc_promotor: '',
+        cdc_NombreFantasia: '',
+        cdc_NombreFarmaceutico: '',
+        cdc_NumeroMatricula: '',
+        cdc_Direccion: '',
+        cdc_Localidad: '',
+        cdc_Provincia: '',
+        cdc_CPA: '',
+        cdc_Telefono: '',
+        cdc_Email: '',
+        cdc_CUIT: '',
+        cdc_IVA: '',
+        cdc_NroInscripcionDGR: '',
+        cdc_CodigoPAMI: '',
+        cdc_GLN: '',
+        cdc_DescuentoPlazoPago: '',
+        cdc_MontoDeCreditoAcordado: '',
+        cdc_MontoDeCreditoAcordado_Periodo: '',
+        cdc_Reparto: '',
+        cdc_Proveedor_Nombre: '',
+        cdc_Proveedor_Direccion: '',
+        cdc_Proveedor_Localidad: '',
+        cdc_Proveedor_Provincia: '',
+        cdc_Proveedor_CPA: '',
+        cdc_Proveedor_Telefono: '',
+        listaResponsable: []
+    };
+    var o_datosCliente = window.localStorage.getItem('o_datosCliente') || '';
+    if (o_datosCliente !== null && o_datosCliente !== undefined && o_datosCliente !== '') {
+        result = JSON.parse(o_datosCliente);
+    }
+    return result;
+}
+
+export function setDatosCliente_util(pObj) {
+    if (pObj !== null && pObj !== undefined && pObj !== '') {
+        localStorage.setItem('o_datosCliente', JSON.stringify(pObj));
+    }
 }

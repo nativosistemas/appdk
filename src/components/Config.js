@@ -51,7 +51,7 @@ function Config() {
 
             <footer className="footer">
                 <div className="container">
-                    <span className="text-muted">Versión 1.0.2</span>
+                    <span className="text-muted">Versión 1.0.3</span>
                 </div>
             </footer>
         </>
