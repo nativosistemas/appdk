@@ -2,34 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Redirect, Link,useHistory } from "react-router-dom";
 import { setDatosCliente_util } from './utils';
 import CargaDatosClientesGrillaResponsable from './CargaDatosClientesGrillaResponsable'
+import CargaDatosClientesGrillaProveedor from './CargaDatosClientesGrillaProveedor'
 import {  setDatosCliente_urlEditar_util } from './utils';
 function CargaDatosClientesDetalle(props) {
 
-    //const [state, setState] = useState({first: 1, second: 2});
     const [state, setState] = useState(props.datosCliente);
     const history = useHistory();
     useEffect(() => {
-        // storing input name
-        //localStorage.setItem("name", JSON.stringify(name));
         setDatosCliente_util(state);
     }, [state]);
     function handleChange(e) {
         const { name, value } = e.target
-        // this.setState({ [name]: value })
-        //console.log("state.cdc_NombreFantasia 1: " +state.cdc_NombreFantasia);
-        //console.log("props.datosCliente.cdc_NombreFantasia 1: " + props.datosCliente.cdc_NombreFantasia);
-        //console.log( value);
-        //setState(prev => ({...prev, [name]: value }));
-        /*  */
         setState(prev => ({ ...prev, [name]: value }));
-        //props.setDatosCliente(prev => ({ ...prev, [name]: value }));
-
-
-        /* setState(prev => ({...prev, [name]: value }), () => { 
-             this.props.setDatosCliente(state);
-          });*/
-        // console.log("state.cdc_NombreFantasia: " +state.cdc_NombreFantasia);
-        //console.log("props.datosCliente.cdc_NombreFantasia: " + props.datosCliente.cdc_NombreFantasia);
     }
     function onClickRedirectResponsableEditar(e) {
         e.preventDefault();;
@@ -38,6 +22,11 @@ function CargaDatosClientesDetalle(props) {
     function onClickStearUrlEditar(e) {
         setDatosCliente_urlEditar_util(-1);
         let path = 'cargadatosclientesgrillaresponsableeditar';
+        history.push(path);
+    }
+    function onClickStearUrlEditar_proveedor(e) {
+        setDatosCliente_urlEditar_util(-1);
+        let path = 'cargadatosclientesgrillaproveedoreditar';
         history.push(path);
     }
     return (
@@ -161,29 +150,21 @@ function CargaDatosClientesDetalle(props) {
             <br></br>
             <div className="card">
                 <div className="card-header">
-                    <h5 className="card-title">PRINCIPALES PROVEEDORES</h5>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-10">
+                                <h5 className="card-title">PRINCIPALES PROVEEDORES</h5>
+                            </div>
+                            <div className="col-2">
+                                <button className="btn btn-success" onClick={(e) => onClickStearUrlEditar_proveedor(e)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28" viewBox="0 0 24 24" fill="currentColor" class="bi bi-plus-circle" ><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" /><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" /></svg>
+                                </button>                               
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="card-body card-body-box-sizing">
-                    <div class="mb-3">
-                        <label className="form-label">Nombre</label>
-                        <input type="text" className="form-control" name="cdc_Proveedor_Nombre" value={state.cdc_Proveedor_Nombre} onChange={handleChange}></input>
-                    </div>
-                    <div class="mb-3">
-                        <label className="form-label">Domicilio</label>
-                        <input type="text" className="form-control" name="cdc_Proveedor_Direccion" value={state.cdc_Proveedor_Direccion} onChange={handleChange}></input>
-                    </div>
-                    <div class="mb-3">
-                        <label className="form-label">Localidad</label>
-                        <input type="text" className="form-control" name="cdc_Proveedor_Localidad" value={state.cdc_Proveedor_Localidad} onChange={handleChange}></input>
-                    </div>
-                    <div class="mb-3">
-                        <label className="form-label">C.P.</label>
-                        <input type="text" className="form-control" name="cdc_Proveedor_CPA" value={state.cdc_Proveedor_CPA} onChange={handleChange}></input>
-                    </div>
-                    <div class="mb-3">
-                        <label className="form-label">Teléfono</label>
-                        <input type="text" className="form-control" name="cdc_Proveedor_Telefono" value={state.cdc_Proveedor_Telefono} onChange={handleChange}></input>
-                    </div>
+                    <CargaDatosClientesGrillaProveedor listaProveedor={state.listaProveedor}></CargaDatosClientesGrillaProveedor>
                 </div>
             </div>
         </>

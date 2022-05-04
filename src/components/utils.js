@@ -1,4 +1,4 @@
-var url = 'https://api.kellerhoff.com.ar/api/';//'https://localhost:5001/api/';//
+var url = 'https://localhost:5001/api/';//'https://api.kellerhoff.com.ar/api/';//
 var apiNameSincronizadorApp = 'SincronizadorApp';// 'SincronizadorAppTest'; // 
 var apiNameCargaDatosCliente = 'CargaDatosCliente';// 'CargaDatosClienteTest'; // 
 var msgNoInternet = 'No hay conexion de internet. Vuelva a intentarlo mas tarde.';
@@ -917,7 +917,8 @@ export function getDatosCliente_util() {
         cdc_Proveedor_Provincia: '',
         cdc_Proveedor_CPA: '',
         cdc_Proveedor_Telefono: '',
-        listaResponsable: []
+        listaResponsable: [],
+        listaProveedor:[]
     };
     var o_datosCliente = window.localStorage.getItem('o_datosCliente') || '';
     if (o_datosCliente !== null && o_datosCliente !== undefined && o_datosCliente !== '') {

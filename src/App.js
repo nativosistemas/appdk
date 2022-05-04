@@ -11,6 +11,7 @@ import Config from './components/Config'
 import PedidosHistorialCliente from './components/PedidosHistorialCliente'
 import CargaDatosClientes from './components/CargaDatosClientes'
 import CargaDatosClientesGrillaResponsableEditar from './components/CargaDatosClientesGrillaResponsableEditar'
+import CargaDatosClientesGrillaProveedorEditar from './components/CargaDatosClientesGrillaProveedorEditar'
 
 import { apiSincronizadorAppPostAsync, getUltimaSincronizacion, getFormattedDateTime, getTiempoUltimaSincronizacion, loggedOut, getName, isAlertVisible, getMsgAlert, setAlertVisible, CerrarAlert } from './components/utils';
 
@@ -131,6 +132,7 @@ function App() {
           <Route path="/pedidoshistorialcliente" component={PedidosHistorialCliente} />
           <Route path="/cargadatosclientes" component={CargaDatosClientes} />
           <Route path="/cargadatosclientesgrillaresponsableeditar" component={CargaDatosClientesGrillaResponsableEditar} />
+          <Route path="/cargadatosclientesgrillaproveedoreditar" component={CargaDatosClientesGrillaProveedorEditar} />
         </Switch>
       </div>
     </Router>
