@@ -665,7 +665,7 @@ export async function apiSincronizadorAppPostAsync() {
                         window.location.reload();
                     }
                 }
-            } catch {
+            } catch(e) {
                 localStorage.removeItem('apiSincronizadorAppPost');
                 AbrirAlert(msgNoInternet);
                 window.location.reload();
